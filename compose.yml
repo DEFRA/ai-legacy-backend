@@ -55,7 +55,7 @@ services:
   #   networks:
   #     - cdp-tenant
 
-  cdp-node-backend-template:
+  ai-legacy-backend:
     build:
       context: .
       target: development
