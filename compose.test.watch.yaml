@@ -1,0 +1,3 @@
+services:
+  ai-legacy-backend:
+    command: npm run test:watch
