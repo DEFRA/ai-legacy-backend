@@ -9,7 +9,7 @@ services:
       - path: .env
         required: false
     environment:
-      PORT: 3000
+      PORT: 3002
       NODE_ENV: development
       MONGO_URI: mongodb://mongodb:27017/
       POSTGRES_HOST: postgres

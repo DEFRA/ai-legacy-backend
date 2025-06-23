@@ -159,7 +159,7 @@ docker build --target development --no-cache --tag ai-legacy-backend:development
 Run:
 
 ```bash
-docker run -e PORT=3000 -p 3000:3000 ai-legacy-backend:development
+docker run -e PORT=3002 -p 3002:3002 ai-legacy-backend:development
 ```
 
 ### Production image
@@ -173,7 +173,7 @@ docker build --no-cache --tag ai-legacy-backend .
 Run:
 
 ```bash
-docker run -e PORT=3000 -p 3000:3000 ai-legacy-backend
+docker run -e PORT=3002 -p 3002:3002 ai-legacy-backend
 ```
 
 ### Docker Compose

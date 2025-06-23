@@ -5,7 +5,7 @@ services:
     image: ai-legacy-backend-development
     container_name: ai-legacy-backend-development
     ports:
-      - '3000:3000'
+      - '3002:3002'
       - '9232:9232'
     links:
       - 'mongodb:mongodb'
@@ -20,7 +20,7 @@ services:
     env_file:
       - .env
     environment:
-      PORT: 3000
+      PORT: 3002
       PORT_DEBUG: 9232
       NODE_ENV: development
       MONGO_URI: mongodb://mongodb:27017/
