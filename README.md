@@ -44,6 +44,20 @@ Install application dependencies:
 npm install
 ```
 
+#### Database Setup
+
+This application uses PostgreSQL with Liquibase for database migrations. To set up the database:
+
+1. Start the PostgreSQL service:
+   ```bash
+   docker compose up postgres -d
+   ```
+
+2. Run database migrations:
+   ```bash
+   docker compose run --rm liquibase update
+   ```
+
 ### Development
 
 To run the application in `development` mode run:
@@ -166,15 +180,52 @@ docker run -e PORT=3000 -p 3000:3000 ai-legacy-backend
 
 A local environment with:
 
-- Localstack for AWS services (S3, SQS)
-- Redis
+- PostgreSQL database
 - MongoDB
-- This service.
-- A commented out frontend example.
+- Redis
+- This service
+- Liquibase for database migrations
+- A commented out frontend example
 
 ```bash
 docker compose up --build -d
 ```
+
+### Database Migrations
+
+This project uses Liquibase for database schema management. The changelog files are located in the `/changelog` directory.
+
+#### Running migrations in development:
+
+```bash
+# Run migrations against the development database
+docker compose run --rm liquibase update
+```
+
+#### Running migrations in test environment:
+
+```bash
+# Run migrations against the test database
+docker compose -f compose.yaml -f compose.test.yaml run --rm liquibase update
+```
+
+#### Other useful Liquibase commands:
+
+```bash
+# Check migration status
+docker compose run --rm liquibase status
+
+# Rollback last changeset
+docker compose run --rm liquibase rollback-count 1
+
+# Generate SQL for pending changes (dry run)
+docker compose run --rm liquibase update-sql
+
+# Validate changelog syntax
+docker compose run --rm liquibase validate
+```
+
+**Note:** The Liquibase service uses Docker profiles and will only start when explicitly run with `docker compose run`.
 
 ## Licence
 
