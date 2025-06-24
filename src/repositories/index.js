@@ -13,10 +13,4 @@ export const adminRepository = new AdminRepository(db)
 export const fieldStaffRepository = new FieldStaffRepository(db)
 
 // Export all repositories
-export {
-  CountyRepository,
-  CphRepository,
-  CaseRepository,
-  AdminRepository,
-  FieldStaffRepository
-}
+export { CountyRepository, CphRepository, CaseRepository, AdminRepository, FieldStaffRepository }

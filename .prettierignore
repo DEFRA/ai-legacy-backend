@@ -12,4 +12,3 @@ package-lock.json
 .env.*.local
 changelog/
 database-docs/
-# Test commit for pre-commit hook
