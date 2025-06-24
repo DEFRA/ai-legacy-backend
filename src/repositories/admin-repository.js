@@ -20,9 +20,7 @@ export class AdminRepository extends BaseRepository {
    * @returns {Promise<Array>}
    */
   async findByRegion(region) {
-    return await this.db(this.tableName)
-      .where('region', region)
-      .orderBy('last_name', 'first_name')
+    return await this.db(this.tableName).where('region', region).orderBy('last_name', 'first_name')
   }
 
   /**
@@ -31,9 +29,7 @@ export class AdminRepository extends BaseRepository {
    * @returns {Promise<Array>}
    */
   async findByOffice(office) {
-    return await this.db(this.tableName)
-      .where('office', office)
-      .orderBy('last_name', 'first_name')
+    return await this.db(this.tableName).where('office', office).orderBy('last_name', 'first_name')
   }
 
   /**
@@ -42,9 +38,7 @@ export class AdminRepository extends BaseRepository {
    * @returns {Promise<Array>}
    */
   async findByPermission(permission) {
-    return await this.db(this.tableName)
-      .where('permission', permission)
-      .orderBy('last_name', 'first_name')
+    return await this.db(this.tableName).where('permission', permission).orderBy('last_name', 'first_name')
   }
 
   /**
@@ -54,7 +48,7 @@ export class AdminRepository extends BaseRepository {
    */
   async search(searchTerm) {
     return await this.db(this.tableName)
-      .where(function() {
+      .where(function () {
         this.where('first_name', 'ilike', `%${searchTerm}%`)
           .orWhere('last_name', 'ilike', `%${searchTerm}%`)
           .orWhere('pref_first_name', 'ilike', `%${searchTerm}%`)
@@ -69,10 +63,7 @@ export class AdminRepository extends BaseRepository {
    */
   async findWithFormattedName(staffNo) {
     return await this.db(this.tableName)
-      .select([
-        '*',
-        this.db.raw('CONCAT(pref_first_name, \' \', last_name) as full_name')
-      ])
+      .select(['*', this.db.raw("CONCAT(pref_first_name, ' ', last_name) as full_name")])
       .where('staff_no', staffNo)
       .first()
   }

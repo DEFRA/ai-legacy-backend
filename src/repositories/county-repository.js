@@ -11,9 +11,7 @@ export class CountyRepository extends BaseRepository {
    * @returns {Promise<Array>}
    */
   async findByCountry(country) {
-    return await this.db(this.tableName)
-      .where('country', country)
-      .orderBy('county')
+    return await this.db(this.tableName).where('country', country).orderBy('county')
   }
 
   /**
@@ -22,9 +20,7 @@ export class CountyRepository extends BaseRepository {
    * @returns {Promise<Array>}
    */
   async findByRegion(region) {
-    return await this.db(this.tableName)
-      .where('region', region)
-      .orderBy('county')
+    return await this.db(this.tableName).where('region', region).orderBy('county')
   }
 
   /**

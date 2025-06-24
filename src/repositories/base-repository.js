@@ -53,10 +53,7 @@ export class BaseRepository {
    * @returns {Promise<Object|null>}
    */
   async findById(id, select = ['*']) {
-    const result = await this.db(this.tableName)
-      .select(select)
-      .where('id', id)
-      .first()
+    const result = await this.db(this.tableName).select(select).where('id', id).first()
 
     return result || null
   }
@@ -68,10 +65,7 @@ export class BaseRepository {
    * @returns {Promise<Object|null>}
    */
   async findOne(conditions, select = ['*']) {
-    const result = await this.db(this.tableName)
-      .select(select)
-      .where(conditions)
-      .first()
+    const result = await this.db(this.tableName).select(select).where(conditions).first()
 
     return result || null
   }
@@ -82,9 +76,7 @@ export class BaseRepository {
    * @returns {Promise<Object>}
    */
   async create(data) {
-    const [result] = await this.db(this.tableName)
-      .insert(data)
-      .returning('*')
+    const [result] = await this.db(this.tableName).insert(data).returning('*')
 
     return result
   }
@@ -110,9 +102,7 @@ export class BaseRepository {
    * @returns {Promise<boolean>}
    */
   async delete(id) {
-    const deletedCount = await this.db(this.tableName)
-      .where('id', id)
-      .del()
+    const deletedCount = await this.db(this.tableName).where('id', id).del()
 
     return deletedCount > 0
   }
@@ -123,10 +113,7 @@ export class BaseRepository {
    * @returns {Promise<number>}
    */
   async count(filters = {}) {
-    const result = await this.db(this.tableName)
-      .where(filters)
-      .count('* as count')
-      .first()
+    const result = await this.db(this.tableName).where(filters).count('* as count').first()
 
     return parseInt(result.count)
   }
@@ -137,9 +124,7 @@ export class BaseRepository {
    * @returns {Promise<boolean>}
    */
   async exists(conditions) {
-    const result = await this.db(this.tableName)
-      .where(conditions)
-      .first()
+    const result = await this.db(this.tableName).where(conditions).first()
 
     return !!result
   }

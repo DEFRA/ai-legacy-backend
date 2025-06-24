@@ -78,7 +78,7 @@ export const cphController = {
   async getAll(request, h) {
     try {
       const { county, postcode, search, pgp_study, limit = 50, offset = 0 } = request.query
-      
+
       let cphRecords, total
 
       if (search) {
@@ -93,7 +93,6 @@ export const cphController = {
         const filters = {}
         if (county) filters.county = county
         if (pgp_study !== undefined) filters.pgp_study = pgp_study === 'true'
-
         ;[cphRecords, total] = await Promise.all([
           cphRepository.findAll({
             filters,
@@ -105,14 +104,16 @@ export const cphController = {
         ])
       }
 
-      return h.response({
-        data: cphRecords,
-        pagination: {
-          limit: parseInt(limit),
-          offset: parseInt(offset),
-          total
-        }
-      }).code(200)
+      return h
+        .response({
+          data: cphRecords,
+          pagination: {
+            limit: parseInt(limit),
+            offset: parseInt(offset),
+            total
+          }
+        })
+        .code(200)
     } catch (error) {
       request.logger.error('Error fetching CPH records:', error)
       throw Boom.internal('Failed to fetch CPH records')
@@ -364,7 +365,7 @@ export const cphController = {
   async delete(request, h) {
     try {
       const { cph } = request.params
-      
+
       // First check if CPH exists
       const existingCph = await cphRepository.findByCph(cph)
       if (!existingCph) {

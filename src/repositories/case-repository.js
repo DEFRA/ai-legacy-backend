@@ -20,9 +20,7 @@ export class CaseRepository extends BaseRepository {
    * @returns {Promise<Array>}
    */
   async findByCph(cph) {
-    return await this.db(this.tableName)
-      .where('cph', cph)
-      .orderBy('nat_inc')
+    return await this.db(this.tableName).where('cph', cph).orderBy('nat_inc')
   }
 
   /**
@@ -31,9 +29,7 @@ export class CaseRepository extends BaseRepository {
    * @returns {Promise<Array>}
    */
   async findByTbStatus(tbStatus) {
-    return await this.db(this.tableName)
-      .where('tb_status', tbStatus)
-      .orderBy('nat_inc')
+    return await this.db(this.tableName).where('tb_status', tbStatus).orderBy('nat_inc')
   }
 
   /**
@@ -42,9 +38,7 @@ export class CaseRepository extends BaseRepository {
    * @returns {Promise<Array>}
    */
   async findByResult(result) {
-    return await this.db(this.tableName)
-      .where('result', result)
-      .orderBy('nat_inc')
+    return await this.db(this.tableName).where('result', result).orderBy('nat_inc')
   }
 
   /**
@@ -97,9 +91,7 @@ export class CaseRepository extends BaseRepository {
    * @returns {Promise<Array>}
    */
   async findPostMortemRequired() {
-    return await this.db(this.tableName)
-      .whereNotNull('final_pm_date')
-      .orderBy('final_pm_date')
+    return await this.db(this.tableName).whereNotNull('final_pm_date').orderBy('final_pm_date')
   }
 
   /**
@@ -110,8 +102,8 @@ export class CaseRepository extends BaseRepository {
     const stats = await this.db(this.tableName)
       .select([
         this.db.raw('COUNT(*) as total_cases'),
-        this.db.raw('COUNT(CASE WHEN result = \'Reactor\' THEN 1 END) as reactor_cases'),
-        this.db.raw('COUNT(CASE WHEN result = \'Clear\' THEN 1 END) as clear_cases'),
+        this.db.raw("COUNT(CASE WHEN result = 'Reactor' THEN 1 END) as reactor_cases"),
+        this.db.raw("COUNT(CASE WHEN result = 'Clear' THEN 1 END) as clear_cases"),
         this.db.raw('COUNT(CASE WHEN final_drf_completed_date IS NULL THEN 1 END) as pending_drf'),
         this.db.raw('COUNT(CASE WHEN drf_late = true THEN 1 END) as late_drf')
       ])

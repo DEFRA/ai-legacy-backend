@@ -85,7 +85,7 @@ export const caseController = {
   async getAll(request, h) {
     try {
       const { cph, tb_status, result, start_date, end_date, limit = 50, offset = 0 } = request.query
-      
+
       let cases, total
 
       if (start_date && end_date) {
@@ -97,7 +97,6 @@ export const caseController = {
         if (cph) filters.cph = cph
         if (tb_status) filters.tb_status = parseInt(tb_status)
         if (result) filters.result = result
-
         ;[cases, total] = await Promise.all([
           caseRepository.findAll({
             filters,
@@ -109,14 +108,16 @@ export const caseController = {
         ])
       }
 
-      return h.response({
-        data: cases,
-        pagination: {
-          limit: parseInt(limit),
-          offset: parseInt(offset),
-          total
-        }
-      }).code(200)
+      return h
+        .response({
+          data: cases,
+          pagination: {
+            limit: parseInt(limit),
+            offset: parseInt(offset),
+            total
+          }
+        })
+        .code(200)
     } catch (error) {
       request.logger.error('Error fetching cases:', error)
       throw Boom.internal('Failed to fetch cases')

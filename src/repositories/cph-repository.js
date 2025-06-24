@@ -20,9 +20,7 @@ export class CphRepository extends BaseRepository {
    * @returns {Promise<Array>}
    */
   async findByCounty(county) {
-    return await this.db(this.tableName)
-      .where('county', county)
-      .orderBy('cph_name')
+    return await this.db(this.tableName).where('county', county).orderBy('cph_name')
   }
 
   /**
@@ -31,9 +29,7 @@ export class CphRepository extends BaseRepository {
    * @returns {Promise<Array>}
    */
   async findByPostcodeArea(postcodePrefix) {
-    return await this.db(this.tableName)
-      .where('postcode', 'like', `${postcodePrefix}%`)
-      .orderBy('cph_name')
+    return await this.db(this.tableName).where('postcode', 'like', `${postcodePrefix}%`).orderBy('cph_name')
   }
 
   /**
@@ -57,7 +53,9 @@ export class CphRepository extends BaseRepository {
     return await this.db(this.tableName)
       .select([
         '*',
-        this.db.raw('CASE WHEN easting IS NOT NULL AND northing IS NOT NULL THEN json_build_object(\'easting\', easting, \'northing\', northing, \'map_ref\', map_ref) END as location')
+        this.db.raw(
+          "CASE WHEN easting IS NOT NULL AND northing IS NOT NULL THEN json_build_object('easting', easting, 'northing', northing, 'map_ref', map_ref) END as location"
+        )
       ])
       .where('cph', cph)
       .first()
@@ -68,8 +66,6 @@ export class CphRepository extends BaseRepository {
    * @returns {Promise<Array>}
    */
   async findPgpStudyParticipants() {
-    return await this.db(this.tableName)
-      .where('pgp_study', true)
-      .orderBy('cph_name')
+    return await this.db(this.tableName).where('pgp_study', true).orderBy('cph_name')
   }
 }

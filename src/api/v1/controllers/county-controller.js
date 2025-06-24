@@ -68,7 +68,7 @@ export const countyController = {
   async getAll(request, h) {
     try {
       const { country, region, limit = 50, offset = 0 } = request.query
-      
+
       const filters = {}
       if (country) filters.country = country
       if (region) filters.region = region
@@ -83,14 +83,16 @@ export const countyController = {
         countyRepository.count(filters)
       ])
 
-      return h.response({
-        data: counties,
-        pagination: {
-          limit: parseInt(limit),
-          offset: parseInt(offset),
-          total
-        }
-      }).code(200)
+      return h
+        .response({
+          data: counties,
+          pagination: {
+            limit: parseInt(limit),
+            offset: parseInt(offset),
+            total
+          }
+        })
+        .code(200)
     } catch (error) {
       request.logger.error('Error fetching counties:', error)
       throw Boom.internal(`Failed to fetch counties: ${error.message}`)

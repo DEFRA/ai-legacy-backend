@@ -32,7 +32,7 @@
  *       required:
  *         - county
  *         - country
- * 
+ *
  *     CountyInput:
  *       type: object
  *       properties:
@@ -59,7 +59,7 @@
  *       required:
  *         - county
  *         - country
- * 
+ *
  *     CPH:
  *       type: object
  *       properties:
@@ -126,7 +126,7 @@
  *       required:
  *         - cph
  *         - cph_name
- * 
+ *
  *     CPHInput:
  *       type: object
  *       properties:

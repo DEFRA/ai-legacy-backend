@@ -20,9 +20,7 @@ export class FieldStaffRepository extends BaseRepository {
    * @returns {Promise<Array>}
    */
   async findByRegion(region) {
-    return await this.db(this.tableName)
-      .where('region', region)
-      .orderBy('last_name', 'first_name')
+    return await this.db(this.tableName).where('region', region).orderBy('last_name', 'first_name')
   }
 
   /**
@@ -31,9 +29,7 @@ export class FieldStaffRepository extends BaseRepository {
    * @returns {Promise<Array>}
    */
   async findByFieldPost(fieldPost) {
-    return await this.db(this.tableName)
-      .where('field_post', fieldPost)
-      .orderBy('last_name', 'first_name')
+    return await this.db(this.tableName).where('field_post', fieldPost).orderBy('last_name', 'first_name')
   }
 
   /**
@@ -42,9 +38,7 @@ export class FieldStaffRepository extends BaseRepository {
    * @returns {Promise<Array>}
    */
   async findByPermission(permission) {
-    return await this.db(this.tableName)
-      .where('permission', permission)
-      .orderBy('last_name', 'first_name')
+    return await this.db(this.tableName).where('permission', permission).orderBy('last_name', 'first_name')
   }
 
   /**
@@ -54,10 +48,7 @@ export class FieldStaffRepository extends BaseRepository {
    */
   async findWithFieldPost(staffNo) {
     return await this.db(this.tableName)
-      .select([
-        'field_staff_t.*',
-        'field_staff_cat_t.field_post as field_post_name'
-      ])
+      .select(['field_staff_t.*', 'field_staff_cat_t.field_post as field_post_name'])
       .leftJoin('field_staff_cat_t', 'field_staff_t.field_post', 'field_staff_cat_t.id')
       .where('field_staff_t.staff_no', staffNo)
       .first()
@@ -70,7 +61,7 @@ export class FieldStaffRepository extends BaseRepository {
    */
   async search(searchTerm) {
     return await this.db(this.tableName)
-      .where(function() {
+      .where(function () {
         this.where('first_name', 'ilike', `%${searchTerm}%`)
           .orWhere('last_name', 'ilike', `%${searchTerm}%`)
           .orWhere('pref_first_name', 'ilike', `%${searchTerm}%`)
