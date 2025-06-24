@@ -28,7 +28,7 @@ services:
       POSTGRES_PORT: 5432
       POSTGRES_DB: tbcms
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: ppp
     networks:
       - ai-legacy-backend
 
