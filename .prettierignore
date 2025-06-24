@@ -1,0 +1,15 @@
+node_modules/
+dist/
+build/
+coverage/
+*.min.js
+*.min.css
+package-lock.json
+*.log
+.git/
+.env
+.env.local
+.env.*.local
+changelog/
+database-docs/
+# Test commit for pre-commit hook
