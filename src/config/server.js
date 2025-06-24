@@ -79,6 +79,38 @@ const serverConfig = {
       env: 'MONGO_DATABASE'
     }
   },
+  postgres: {
+    host: {
+      doc: 'PostgreSQL host',
+      format: String,
+      default: 'localhost',
+      env: 'POSTGRES_HOST'
+    },
+    port: {
+      doc: 'PostgreSQL port',
+      format: 'port',
+      default: 5432,
+      env: 'POSTGRES_PORT'
+    },
+    database: {
+      doc: 'PostgreSQL database name',
+      format: String,
+      default: 'tbcms',
+      env: 'POSTGRES_DB'
+    },
+    user: {
+      doc: 'PostgreSQL username',
+      format: String,
+      default: 'postgres',
+      env: 'POSTGRES_USER'
+    },
+    password: {
+      doc: 'PostgreSQL password',
+      format: String,
+      default: 'postgres',
+      env: 'POSTGRES_PASSWORD'
+    }
+  },
   httpProxy: {
     doc: 'HTTP Proxy URL',
     format: String,
