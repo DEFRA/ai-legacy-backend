@@ -7,7 +7,3 @@ import Joi from 'joi'
 export const cphSchema = Joi.string()
   .pattern(/^[0-9]{11}$/)
   .description('County Parish Holding identifier (11 digits)')
-
-export {
-  cphSchema
-}

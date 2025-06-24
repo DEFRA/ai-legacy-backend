@@ -7,24 +7,28 @@ import { PgHoldingsRepository } from '../../data/sql/pg-holdings-repository.js'
  * Handler for GET /v1/holdings
  * Returns all holdings
  */
-async function getAllHoldings (request, h) {
+async function getAllHoldings(request, h) {
   try {
     const knex = getKnexInstance()
     const holdingsRepo = new PgHoldingsRepository(knex)
-    
+
     // TODO: Call repository method when implemented
     // const holdings = await holdingsRepo.findAll()
-    
+
     // Temporary response for basic setup
-    return h.response({
-      message: 'Holdings endpoint - implementation pending',
-      endpoint: 'GET /v1/holdings'
-    }).code(StatusCodes.OK)
+    return h
+      .response({
+        message: 'Holdings endpoint - implementation pending',
+        endpoint: 'GET /v1/holdings'
+      })
+      .code(StatusCodes.OK)
   } catch (error) {
     request.logger.error('Error fetching holdings:', error)
-    return h.response({
-      message: 'Internal server error'
-    }).code(StatusCodes.INTERNAL_SERVER_ERROR)
+    return h
+      .response({
+        message: 'Internal server error'
+      })
+      .code(StatusCodes.INTERNAL_SERVER_ERROR)
   }
 }
 
@@ -32,12 +36,12 @@ async function getAllHoldings (request, h) {
  * Handler for GET /v1/holdings/{cph}
  * Returns a single holding by CPH
  */
-async function getHoldingByCph (request, h) {
+async function getHoldingByCph(request, h) {
   try {
     const { cph } = request.params
     const knex = getKnexInstance()
     const holdingsRepo = new PgHoldingsRepository(knex)
-    
+
     // TODO: Call repository method when implemented
     // const holding = await holdingsRepo.findByCph(cph)
     // if (!holding) {
@@ -45,18 +49,22 @@ async function getHoldingByCph (request, h) {
     //     message: 'Holding not found'
     //   }).code(StatusCodes.NOT_FOUND)
     // }
-    
+
     // Temporary response for basic setup
-    return h.response({
-      message: 'Single holding endpoint - implementation pending',
-      endpoint: `GET /v1/holdings/${cph}`,
-      cph
-    }).code(StatusCodes.OK)
+    return h
+      .response({
+        message: 'Single holding endpoint - implementation pending',
+        endpoint: `GET /v1/holdings/${cph}`,
+        cph
+      })
+      .code(StatusCodes.OK)
   } catch (error) {
     request.logger.error('Error fetching holding:', error)
-    return h.response({
-      message: 'Internal server error'
-    }).code(StatusCodes.INTERNAL_SERVER_ERROR)
+    return h
+      .response({
+        message: 'Internal server error'
+      })
+      .code(StatusCodes.INTERNAL_SERVER_ERROR)
   }
 }
 
@@ -74,7 +82,7 @@ const cphSchema = Joi.string()
 const router = {
   plugin: {
     name: 'holdings-router',
-    register (server) {
+    register(server) {
       // GET /v1/holdings - Get all holdings
       server.route({
         method: 'GET',

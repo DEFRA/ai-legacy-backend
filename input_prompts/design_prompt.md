@@ -39,5 +39,11 @@ look at the database structure in the changelog and implement it precisely and g
 - only create columns that exist in #db.changelog-1.0.xml, i.e. if some tables dont have id's do not create them
 - the scipt(s) should be saved in the #db-seeds folder 
 
-# 3 resolving foreign key constraints:
+# 3 Resolving foreign key constraints:
 refactor the sql files in #file:db-seeds , to ensure it conforms to the definitions in the #file:db.changelog-1.0.xml . Pay particular attention to foreign key constraints and ensure these are inserted at the appropriate time
+
+# 4 Creating endpoints for reference data retrival
+Using this sql file #file:01_reference_data.sql I would like to generate an OpenAPI endpoint using the latest version of the OpenAPI specification https://swagger.io/specification/ for each of the entities that uses the repositry pattern https://psid23.medium.com/repository-pattern-for-data-access-in-software-development-4c10aa9604da and knex.js https://knexjs.org/guide for data access.
+
+Please ensure that the folder structure of the project is updated to store the endpoints and the repository implementations as per best practice.
+ 

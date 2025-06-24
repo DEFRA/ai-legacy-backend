@@ -9,6 +9,8 @@ import { requestTracing } from './plugins/request-tracing.js'
 
 import { probes as probesRouter } from './probes/probes.js'
 import { router as holdingsRouter } from './v1/holdings/router.js'
+import { tbcmsRouter } from './v1/router.js'
+import { swaggerPlugin } from './plugins/swagger.js'
 
 async function createServer () {
   const server = hapi.server({
@@ -42,8 +44,10 @@ async function createServer () {
     requestLogger,
     requestTracing,
     pulse,
+    swaggerPlugin,
     probesRouter,
-    holdingsRouter
+    holdingsRouter,
+    tbcmsRouter
   ])
 
   return server
