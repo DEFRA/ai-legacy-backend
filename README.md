@@ -49,13 +49,31 @@ npm install
 This application uses PostgreSQL with Liquibase for database migrations. To set up the database:
 
 1. Start the PostgreSQL service:
+
    ```bash
    docker compose up postgres -d
    ```
 
 2. Run database migrations:
+
    ```bash
    docker compose run --rm liquibase update
+   ```
+
+3. Populate the database with reference data:
+
+   ```bash
+   # Run the seed scripts in order
+   docker exec -i ai-legacy-backend-postgres psql -U postgres -d tbcms < database-docs/db-seeds/01_reference_data.sql
+   docker exec -i ai-legacy-backend-postgres psql -U postgres -d tbcms < database-docs/db-seeds/02_geographic_administrative.sql
+   docker exec -i ai-legacy-backend-postgres psql -U postgres -d tbcms < database-docs/db-seeds/03_premises_farms.sql
+   docker exec -i ai-legacy-backend-postgres psql -U postgres -d tbcms < database-docs/db-seeds/04_tb_cases_testing.sql
+   ```
+
+4. Verify the data was loaded:
+   ```bash
+   # Check TB status reference data
+   docker exec -it ai-legacy-backend-postgres psql -U postgres -d tbcms -c "SELECT * FROM tb_status_t;"
    ```
 
 ### Development
@@ -189,6 +207,27 @@ A local environment with:
 
 ```bash
 docker compose up --build -d
+```
+
+#### Complete Setup with Database Seeding
+
+To set up the complete environment with database schema and reference data:
+
+```bash
+# 1. Start all services
+docker compose up
+
+# 2. In a separate terminal, run database migrations
+docker compose run --rm liquibase update
+
+# 3. Seed the database with reference data
+docker exec -i ai-legacy-backend-postgres psql -U postgres -d tbcms < database-docs/db-seeds/01_reference_data.sql
+docker exec -i ai-legacy-backend-postgres psql -U postgres -d tbcms < database-docs/db-seeds/02_geographic_administrative.sql
+docker exec -i ai-legacy-backend-postgres psql -U postgres -d tbcms < database-docs/db-seeds/03_premises_farms.sql
+docker exec -i ai-legacy-backend-postgres psql -U postgres -d tbcms < database-docs/db-seeds/04_tb_cases_testing.sql
+
+# 4. Test the API
+curl http://localhost:3002/api/v1/reference/tb-status
 ```
 
 ### Database Migrations
