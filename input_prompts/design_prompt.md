@@ -59,3 +59,4 @@ Please ensure that the folder structure of the project is updated to store the e
 # 5 Link TB case drop down to table in database
 
 Generate a new OpenAPI endpoint for tb_status_t as a GET include the values that are in the table in the response object. Update the #file:case-details.njk and change the tb-status selector to display the items from the GET endpoint. The values for the endpoint are stored in the reference table tb_status_t #file:01_reference_data.sql
+

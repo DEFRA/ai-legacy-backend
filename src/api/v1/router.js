@@ -9,5 +9,6 @@ export const tbcmsRouter = {
   register: async server => {
     // Register all routes
     server.route([...countyRoutes, ...cphRoutes, ...caseRoutes, ...referenceRoutes])
+
   }
 }

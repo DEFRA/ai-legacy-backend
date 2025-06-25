@@ -54,17 +54,22 @@ npm install
 
 This application uses PostgreSQL with Liquibase for database migrations. To set up the database:
 
+
 1. **Start the PostgreSQL service:**
+
 
    ```bash
    docker compose up postgres -d
    ```
 
+
 2. **Run database migrations:**
+
 
    ```bash
    docker compose run --rm liquibase update
    ```
+
 
 3. **Clear all tables (if needed):**
 
@@ -81,6 +86,7 @@ This application uses PostgreSQL with Liquibase for database migrations. To set 
 
 4. **Populate the database with reference data:**
 
+
    ```bash
    # Run the seed scripts in order
    docker exec -i ai-legacy-backend-postgres psql -U postgres -d tbcms < database-docs/db-seeds/01_reference_data.sql
@@ -89,7 +95,9 @@ This application uses PostgreSQL with Liquibase for database migrations. To set 
    docker exec -i ai-legacy-backend-postgres psql -U postgres -d tbcms < database-docs/db-seeds/04_tb_cases_testing.sql
    ```
 
+
 5. **Verify the data was loaded:**
+
 
    ```bash
    # Check TB status reference data
