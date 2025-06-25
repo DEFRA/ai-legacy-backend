@@ -1,7 +1,7 @@
 import { BaseRepository } from './base-repository.js'
 
 export class FieldStaffRepository extends BaseRepository {
-  constructor(db) {
+  constructor (db) {
     super(db, 'field_staff_t')
   }
 
@@ -10,7 +10,7 @@ export class FieldStaffRepository extends BaseRepository {
    * @param {string} staffNo - Staff number
    * @returns {Promise<Object|null>}
    */
-  async findByStaffNo(staffNo) {
+  async findByStaffNo (staffNo) {
     return await this.findOne({ staff_no: staffNo })
   }
 
@@ -19,8 +19,10 @@ export class FieldStaffRepository extends BaseRepository {
    * @param {string} region - Region name
    * @returns {Promise<Array>}
    */
-  async findByRegion(region) {
-    return await this.db(this.tableName).where('region', region).orderBy('last_name', 'first_name')
+  async findByRegion (region) {
+    return await this.db(this.tableName)
+      .where('region', region)
+      .orderBy('last_name', 'first_name')
   }
 
   /**
@@ -28,8 +30,10 @@ export class FieldStaffRepository extends BaseRepository {
    * @param {number} fieldPost - Field post ID
    * @returns {Promise<Array>}
    */
-  async findByFieldPost(fieldPost) {
-    return await this.db(this.tableName).where('field_post', fieldPost).orderBy('last_name', 'first_name')
+  async findByFieldPost (fieldPost) {
+    return await this.db(this.tableName)
+      .where('field_post', fieldPost)
+      .orderBy('last_name', 'first_name')
   }
 
   /**
@@ -37,8 +41,10 @@ export class FieldStaffRepository extends BaseRepository {
    * @param {number} permission - Permission level
    * @returns {Promise<Array>}
    */
-  async findByPermission(permission) {
-    return await this.db(this.tableName).where('permission', permission).orderBy('last_name', 'first_name')
+  async findByPermission (permission) {
+    return await this.db(this.tableName)
+      .where('permission', permission)
+      .orderBy('last_name', 'first_name')
   }
 
   /**
@@ -46,10 +52,17 @@ export class FieldStaffRepository extends BaseRepository {
    * @param {string} staffNo - Staff number
    * @returns {Promise<Object|null>}
    */
-  async findWithFieldPost(staffNo) {
+  async findWithFieldPost (staffNo) {
     return await this.db(this.tableName)
-      .select(['field_staff_t.*', 'field_staff_cat_t.field_post as field_post_name'])
-      .leftJoin('field_staff_cat_t', 'field_staff_t.field_post', 'field_staff_cat_t.id')
+      .select([
+        'field_staff_t.*',
+        'field_staff_cat_t.field_post as field_post_name'
+      ])
+      .leftJoin(
+        'field_staff_cat_t',
+        'field_staff_t.field_post',
+        'field_staff_cat_t.id'
+      )
       .where('field_staff_t.staff_no', staffNo)
       .first()
   }
@@ -59,7 +72,7 @@ export class FieldStaffRepository extends BaseRepository {
    * @param {string} searchTerm - Search term
    * @returns {Promise<Array>}
    */
-  async search(searchTerm) {
+  async search (searchTerm) {
     return await this.db(this.tableName)
       .where(function () {
         this.where('first_name', 'ilike', `%${searchTerm}%`)

@@ -9,6 +9,4 @@ const requestTracing = {
   }
 }
 
-export {
-  requestTracing
-}
+export { requestTracing }

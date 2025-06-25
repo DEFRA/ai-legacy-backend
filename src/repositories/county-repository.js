@@ -1,7 +1,7 @@
 import { BaseRepository } from './base-repository.js'
 
 export class CountyRepository extends BaseRepository {
-  constructor(db) {
+  constructor (db) {
     super(db, 'county_t')
   }
 
@@ -10,8 +10,10 @@ export class CountyRepository extends BaseRepository {
    * @param {string} country - Country name
    * @returns {Promise<Array>}
    */
-  async findByCountry(country) {
-    return await this.db(this.tableName).where('country', country).orderBy('county')
+  async findByCountry (country) {
+    return await this.db(this.tableName)
+      .where('country', country)
+      .orderBy('county')
   }
 
   /**
@@ -19,8 +21,10 @@ export class CountyRepository extends BaseRepository {
    * @param {string} region - Region name
    * @returns {Promise<Array>}
    */
-  async findByRegion(region) {
-    return await this.db(this.tableName).where('region', region).orderBy('county')
+  async findByRegion (region) {
+    return await this.db(this.tableName)
+      .where('region', region)
+      .orderBy('county')
   }
 
   /**
@@ -28,7 +32,7 @@ export class CountyRepository extends BaseRepository {
    * @param {number} id - County ID
    * @returns {Promise<Object|null>}
    */
-  async findWithOffice(id) {
+  async findWithOffice (id) {
     return await this.db(this.tableName)
       .select([
         'county_t.*',

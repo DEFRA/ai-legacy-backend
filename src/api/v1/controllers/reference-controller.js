@@ -57,12 +57,21 @@ export const referenceController = {
    *       500:
    *         description: Internal server error
    */
-  async getTbStatus(request, h) {
+  async getTbStatus (request, h) {
     try {
       // Use DISTINCT ON to get unique TB status values based on status_abb and status
       // This eliminates the duplicate entries in the database
       const tbStatuses = await db('tb_status_t')
-        .distinct('status_abb', 'status', 'midlands', 'north', 'scotland', 'south_east', 'south_west', 'wales')
+        .distinct(
+          'status_abb',
+          'status',
+          'midlands',
+          'north',
+          'scotland',
+          'south_east',
+          'south_west',
+          'wales'
+        )
         .orderBy('status_abb')
 
       return h

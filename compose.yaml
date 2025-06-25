@@ -82,4 +82,3 @@ networks:
   ai-legacy-backend:
     name: ai-legacy-backend
     driver: bridge
-

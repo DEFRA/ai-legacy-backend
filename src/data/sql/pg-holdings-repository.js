@@ -4,7 +4,7 @@ import { Holding } from '../models/holding.js'
  * Repository for reading holdings from PostgreSQL database
  */
 class PgHoldingsRepository {
-  constructor(knex) {
+  constructor (knex) {
     this.knex = knex
   }
 
@@ -12,7 +12,7 @@ class PgHoldingsRepository {
    * Get all holdings
    * @returns {Promise<Holding[]>} Array of Holding models
    */
-  async findAll() {
+  async findAll () {
     // TODO: Query cpht table to get all holdings
     // TODO: Convert database rows to Holding models using Holding.fromDatabaseRow()
     // TODO: Load comments for holdings if comments table exists
@@ -22,10 +22,10 @@ class PgHoldingsRepository {
 
   /**
    * Get a single holding by CPH
-   * @param {string} cph - County Parish Holding identifier
+   * @param {string} _cph - County Parish Holding identifier
    * @returns {Promise<Holding|null>} Holding model or null if not found
    */
-  async findByCph(cph) {
+  async findByCph (_cph) {
     // TODO: Query cpht table by CPH
     // TODO: Convert database row to Holding model using Holding.fromDatabaseRow()
     // TODO: Load comments for this holding if comments table exists
@@ -36,10 +36,10 @@ class PgHoldingsRepository {
 
   /**
    * Load comments for holdings from comments table (if exists)
-   * @param {Holding[]} holdings - Array of holdings to load comments for
+   * @param {Holding[]} _holdings - Array of holdings to load comments for
    * @private
    */
-  async _loadCommentsForHoldings(holdings) {
+  async _loadCommentsForHoldings (_holdings) {
     // TODO: Check if comments table exists
     // TODO: Query comments table for all CPHs
     // TODO: Convert comment rows to Comment models using Comment.fromDatabaseRow()
@@ -50,11 +50,11 @@ class PgHoldingsRepository {
 
   /**
    * Check if a table exists in the database
-   * @param {string} tableName - Name of the table to check
+   * @param {string} _tableName - Name of the table to check
    * @returns {Promise<boolean>} True if table exists
    * @private
    */
-  async _tableExists(tableName) {
+  async _tableExists (_tableName) {
     // TODO: Use Knex schema inspection to check if table exists
     throw new Error('Method not implemented')
   }

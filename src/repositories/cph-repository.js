@@ -1,7 +1,7 @@
 import { BaseRepository } from './base-repository.js'
 
 export class CphRepository extends BaseRepository {
-  constructor(db) {
+  constructor (db) {
     super(db, 'cpht')
   }
 
@@ -10,7 +10,7 @@ export class CphRepository extends BaseRepository {
    * @param {string} cph - CPH number
    * @returns {Promise<Object|null>}
    */
-  async findByCph(cph) {
+  async findByCph (cph) {
     return await this.findOne({ cph })
   }
 
@@ -19,8 +19,10 @@ export class CphRepository extends BaseRepository {
    * @param {string} county - County name
    * @returns {Promise<Array>}
    */
-  async findByCounty(county) {
-    return await this.db(this.tableName).where('county', county).orderBy('cph_name')
+  async findByCounty (county) {
+    return await this.db(this.tableName)
+      .where('county', county)
+      .orderBy('cph_name')
   }
 
   /**
@@ -28,8 +30,10 @@ export class CphRepository extends BaseRepository {
    * @param {string} postcodePrefix - Postcode prefix (e.g., 'FB50')
    * @returns {Promise<Array>}
    */
-  async findByPostcodeArea(postcodePrefix) {
-    return await this.db(this.tableName).where('postcode', 'like', `${postcodePrefix}%`).orderBy('cph_name')
+  async findByPostcodeArea (postcodePrefix) {
+    return await this.db(this.tableName)
+      .where('postcode', 'like', `${postcodePrefix}%`)
+      .orderBy('cph_name')
   }
 
   /**
@@ -37,7 +41,7 @@ export class CphRepository extends BaseRepository {
    * @param {string} searchTerm - Search term
    * @returns {Promise<Array>}
    */
-  async search(searchTerm) {
+  async search (searchTerm) {
     return await this.db(this.tableName)
       .where('cph_name', 'ilike', `%${searchTerm}%`)
       .orWhere('description', 'ilike', `%${searchTerm}%`)
@@ -49,7 +53,7 @@ export class CphRepository extends BaseRepository {
    * @param {string} cph - CPH number
    * @returns {Promise<Object|null>}
    */
-  async findWithLocation(cph) {
+  async findWithLocation (cph) {
     return await this.db(this.tableName)
       .select([
         '*',
@@ -65,7 +69,9 @@ export class CphRepository extends BaseRepository {
    * Get CPHs participating in PGP study
    * @returns {Promise<Array>}
    */
-  async findPgpStudyParticipants() {
-    return await this.db(this.tableName).where('pgp_study', true).orderBy('cph_name')
+  async findPgpStudyParticipants () {
+    return await this.db(this.tableName)
+      .where('pgp_study', true)
+      .orderBy('cph_name')
   }
 }

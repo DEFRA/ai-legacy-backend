@@ -82,14 +82,25 @@ export const caseController = {
    *       500:
    *         description: Internal server error
    */
-  async getAll(request, h) {
+  async getAll (request, h) {
     try {
-      const { cph, tb_status, result, start_date, end_date, limit = 50, offset = 0 } = request.query
+      const {
+        cph,
+        tb_status,
+        result,
+        start_date,
+        end_date,
+        limit = 50,
+        offset = 0
+      } = request.query
 
       let cases, total
 
       if (start_date && end_date) {
-        cases = await caseRepository.findByDateRange(new Date(start_date), new Date(end_date))
+        cases = await caseRepository.findByDateRange(
+          new Date(start_date),
+          new Date(end_date)
+        )
         total = cases.length
         cases = cases.slice(offset, offset + parseInt(limit))
       } else {
@@ -149,7 +160,7 @@ export const caseController = {
    *       500:
    *         description: Internal server error
    */
-  async getByNatInc(request, h) {
+  async getByNatInc (request, h) {
     try {
       const { nat_inc } = request.params
       const caseRecord = await caseRepository.findByNatInc(nat_inc)
@@ -193,7 +204,7 @@ export const caseController = {
    *       500:
    *         description: Internal server error
    */
-  async getWithDetails(request, h) {
+  async getWithDetails (request, h) {
     try {
       const { nat_inc } = request.params
       const caseRecord = await caseRepository.findWithDetails(nat_inc)
@@ -230,7 +241,7 @@ export const caseController = {
    *       500:
    *         description: Internal server error
    */
-  async getDrfPending(request, h) {
+  async getDrfPending (request, h) {
     try {
       const cases = await caseRepository.findDrfPending()
       return h.response(cases).code(200)
@@ -267,7 +278,7 @@ export const caseController = {
    *       500:
    *         description: Internal server error
    */
-  async getDashboardStats(request, h) {
+  async getDashboardStats (request, h) {
     try {
       const stats = await caseRepository.getDashboardStats()
       return h.response(stats).code(200)

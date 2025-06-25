@@ -7,7 +7,7 @@ import { PgHoldingsRepository } from '../../data/sql/pg-holdings-repository.js'
  * Handler for GET /v1/holdings
  * Returns all holdings
  */
-async function getAllHoldings(request, h) {
+async function getAllHoldings (request, h) {
   try {
     const knex = getKnexInstance()
     const holdingsRepo = new PgHoldingsRepository(knex)
@@ -36,7 +36,7 @@ async function getAllHoldings(request, h) {
  * Handler for GET /v1/holdings/{cph}
  * Returns a single holding by CPH
  */
-async function getHoldingByCph(request, h) {
+async function getHoldingByCph (request, h) {
   try {
     const { cph } = request.params
     const knex = getKnexInstance()
@@ -82,7 +82,7 @@ const cphSchema = Joi.string()
 const router = {
   plugin: {
     name: 'holdings-router',
-    register(server) {
+    register (server) {
       // GET /v1/holdings - Get all holdings
       server.route({
         method: 'GET',

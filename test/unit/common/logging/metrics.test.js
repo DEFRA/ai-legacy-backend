@@ -1,4 +1,8 @@
-import { StorageResolution, Unit, createMetricsLogger } from 'aws-embedded-metrics'
+import {
+  StorageResolution,
+  Unit,
+  createMetricsLogger
+} from 'aws-embedded-metrics'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 
 import { createLogger } from '../../../../src/common/logging/logger.js'
@@ -109,7 +113,10 @@ describe('metrics', () => {
       test('then logger should log the error', async () => {
         await metricsCounter(mockMetricsName, mockValue)
 
-        expect(mockLogger.error).toHaveBeenCalledWith(Error(mockError), mockError)
+        expect(mockLogger.error).toHaveBeenCalledWith(
+          Error(mockError),
+          mockError
+        )
       })
     })
   })

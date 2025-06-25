@@ -65,7 +65,7 @@ export const countyController = {
    *       500:
    *         description: Internal server error
    */
-  async getAll(request, h) {
+  async getAll (request, h) {
     try {
       const { country, region, limit = 50, offset = 0 } = request.query
 
@@ -124,7 +124,7 @@ export const countyController = {
    *       500:
    *         description: Internal server error
    */
-  async getById(request, h) {
+  async getById (request, h) {
     try {
       const { id } = request.params
       const county = await countyRepository.findById(id)
@@ -181,7 +181,7 @@ export const countyController = {
    *       500:
    *         description: Internal server error
    */
-  async getWithOffice(request, h) {
+  async getWithOffice (request, h) {
     try {
       const { id } = request.params
       const county = await countyRepository.findWithOffice(id)
@@ -224,7 +224,7 @@ export const countyController = {
    *       500:
    *         description: Internal server error
    */
-  async create(request, h) {
+  async create (request, h) {
     try {
       const countyData = request.payload
       const county = await countyRepository.create(countyData)
@@ -269,7 +269,7 @@ export const countyController = {
    *       500:
    *         description: Internal server error
    */
-  async update(request, h) {
+  async update (request, h) {
     try {
       const { id } = request.params
       const updateData = request.payload
@@ -311,7 +311,7 @@ export const countyController = {
    *       500:
    *         description: Internal server error
    */
-  async delete(request, h) {
+  async delete (request, h) {
     try {
       const { id } = request.params
       const deleted = await countyRepository.delete(id)

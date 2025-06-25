@@ -3,7 +3,7 @@
  * Following the Repository Pattern for data access abstraction
  */
 export class BaseRepository {
-  constructor(db, tableName) {
+  constructor (db, tableName) {
     this.db = db
     this.tableName = tableName
   }
@@ -18,7 +18,7 @@ export class BaseRepository {
    * @param {number} options.offset - Offset for pagination
    * @returns {Promise<Array>}
    */
-  async findAll(options = {}) {
+  async findAll (options = {}) {
     let query = this.db(this.tableName)
 
     if (options.select) {
@@ -52,8 +52,11 @@ export class BaseRepository {
    * @param {Array} select - Columns to select
    * @returns {Promise<Object|null>}
    */
-  async findById(id, select = ['*']) {
-    const result = await this.db(this.tableName).select(select).where('id', id).first()
+  async findById (id, select = ['*']) {
+    const result = await this.db(this.tableName)
+      .select(select)
+      .where('id', id)
+      .first()
 
     return result || null
   }
@@ -64,8 +67,11 @@ export class BaseRepository {
    * @param {Array} select - Columns to select
    * @returns {Promise<Object|null>}
    */
-  async findOne(conditions, select = ['*']) {
-    const result = await this.db(this.tableName).select(select).where(conditions).first()
+  async findOne (conditions, select = ['*']) {
+    const result = await this.db(this.tableName)
+      .select(select)
+      .where(conditions)
+      .first()
 
     return result || null
   }
@@ -75,7 +81,7 @@ export class BaseRepository {
    * @param {Object} data - Record data
    * @returns {Promise<Object>}
    */
-  async create(data) {
+  async create (data) {
     const [result] = await this.db(this.tableName).insert(data).returning('*')
 
     return result
@@ -87,7 +93,7 @@ export class BaseRepository {
    * @param {Object} data - Update data
    * @returns {Promise<Object|null>}
    */
-  async update(id, data) {
+  async update (id, data) {
     const [result] = await this.db(this.tableName)
       .where('id', id)
       .update({ ...data, updated_at: new Date() })
@@ -101,7 +107,7 @@ export class BaseRepository {
    * @param {number|string} id - Record ID
    * @returns {Promise<boolean>}
    */
-  async delete(id) {
+  async delete (id) {
     const deletedCount = await this.db(this.tableName).where('id', id).del()
 
     return deletedCount > 0
@@ -112,8 +118,11 @@ export class BaseRepository {
    * @param {Object} filters - Where conditions
    * @returns {Promise<number>}
    */
-  async count(filters = {}) {
-    const result = await this.db(this.tableName).where(filters).count('* as count').first()
+  async count (filters = {}) {
+    const result = await this.db(this.tableName)
+      .where(filters)
+      .count('* as count')
+      .first()
 
     return parseInt(result.count)
   }
@@ -123,7 +132,7 @@ export class BaseRepository {
    * @param {Object} conditions - Where conditions
    * @returns {Promise<boolean>}
    */
-  async exists(conditions) {
+  async exists (conditions) {
     const result = await this.db(this.tableName).where(conditions).first()
 
     return !!result

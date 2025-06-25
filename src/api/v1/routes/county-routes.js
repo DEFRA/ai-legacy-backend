@@ -13,8 +13,17 @@ export const countyRoutes = [
         query: Joi.object({
           country: Joi.string().optional().description('Filter by country'),
           region: Joi.string().optional().description('Filter by region'),
-          limit: Joi.number().integer().min(1).max(100).default(50).description('Maximum number of counties to return'),
-          offset: Joi.number().integer().min(0).default(0).description('Number of counties to skip')
+          limit: Joi.number()
+            .integer()
+            .min(1)
+            .max(100)
+            .default(50)
+            .description('Maximum number of counties to return'),
+          offset: Joi.number()
+            .integer()
+            .min(0)
+            .default(0)
+            .description('Number of counties to skip')
         })
       }
     }

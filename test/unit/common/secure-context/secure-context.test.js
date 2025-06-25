@@ -31,7 +31,9 @@ describe('secure context', () => {
 
       process.env.ENABLE_SECURE_CONTEXT = 'false'
 
-      secureContext = await import('../../../../src/common/secure-context/secure-context.js')
+      secureContext = await import(
+        '../../../../src/common/secure-context/secure-context.js'
+      )
     })
 
     describe('when secure context load is attempted', () => {
@@ -60,9 +62,12 @@ describe('secure context', () => {
     let createSecureContextSpy
 
     beforeAll(async () => {
-      secureContext = await import('../../../../src/common/secure-context/secure-context.js')
+      secureContext = await import(
+        '../../../../src/common/secure-context/secure-context.js'
+      )
 
-      createSecureContextSpy = vi.spyOn(tls, 'createSecureContext')
+      createSecureContextSpy = vi
+        .spyOn(tls, 'createSecureContext')
         .mockReturnValue(mockTlsCreateSecureContext)
     })
 
@@ -71,15 +76,22 @@ describe('secure context', () => {
         vi.resetModules()
 
         process.env.ENABLE_SECURE_CONTEXT = 'true'
-        process.env.TRUSTSTORE_ONE = 'LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCm1vY2stY2VydC1kb3JpcwotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=='
+        process.env.TRUSTSTORE_ONE =
+          'LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCm1vY2stY2VydC1kb3JpcwotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=='
 
-        secureContext = await import('../../../../src/common/secure-context/secure-context.js')
+        secureContext = await import(
+          '../../../../src/common/secure-context/secure-context.js'
+        )
       })
 
       test('then addCACert should be called once', () => {
         secureContext.getSecureContext()
 
-        expect(mockTlsCreateSecureContext.context.addCACert).toHaveBeenCalledWith('-----BEGIN CERTIFICATE-----\nmock-cert-doris\n-----END CERTIFICATE-----')
+        expect(
+          mockTlsCreateSecureContext.context.addCACert
+        ).toHaveBeenCalledWith(
+          '-----BEGIN CERTIFICATE-----\nmock-cert-doris\n-----END CERTIFICATE-----'
+        )
       })
 
       afterAll(() => {
@@ -92,17 +104,29 @@ describe('secure context', () => {
         vi.resetModules()
 
         process.env.ENABLE_SECURE_CONTEXT = 'true'
-        process.env.TRUSTSTORE_ONE = 'LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCm1vY2stY2VydC1kb3JpcwotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=='
-        process.env.TRUSTSTORE_TWO = 'LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCm1vY2stY2VydC1hbGljZQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=='
+        process.env.TRUSTSTORE_ONE =
+          'LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCm1vY2stY2VydC1kb3JpcwotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=='
+        process.env.TRUSTSTORE_TWO =
+          'LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCm1vY2stY2VydC1hbGljZQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=='
 
-        secureContext = await import('../../../../src/common/secure-context/secure-context.js')
+        secureContext = await import(
+          '../../../../src/common/secure-context/secure-context.js'
+        )
       })
 
       test('then addCACert should be called for each cert', () => {
         secureContext.getSecureContext()
 
-        expect(mockTlsCreateSecureContext.context.addCACert).toHaveBeenCalledWith('-----BEGIN CERTIFICATE-----\nmock-cert-doris\n-----END CERTIFICATE-----')
-        expect(mockTlsCreateSecureContext.context.addCACert).toHaveBeenCalledWith('-----BEGIN CERTIFICATE-----\nmock-cert-alice\n-----END CERTIFICATE-----')
+        expect(
+          mockTlsCreateSecureContext.context.addCACert
+        ).toHaveBeenCalledWith(
+          '-----BEGIN CERTIFICATE-----\nmock-cert-doris\n-----END CERTIFICATE-----'
+        )
+        expect(
+          mockTlsCreateSecureContext.context.addCACert
+        ).toHaveBeenCalledWith(
+          '-----BEGIN CERTIFICATE-----\nmock-cert-alice\n-----END CERTIFICATE-----'
+        )
       })
 
       afterAll(() => {
@@ -116,7 +140,9 @@ describe('secure context', () => {
 
         process.env.ENABLE_SECURE_CONTEXT = 'true'
 
-        secureContext = await import('../../../../src/common/secure-context/secure-context.js')
+        secureContext = await import(
+          '../../../../src/common/secure-context/secure-context.js'
+        )
       })
 
       test('then getSecureContext() should log a warning', () => {

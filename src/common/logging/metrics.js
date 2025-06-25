@@ -28,6 +28,4 @@ async function metricsCounter (metricName, value = 1) {
   }
 }
 
-export {
-  metricsCounter
-}
+export { metricsCounter }

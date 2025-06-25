@@ -7,8 +7,7 @@ describe('health probe', () => {
 
   const setupServer = async () => {
     server = await startServer()
-
-    await server.start()
+    // startServer() already calls server.start() internally
   }
 
   describe('GET /health', () => {
