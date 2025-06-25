@@ -69,7 +69,9 @@ describe('startServer', () => {
       test('then it should log failure messages', async () => {
         await startServer()
 
-        expect(mockLogger.info).toHaveBeenCalledWith('Server failed to start :(')
+        expect(mockLogger.info).toHaveBeenCalledWith(
+          'Server failed to start :('
+        )
         expect(mockLogger.error).toHaveBeenCalledWith(error)
       })
     })

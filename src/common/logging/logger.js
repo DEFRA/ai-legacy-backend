@@ -8,6 +8,4 @@ function createLogger () {
   return logger
 }
 
-export {
-  createLogger
-}
+export { createLogger }

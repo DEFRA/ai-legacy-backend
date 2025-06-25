@@ -75,9 +75,16 @@ export const cphController = {
    *       500:
    *         description: Internal server error
    */
-  async getAll(request, h) {
+  async getAll (request, h) {
     try {
-      const { county, postcode, search, pgp_study, limit = 50, offset = 0 } = request.query
+      const {
+        county,
+        postcode,
+        search,
+        pgp_study,
+        limit = 50,
+        offset = 0
+      } = request.query
 
       let cphRecords, total
 
@@ -145,7 +152,7 @@ export const cphController = {
    *       500:
    *         description: Internal server error
    */
-  async getByCph(request, h) {
+  async getByCph (request, h) {
     try {
       const { cph } = request.params
       const cphRecord = await cphRepository.findByCph(cph)
@@ -201,7 +208,7 @@ export const cphController = {
    *       500:
    *         description: Internal server error
    */
-  async getWithLocation(request, h) {
+  async getWithLocation (request, h) {
     try {
       const { cph } = request.params
       const cphRecord = await cphRepository.findWithLocation(cph)
@@ -238,7 +245,7 @@ export const cphController = {
    *       500:
    *         description: Internal server error
    */
-  async getPgpStudyParticipants(request, h) {
+  async getPgpStudyParticipants (request, h) {
     try {
       const cphRecords = await cphRepository.findPgpStudyParticipants()
       return h.response(cphRecords).code(200)
@@ -272,7 +279,7 @@ export const cphController = {
    *       500:
    *         description: Internal server error
    */
-  async create(request, h) {
+  async create (request, h) {
     try {
       const cphData = request.payload
       const cphRecord = await cphRepository.create(cphData)
@@ -317,7 +324,7 @@ export const cphController = {
    *       500:
    *         description: Internal server error
    */
-  async update(request, h) {
+  async update (request, h) {
     try {
       const { cph } = request.params
       const updateData = request.payload
@@ -362,7 +369,7 @@ export const cphController = {
    *       500:
    *         description: Internal server error
    */
-  async delete(request, h) {
+  async delete (request, h) {
     try {
       const { cph } = request.params
 

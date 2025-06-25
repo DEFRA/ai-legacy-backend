@@ -140,6 +140,4 @@ const serverConfig = {
   }
 }
 
-export {
-  serverConfig
-}
+export { serverConfig }

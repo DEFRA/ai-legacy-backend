@@ -9,6 +9,4 @@ const probes = {
   }
 }
 
-export {
-  probes
-}
+export { probes }

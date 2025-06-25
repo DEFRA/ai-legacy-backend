@@ -12,12 +12,24 @@ export const caseRoutes = [
       validate: {
         query: Joi.object({
           cph: Joi.string().optional().description('Filter by CPH number'),
-          tb_status: Joi.number().integer().optional().description('Filter by TB status'),
+          tb_status: Joi.number()
+            .integer()
+            .optional()
+            .description('Filter by TB status'),
           result: Joi.string().optional().description('Filter by case result'),
           start_date: Joi.date().optional().description('Filter by start date'),
           end_date: Joi.date().optional().description('Filter by end date'),
-          limit: Joi.number().integer().min(1).max(100).default(50).description('Maximum number of cases to return'),
-          offset: Joi.number().integer().min(0).default(0).description('Number of cases to skip')
+          limit: Joi.number()
+            .integer()
+            .min(1)
+            .max(100)
+            .default(50)
+            .description('Maximum number of cases to return'),
+          offset: Joi.number()
+            .integer()
+            .min(0)
+            .default(0)
+            .description('Number of cases to skip')
         })
       }
     }
@@ -31,7 +43,9 @@ export const caseRoutes = [
       tags: ['api', 'cases'],
       validate: {
         params: Joi.object({
-          nat_inc: Joi.string().required().description('National incident number')
+          nat_inc: Joi.string()
+            .required()
+            .description('National incident number')
         })
       }
     }
@@ -45,7 +59,9 @@ export const caseRoutes = [
       tags: ['api', 'cases'],
       validate: {
         params: Joi.object({
-          nat_inc: Joi.string().required().description('National incident number')
+          nat_inc: Joi.string()
+            .required()
+            .description('National incident number')
         })
       }
     }

@@ -73,6 +73,4 @@ async function startServer () {
   return server
 }
 
-export {
-  startServer
-}
+export { startServer }

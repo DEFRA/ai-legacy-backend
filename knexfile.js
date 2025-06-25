@@ -24,6 +24,28 @@ export default {
     }
   },
 
+  test: {
+    client: 'postgresql',
+    connection: {
+      host: process.env.POSTGRES_HOST || 'localhost',
+      port: process.env.POSTGRES_PORT || 5432,
+      database: process.env.POSTGRES_DB || 'tbcms_test',
+      user: process.env.POSTGRES_USER || 'postgres',
+      password: process.env.POSTGRES_PASSWORD || 'ppp'
+    },
+    pool: {
+      min: 2,
+      max: 10
+    },
+    migrations: {
+      tableName: 'knex_migrations',
+      directory: './src/database/migrations'
+    },
+    seeds: {
+      directory: './src/database/seeds'
+    }
+  },
+
   production: {
     client: 'postgresql',
     connection: {

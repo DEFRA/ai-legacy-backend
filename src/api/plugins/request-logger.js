@@ -7,6 +7,4 @@ const requestLogger = {
   options: loggerOptions
 }
 
-export {
-  requestLogger
-}
+export { requestLogger }
