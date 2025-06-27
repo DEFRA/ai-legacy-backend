@@ -15,7 +15,9 @@ export class TbStatusRepository extends BaseRepository {
    * @returns {Promise<Array>} Array of TB status objects
    */
   async getAllTbStatuses() {
-    return await this.db(this.tableName).orderBy('status_abb', 'asc')
+    return await this.db(this.tableName)
+      .select('status_abb', 'status', 'midlands', 'north', 'scotland', 'south_east', 'south_west', 'wales')
+      .orderBy('status_abb', 'asc')
   }
 
   /**
@@ -28,6 +30,9 @@ export class TbStatusRepository extends BaseRepository {
       throw new Error(`Invalid region: ${region}`)
     }
 
-    return await this.db(this.tableName).where(region, true).orderBy('status_abb', 'asc')
+    return await this.db(this.tableName)
+      .select('status_abb', 'status', 'midlands', 'north', 'scotland', 'south_east', 'south_west', 'wales')
+      .where(region, true)
+      .orderBy('status_abb', 'asc')
   }
 }
