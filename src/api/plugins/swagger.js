@@ -6,7 +6,7 @@ import { config } from '../../config/index.js'
 export const swaggerPlugin = {
   name: 'swagger',
   version: '1.0.0',
-  register: async (server) => {
+  register: async server => {
     const swaggerOptions = {
       info: {
         title: 'TBCMS API Documentation',
@@ -26,6 +26,10 @@ export const swaggerPlugin = {
       swaggerUIPath: '/swagger/',
       jsonPath: '/swagger.json',
       tags: [
+        {
+          name: 'Reference',
+          description: 'Reference data lookup operations for dropdowns and selectors'
+        },
         {
           name: 'Counties',
           description: 'County management operations'

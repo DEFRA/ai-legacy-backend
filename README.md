@@ -11,6 +11,10 @@ Core delivery platform Node.js Backend Template.
   - [Npm scripts](#npm-scripts)
   - [Formatting](#formatting)
     - [Windows prettier issue](#windows-prettier-issue)
+- [API Documentation](#api-documentation)
+  - [Reference Data Endpoints](#reference-data-endpoints)
+  - [API Documentation Access](#api-documentation-access)
+  - [API Testing](#api-testing)
 - [API endpoints](#api-endpoints)
 - [Calling API endpoints](#calling-api-endpoints)
   - [Postman](#postman)
@@ -163,6 +167,79 @@ async function doStuff(server) {
 ```
 
 Helper methods are also available in `/src/helpers/mongo-lock.js`.
+
+## API Documentation
+
+The backend provides comprehensive API documentation through Swagger/OpenAPI specification.
+
+### Reference Data Endpoints
+
+The API includes several reference data endpoints that provide lookup data for frontend dropdowns and selectors:
+
+#### TB Status Reference Data
+
+- **GET** `/api/v1/reference/tb-status` - Get all TB status options
+- **GET** `/api/v1/reference/tb-status/{region}` - Get TB status options filtered by region
+  - Supported regions: `midlands`, `north`, `scotland`, `south_east`, `south_west`, `wales`
+
+#### Test Results Reference Data
+
+- **GET** `/api/v1/reference/test-results` - Get all test result options
+
+#### Action Categories Reference Data
+
+- **GET** `/api/v1/reference/action-categories` - Get all action category options
+
+### API Documentation Access
+
+#### Swagger UI
+
+Interactive API documentation is available when the server is running:
+
+```bash
+# Start the server
+npm run dev
+
+# Access Swagger UI in your browser
+open http://localhost:3002/swagger/
+```
+
+#### JSON Schema
+
+The complete OpenAPI specification is available in JSON format:
+
+```bash
+curl http://localhost:3002/swagger.json
+```
+
+### API Testing
+
+You can test the API endpoints directly through:
+
+1. **Swagger UI** - Interactive testing interface at `/swagger/`
+2. **curl** commands:
+
+   ```bash
+   # Test TB status endpoint
+   curl http://localhost:3002/api/v1/reference/tb-status
+
+   # Test TB status with region filter
+   curl http://localhost:3002/api/v1/reference/tb-status/midlands
+
+   # Test test results endpoint
+   curl http://localhost:3002/api/v1/reference/test-results
+
+   # Test action categories endpoint
+   curl http://localhost:3002/api/v1/reference/action-categories
+   ```
+
+### API Features
+
+- **Comprehensive Validation**: All endpoints include Joi schema validation
+- **Error Handling**: Consistent error response format with proper HTTP status codes
+- **Parameter Validation**: Optional path parameters with enum validation
+- **Response Schemas**: Detailed response schemas with example data
+- **Tag Organization**: Endpoints grouped by functionality for better organization
 
 ## Docker
 

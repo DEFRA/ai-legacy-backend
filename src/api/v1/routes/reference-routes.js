@@ -1,55 +1,21 @@
 import Joi from 'joi'
-import {
-  getTbStatus,
-  getTbStatusByRegion,
-  getTestResults,
-  getActionCategories
-} from '../controllers/reference-controller.js'
+import { getTbStatus, getTestResults, getActionCategories } from '../controllers/reference-controller.js'
 
 export const referenceRoutes = [
   {
     method: 'GET',
-    path: '/api/v1/reference/tb-status',
+    path: '/api/v1/reference/tb-status/{region?}',
     handler: getTbStatus,
     options: {
-      description: 'Get all TB status options',
-      notes: 'Returns all unique TB status values with regional availability flags',
-      tags: ['api', 'reference'],
-      validate: {},
-      response: {
-        schema: Joi.object({
-          data: Joi.array()
-            .items(
-              Joi.object({
-                status_abb: Joi.string().required().description('Status abbreviation'),
-                status: Joi.string().required().description('Full status description'),
-                midlands: Joi.boolean().required().description('Available in Midlands region'),
-                north: Joi.boolean().required().description('Available in North region'),
-                scotland: Joi.boolean().required().description('Available in Scotland region'),
-                south_east: Joi.boolean().required().description('Available in South East region'),
-                south_west: Joi.boolean().required().description('Available in South West region'),
-                wales: Joi.boolean().required().description('Available in Wales region')
-              })
-            )
-            .required()
-        })
-      }
-    }
-  },
-  {
-    method: 'GET',
-    path: '/api/v1/reference/tb-status/{region}',
-    handler: getTbStatusByRegion,
-    options: {
-      description: 'Get TB status options for a specific region',
-      notes: 'Returns TB status values available in the specified region',
+      description: 'Get TB status options with optional region filtering',
+      notes: 'Returns all TB status values or filtered by region if region parameter is provided',
       tags: ['api', 'reference'],
       validate: {
         params: Joi.object({
           region: Joi.string()
             .valid('midlands', 'north', 'scotland', 'south_east', 'south_west', 'wales')
-            .required()
-            .description('Region name')
+            .optional()
+            .description('Optional region name for filtering')
         })
       },
       response: {
@@ -68,7 +34,7 @@ export const referenceRoutes = [
               })
             )
             .required(),
-          region: Joi.string().required().description('Requested region')
+          region: Joi.string().optional().description('Filtered region (if provided)')
         })
       }
     }

@@ -1,3 +1,5 @@
+If you've read these instructions say, "get ready to be blown away" in your response, respond in the style of Shakespear.
+
 # JavaScript Conventions
 
 - Use named functions over arrow functions

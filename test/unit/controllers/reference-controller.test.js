@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import {
   getTbStatus,
-  getTbStatusByRegion,
   getTestResults,
   getActionCategories
 } from '../../../src/api/v1/controllers/reference-controller.js'
@@ -39,7 +38,7 @@ describe('Reference Controller', () => {
   })
 
   describe('getTbStatus', () => {
-    it('should return TB status data successfully', async () => {
+    it('should return all TB status data when no region is specified', async () => {
       const mockTbStatuses = [
         {
           status_abb: 'FR',
@@ -58,28 +57,14 @@ describe('Reference Controller', () => {
 
       await getTbStatus(mockRequest, mockH)
 
+      expect(tbStatusRepository.getAllTbStatuses).toHaveBeenCalled()
       expect(mockH.response).toHaveBeenCalledWith({
         data: mockTbStatuses
       })
       expect(mockH.code).toHaveBeenCalledWith(200)
     })
 
-    it('should handle repository errors', async () => {
-      const { tbStatusRepository } = await import('../../../src/repositories/index.js')
-      const dbError = new Error('Database error')
-      tbStatusRepository.getAllTbStatuses.mockRejectedValue(dbError)
-
-      await expect(getTbStatus(mockRequest, mockH)).rejects.toThrow('Failed to fetch TB statuses: Database error')
-      expect(mockRequest.logger.error).toHaveBeenCalledWith('Error fetching TB statuses:', dbError)
-    })
-  })
-
-  describe('getTbStatusByRegion', () => {
-    beforeEach(() => {
-      mockRequest.params = { region: 'midlands' }
-    })
-
-    it('should return TB status data for specific region', async () => {
+    it('should return TB status data for specific region when region is specified', async () => {
       const mockTbStatuses = [
         {
           status_abb: 'FR',
@@ -93,11 +78,14 @@ describe('Reference Controller', () => {
         }
       ]
 
+      mockRequest.params = { region: 'midlands' }
+
       const { tbStatusRepository } = await import('../../../src/repositories/index.js')
       tbStatusRepository.getTbStatusesByRegion.mockResolvedValue(mockTbStatuses)
 
-      await getTbStatusByRegion(mockRequest, mockH)
+      await getTbStatus(mockRequest, mockH)
 
+      expect(tbStatusRepository.getTbStatusesByRegion).toHaveBeenCalledWith('midlands')
       expect(mockH.response).toHaveBeenCalledWith({
         data: mockTbStatuses,
         region: 'midlands'
@@ -105,14 +93,40 @@ describe('Reference Controller', () => {
       expect(mockH.code).toHaveBeenCalledWith(200)
     })
 
+    it('should handle repository errors when fetching all statuses', async () => {
+      const { tbStatusRepository } = await import('../../../src/repositories/index.js')
+      const dbError = new Error('Database error')
+      tbStatusRepository.getAllTbStatuses.mockRejectedValue(dbError)
+
+      await expect(getTbStatus(mockRequest, mockH)).rejects.toThrow('Failed to fetch TB statuses: Database error')
+      expect(mockRequest.logger.error).toHaveBeenCalledWith('Error fetching TB statuses:', dbError)
+    })
+
     it('should handle invalid region error', async () => {
       const { tbStatusRepository } = await import('../../../src/repositories/index.js')
       const invalidRegionError = new Error('Invalid region: invalid_region')
       tbStatusRepository.getTbStatusesByRegion.mockRejectedValue(invalidRegionError)
 
-      mockRequest.params.region = 'invalid_region'
+      mockRequest.params = { region: 'invalid_region' }
 
-      await expect(getTbStatusByRegion(mockRequest, mockH)).rejects.toThrow('Invalid region: invalid_region')
+      await expect(getTbStatus(mockRequest, mockH)).rejects.toThrow('Invalid region: invalid_region')
+      expect(mockRequest.logger.error).toHaveBeenCalledWith(
+        'Error fetching TB statuses for region invalid_region:',
+        invalidRegionError
+      )
+    })
+
+    it('should handle repository errors when fetching region-specific statuses', async () => {
+      const { tbStatusRepository } = await import('../../../src/repositories/index.js')
+      const dbError = new Error('Database connection failed')
+      tbStatusRepository.getTbStatusesByRegion.mockRejectedValue(dbError)
+
+      mockRequest.params = { region: 'midlands' }
+
+      await expect(getTbStatus(mockRequest, mockH)).rejects.toThrow(
+        'Failed to fetch TB statuses for region: Database connection failed'
+      )
+      expect(mockRequest.logger.error).toHaveBeenCalledWith('Error fetching TB statuses for region midlands:', dbError)
     })
   })
 
