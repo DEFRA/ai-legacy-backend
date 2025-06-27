@@ -55,7 +55,7 @@ async function startServer () {
 
   try {
     server = await createServer()
-       
+
     await server.start()
 
     server.logger.info('Server started successfully')

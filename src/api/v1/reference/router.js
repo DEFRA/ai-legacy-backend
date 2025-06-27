@@ -7,7 +7,7 @@ import { MongoTbStatusRepository } from '../../../data/mongo/repositories/tb-sta
 /**
  * Handler for GET /api/v1/reference/tb-status
  * Get all TB status options with optional region filtering
- * 
+ *
  * @param {Object} request - Hapi request object
  * @param {Object} h - Hapi response toolkit
  * @returns {Object} Response with TB status data

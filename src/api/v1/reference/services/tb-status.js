@@ -6,21 +6,21 @@ import { TbStatusOption } from '../models/tb-status.js'
 class TbStatusService {
   /**
    * Creates a new TbStatusService instance
-   * 
+   *
    * @param {Object} repository - TB status repository instance
    */
-  constructor(repository) {
+  constructor (repository) {
     this.repository = repository
   }
 
   /**
    * Get all TB status options with optional region filtering
-   * 
+   *
    * @param {string|null} region - Optional region filter (must be non-empty string if provided)
    * @returns {Promise<Array<TbStatusOption>>} List of formatted TB statuses
    * @throws {Error} When repository operations fail
    */
-  async getOptions(region = null) {
+  async getOptions (region = null) {
     try {
       let options = []
 
@@ -32,7 +32,7 @@ class TbStatusService {
 
       return options.map(option => TbStatusOption.fromEntity(option))
     } catch (error) {
-      throw new Error(`Failed to retrieve TB status options`)
+      throw new Error('Failed to retrieve TB status options')
     }
   }
 }
