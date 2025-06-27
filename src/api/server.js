@@ -6,9 +6,7 @@ import { config } from '../config/index.js'
 import { pulse } from './plugins/pulse.js'
 import { requestLogger } from './plugins/request-logger.js'
 import { requestTracing } from './plugins/request-tracing.js'
-
 import { probes as probesRouter } from './probes/probes.js'
-import { router as holdingsRouter } from './v1/holdings/router.js'
 import { tbcmsRouter } from './v1/router.js'
 import { swaggerPlugin } from './plugins/swagger.js'
 
@@ -46,7 +44,6 @@ async function createServer () {
     pulse,
     swaggerPlugin,
     probesRouter,
-    holdingsRouter,
     tbcmsRouter
   ])
 
@@ -58,6 +55,7 @@ async function startServer () {
 
   try {
     server = await createServer()
+       
     await server.start()
 
     server.logger.info('Server started successfully')

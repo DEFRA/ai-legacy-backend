@@ -24,6 +24,8 @@ services:
       PORT_DEBUG: 9232
       NODE_ENV: development
       MONGO_URI: mongodb://mongodb:27017/
+      MONGO_DATABASE: tbcms
+      MONGO_AUTO_INIT: true
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
       POSTGRES_DB: tbcms
@@ -38,6 +40,9 @@ services:
       - '27017:27017'
     volumes:
       - mongodb-data:/data
+      - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    environment:
+      MONGO_INITDB_DATABASE: tbcms
     networks:
       - ai-legacy-backend
 
