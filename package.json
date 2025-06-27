@@ -14,7 +14,16 @@
     "docker:test:watch": "docker compose down -v && docker compose -f compose.yaml -f compose.test.yaml -f compose.test.watch.yaml run  --build --rm 'ai-legacy-backend'",
     "test": "rm -rf ./coverage/** && vitest run --coverage",
     "test:watch": "vitest watch",
+    "test:mongo": "npm run mongo:start && npm run test && npm run mongo:stop",
+    "test:mongo:watch": "npm run mongo:start && vitest watch",
+    "test:mongo:integration": "./scripts/test-mongo-integration.sh",
     "test:lint": "npx eslint",
+    "mongo:start": "./scripts/mongo-test.sh start",
+    "mongo:stop": "./scripts/mongo-test.sh stop",
+    "mongo:restart": "./scripts/mongo-test.sh restart",
+    "seed:tb-status": "node scripts/seed-tb-status.js",
+    "seed:tb-status:drop": "node scripts/seed-tb-status.js --drop",
+    "init:mongodb": "node scripts/init-mongodb.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint:fix": "eslint --fix .",
@@ -24,7 +33,12 @@
     "prepare": "husky"
   },
   "author": "Defra DDTS",
-  "contributors": [],
+  "contributors": [
+    {
+      "name": "Defra DDTS Team",
+      "email": "defra.ddts@defra.gov.uk"
+    }
+  ],
   "dependencies": {
     "@defra/hapi-tracing": "1.0.0",
     "@elastic/ecs-pino-format": "1.5.0",

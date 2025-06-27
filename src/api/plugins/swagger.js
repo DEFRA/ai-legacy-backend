@@ -1,7 +1,6 @@
 import Inert from '@hapi/inert'
 import Vision from '@hapi/vision'
 import HapiSwagger from 'hapi-swagger'
-import { config } from '../../config/index.js'
 
 export const swaggerPlugin = {
   name: 'swagger',

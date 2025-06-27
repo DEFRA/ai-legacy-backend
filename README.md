@@ -1,24 +1,30 @@
-# ai-legacy-backend
+# AI Legacy Backend
 
 Core delivery platform Node.js Backend Template.
 
+## Table of Contents
+
 - [Requirements](#requirements)
   - [Node.js](#nodejs)
-- [Local development](#local-development)
+- [Local Development](#local-development)
   - [Setup](#setup)
+  - [Database Setup](#database-setup)
   - [Development](#development)
+  - [Testing](#testing)
   - [Production](#production)
-  - [Npm scripts](#npm-scripts)
+  - [NPM Scripts](#npm-scripts)
   - [Formatting](#formatting)
-    - [Windows prettier issue](#windows-prettier-issue)
-- [API endpoints](#api-endpoints)
-- [Calling API endpoints](#calling-api-endpoints)
-  - [Postman](#postman)
+    - [Windows Prettier Issue](#windows-prettier-issue)
+- [Development Helpers](#development-helpers)
+  - [MongoDB Locks](#mongodb-locks)
 - [Docker](#docker)
   - [Development Image](#development-image)
   - [Production Image](#production-image)
-- [Licence](#licence)
-  - [About the licence](#about-the-licence)
+  - [Docker Compose](#docker-compose)
+  - [Complete Setup with Database Seeding](#complete-setup-with-database-seeding)
+- [Database Migrations](#database-migrations)
+- [License](#license)
+  - [About the License](#about-the-license)
 
 ## Requirements
 
@@ -34,7 +40,7 @@ cd ai-legacy-backend
 nvm use
 ```
 
-## Local development
+## Local Development
 
 ### Setup
 
@@ -44,23 +50,36 @@ Install application dependencies:
 npm install
 ```
 
-#### Database Setup
+### Database Setup
 
 This application uses PostgreSQL with Liquibase for database migrations. To set up the database:
 
-1. Start the PostgreSQL service:
+1. **Start the PostgreSQL service:**
 
    ```bash
    docker compose up postgres -d
    ```
 
-2. Run database migrations:
+2. **Run database migrations:**
 
    ```bash
    docker compose run --rm liquibase update
    ```
 
-3. Populate the database with reference data:
+3. **Clear all tables (if needed):**
+
+   ```bash
+   docker exec -i ai-legacy-backend-postgres psql -U postgres -d tbcms -c "
+   DO \$\$ DECLARE
+       r RECORD;
+   BEGIN
+       FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public') LOOP
+           EXECUTE 'TRUNCATE TABLE ' || quote_ident(r.tablename) || ' RESTART IDENTITY CASCADE';
+       END LOOP;
+   END \$\$;"
+   ```
+
+4. **Populate the database with reference data:**
 
    ```bash
    # Run the seed scripts in order
@@ -70,7 +89,8 @@ This application uses PostgreSQL with Liquibase for database migrations. To set 
    docker exec -i ai-legacy-backend-postgres psql -U postgres -d tbcms < database-docs/db-seeds/04_tb_cases_testing.sql
    ```
 
-4. Verify the data was loaded:
+5. **Verify the data was loaded:**
+
    ```bash
    # Check TB status reference data
    docker exec -it ai-legacy-backend-postgres psql -U postgres -d tbcms -c "SELECT * FROM tb_status_t;"
@@ -100,9 +120,9 @@ To mimic the application running in `production` mode locally run:
 npm start
 ```
 
-### Npm scripts
+### NPM Scripts
 
-All available Npm scripts can be seen in [package.json](./package.json)
+All available NPM scripts can be seen in [package.json](./package.json).
 To view them in your command line run:
 
 ```bash
@@ -111,7 +131,7 @@ npm run
 
 ### Formatting
 
-#### Windows prettier issue
+#### Windows Prettier Issue
 
 If you are having issues with formatting of line breaks on Windows update your global git config by running:
 
@@ -119,7 +139,7 @@ If you are having issues with formatting of line breaks on Windows update your g
 git config --global core.autocrlf false
 ```
 
-## Development helpers
+## Development Helpers
 
 ### MongoDB Locks
 
@@ -166,29 +186,29 @@ Helper methods are also available in `/src/helpers/mongo-lock.js`.
 
 ## Docker
 
-### Development image
+### Development Image
 
-Build:
+**Build:**
 
 ```bash
 docker build --target development --no-cache --tag ai-legacy-backend:development .
 ```
 
-Run:
+**Run:**
 
 ```bash
 docker run -e PORT=3002 -p 3002:3002 ai-legacy-backend:development
 ```
 
-### Production image
+### Production Image
 
-Build:
+**Build:**
 
 ```bash
 docker build --no-cache --tag ai-legacy-backend .
 ```
 
-Run:
+**Run:**
 
 ```bash
 docker run -e PORT=3002 -p 3002:3002 ai-legacy-backend
@@ -234,21 +254,21 @@ curl http://localhost:3002/api/v1/reference/tb-status
 
 This project uses Liquibase for database schema management. The changelog files are located in the `/changelog` directory.
 
-#### Running migrations in development:
+#### Running Migrations in Development
 
 ```bash
 # Run migrations against the development database
 docker compose run --rm liquibase update
 ```
 
-#### Running migrations in test environment:
+#### Running Migrations in Test Environment
 
 ```bash
 # Run migrations against the test database
 docker compose -f compose.yaml -f compose.test.yaml run --rm liquibase update
 ```
 
-#### Other useful Liquibase commands:
+#### Other Useful Liquibase Commands
 
 ```bash
 # Check migration status
@@ -266,7 +286,7 @@ docker compose run --rm liquibase validate
 
 **Note:** The Liquibase service uses Docker profiles and will only start when explicitly run with `docker compose run`.
 
-## Licence
+## License
 
 THIS INFORMATION IS LICENSED UNDER THE CONDITIONS OF THE OPEN GOVERNMENT LICENCE found at:
 
@@ -276,7 +296,7 @@ The following attribution statement MUST be cited in your products and applicati
 
 > Contains public sector information licensed under the Open Government license v3
 
-### About the licence
+### About the License
 
 The Open Government Licence (OGL) was developed by the Controller of Her Majesty's Stationery Office (HMSO) to enable
 information providers in the public sector to license the use and re-use of their information under a common open

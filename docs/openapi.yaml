@@ -1,0 +1,79 @@
+openapi: 3.1.0
+info:
+  title: TB Case Management System API
+  description: Backend REST API for maintaining entries on the Defra AI Tech Radar - TB Case Management System
+  version: 1.0.0
+
+servers:
+  - url: /api/v1
+    description: Version 1 API
+
+tags:
+  - name: reference
+    description: Reference data operations
+  - name: tb-status
+    description: TB status reference data
+
+paths:
+  /reference/tb-status:
+    get:
+      tags:
+        - reference
+        - tb-status
+      summary: Get all TB status options
+      description: Retrieve all TB status options with optional region filtering
+      operationId: getTbStatus
+      parameters:
+        - name: region
+          in: query
+          description: Optional region filter to get TB statuses specific to a region
+          required: false
+          schema:
+            type: string
+            example: "Midlands"
+      responses:
+        '200':
+          description: Successful response with TB status data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TbStatusOption'
+              example:
+                data:
+                  - code: "TB1"
+                    description: "Officially TB Free"
+                    regions: ["Midlands", "South West"]
+                  - code: "TB2"
+                    description: "TB Restricted"
+                    regions: ["Midlands"]
+
+components:
+  schemas:
+    TbStatusOption:
+      type: object
+      description: A TB status option with associated regions
+      properties:
+        code:
+          type: string
+          description: TB status code
+          example: "TB1"
+        description:
+          type: string
+          description: TB status description
+          example: "Officially TB Free"
+        regions:
+          type: array
+          description: List of regions where this status is valid
+          items:
+            type: string
+          example: ["Midlands", "South West"]
+      required:
+        - code
+        - description
+        - regions
+

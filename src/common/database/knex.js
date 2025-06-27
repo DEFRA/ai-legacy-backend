@@ -8,9 +8,9 @@ let knexInstance = null
 
 /**
  * Get or create Knex database connection instance
- * @returns {import('knex').Knex} Knex instance
+ * @returns {knex.Knex} Knex instance
  */
-function getKnexInstance() {
+function getKnexInstance () {
   if (!knexInstance) {
     const postgresConfig = config.get('postgres')
 
@@ -26,9 +26,6 @@ function getKnexInstance() {
       pool: {
         min: 2,
         max: 10
-      },
-      migrations: {
-        tableName: 'knex_migrations'
       }
     })
 
@@ -41,7 +38,7 @@ function getKnexInstance() {
 /**
  * Close the database connection
  */
-async function closeConnection() {
+async function closeConnection () {
   if (knexInstance) {
     await knexInstance.destroy()
     knexInstance = null
