@@ -1,5 +1,6 @@
 import Boom from '@hapi/boom'
-import { db } from '../../../database/connection.js'
+import Joi from 'joi'
+import { tbStatusRepository, testResultRepository, actionCategoryRepository } from '../../../repositories/index.js'
 
 /**
  * @swagger
@@ -8,71 +9,96 @@ import { db } from '../../../database/connection.js'
  *   description: Reference data lookup endpoints
  */
 
-export const referenceController = {
-  /**
-   * @swagger
-   * /api/v1/reference/tb-status:
-   *   get:
-   *     summary: Get all TB status options
-   *     tags: [Reference]
-   *     responses:
-   *       200:
-   *         description: Successful response
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 data:
-   *                   type: array
-   *                   items:
-   *                     type: object
-   *                     properties:
-   *                       status_abb:
-   *                         type: string
-   *                         description: Status abbreviation
-   *                         example: "FR"
-   *                       status:
-   *                         type: string
-   *                         description: Full status description
-   *                         example: "Fake Restricted"
-   *                       midlands:
-   *                         type: boolean
-   *                         description: Available in Midlands region
-   *                       north:
-   *                         type: boolean
-   *                         description: Available in North region
-   *                       scotland:
-   *                         type: boolean
-   *                         description: Available in Scotland region
-   *                       south_east:
-   *                         type: boolean
-   *                         description: Available in South East region
-   *                       south_west:
-   *                         type: boolean
-   *                         description: Available in South West region
-   *                       wales:
-   *                         type: boolean
-   *                         description: Available in Wales region
-   *       500:
-   *         description: Internal server error
-   */
-  async getTbStatus(request, h) {
-    try {
-      // Use DISTINCT ON to get unique TB status values based on status_abb and status
-      // This eliminates the duplicate entries in the database
-      const tbStatuses = await db('tb_status_t')
-        .distinct('status_abb', 'status', 'midlands', 'north', 'scotland', 'south_east', 'south_west', 'wales')
-        .orderBy('status_abb')
+/**
+ * Get all TB status options
+ * Returns unique TB status values with regional availability flags
+ * Eliminates duplicate entries from the database
+ * @param {object} request - Hapi request object
+ * @param {object} h - Hapi response toolkit
+ * @returns {Promise<object>} Response containing TB status data
+ */
+export async function getTbStatus(request, h) {
+  try {
+    const tbStatuses = await tbStatusRepository.getAllTbStatuses()
 
-      return h
-        .response({
-          data: tbStatuses
-        })
-        .code(200)
-    } catch (error) {
-      request.logger.error('Error fetching TB statuses:', error)
-      throw Boom.internal(`Failed to fetch TB statuses: ${error.message}`)
+    return h
+      .response({
+        data: tbStatuses
+      })
+      .code(200)
+  } catch (error) {
+    request.logger.error('Error fetching TB statuses:', error)
+    throw Boom.internal(`Failed to fetch TB statuses: ${error.message}`)
+  }
+}
+
+/**
+ * Get TB status options available for a specific region
+ * @param {object} request - Hapi request object
+ * @param {object} h - Hapi response toolkit
+ * @returns {Promise<object>} Response containing TB status data for the region
+ */
+export async function getTbStatusByRegion(request, h) {
+  try {
+    const { region } = request.params
+
+    const tbStatuses = await tbStatusRepository.getTbStatusesByRegion(region)
+
+    return h
+      .response({
+        data: tbStatuses,
+        region
+      })
+      .code(200)
+  } catch (error) {
+    request.logger.error(`Error fetching TB statuses for region ${request.params.region}:`, error)
+
+    if (error.message.includes('Invalid region')) {
+      throw Boom.badRequest(error.message)
     }
+
+    throw Boom.internal(`Failed to fetch TB statuses for region: ${error.message}`)
+  }
+}
+
+/**
+ * Get all test result options
+ * @param {object} request - Hapi request object
+ * @param {object} h - Hapi response toolkit
+ * @returns {Promise<object>} Response containing test result data
+ */
+export async function getTestResults(request, h) {
+  try {
+    const testResults = await testResultRepository.getAllTestResults()
+
+    return h
+      .response({
+        data: testResults
+      })
+      .code(200)
+  } catch (error) {
+    request.logger.error('Error fetching test results:', error)
+    throw Boom.internal(`Failed to fetch test results: ${error.message}`)
+  }
+}
+
+/**
+ * Get all action category options
+ * @param {object} request - Hapi request object
+ * @param {object} h - Hapi response toolkit
+ * @returns {Promise<object>} Response containing action category data
+ */
+export async function getActionCategories(request, h) {
+  try {
+    const actionCategories = await actionCategoryRepository.getAllActionCategories()
+
+    return h
+      .response({
+        data: actionCategories
+      })
+      .code(200)
+  } catch (error) {
+    request.logger.error('Error fetching action categories:', error)
+    throw Boom.internal(`Failed to fetch action categories: ${error.message}`)
   }
 }

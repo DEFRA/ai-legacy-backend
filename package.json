@@ -24,7 +24,12 @@
     "prepare": "husky"
   },
   "author": "Defra DDTS",
-  "contributors": [],
+  "contributors": [
+    {
+      "name": "GitHub Copilot",
+      "email": "copilot@github.com"
+    }
+  ],
   "dependencies": {
     "@defra/hapi-tracing": "1.0.0",
     "@elastic/ecs-pino-format": "1.5.0",
