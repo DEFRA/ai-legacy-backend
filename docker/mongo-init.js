@@ -51,6 +51,15 @@ function checkExistingAllocationSkipReasonsData () {
 }
 
 /**
+ * Check if finishing unit data already exists
+ * @returns {number} Count of existing finishing unit documents
+ */
+function checkExistingFinishingUnitData () {
+  console.log('🔍 Checking for existing finishing unit data...')
+  return db.finishingUnit.countDocuments()
+}
+
+/**
  * Seed TB status reference data into the database
  * @returns {void}
  */
@@ -300,6 +309,57 @@ function seedAllocationSkipReasonsData () {
 }
 
 /**
+ * Seed finishing unit reference data into the database
+ * @returns {void}
+ */
+function seedFinishingUnitData () {
+  console.log('🌱 Seeding finishing unit reference data...')
+
+  const now = new Date()
+
+  // Finishing unit reference data based on the Access database table
+  const finishingUnitData = [
+    {
+      unitType: 'Grazing AFU',
+      validRegions: ['midlands', 'north', 'south_east', 'south_west'],
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      unitType: 'Non-Grazing AFU',
+      validRegions: ['midlands', 'north', 'south_east', 'south_west', 'wales'],
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      unitType: 'Licensed Finishing Unit',
+      validRegions: ['midlands', 'north', 'south_east'],
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      unitType: 'AFU Enhanced',
+      validRegions: ['midlands', 'north', 'south_east', 'south_west'],
+      createdAt: now,
+      updatedAt: now
+    }
+  ]
+
+  // Insert finishing unit data
+  const result = db.finishingUnit.insertMany(finishingUnitData)
+  console.log('✅ Inserted ' + result.insertedIds.length + ' finishing unit records')
+
+  // Create indexes
+  db.finishingUnit.createIndex({ unitType: 1 }, { unique: true })
+  db.finishingUnit.createIndex({ validRegions: 1 })
+  console.log('✅ Created indexes for finishing unit collection')
+
+  // Verify data
+  const count = db.finishingUnit.countDocuments()
+  console.log('📊 Total finishing unit records: ' + count)
+}
+
+/**
  * Main initialization logic
  * @returns {void}
  */
@@ -339,6 +399,15 @@ function initializeMongoDB () {
     } else {
       seedAllocationSkipReasonsData()
       console.log('🎉 Allocation skip reasons seeding completed!')
+    }
+
+    const existingFinishingUnitCount = checkExistingFinishingUnitData()
+
+    if (existingFinishingUnitCount > 0) {
+      console.log('📊 Finishing unit data already exists (' + existingFinishingUnitCount + ' records), skipping seed...')
+    } else {
+      seedFinishingUnitData()
+      console.log('🎉 Finishing unit seeding completed!')
     }
 
     console.log('✅ MongoDB initialization complete!')

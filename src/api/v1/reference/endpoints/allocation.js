@@ -75,7 +75,7 @@ const allocationRoutes = [
   },
   {
     method: 'GET',
-    path: '/api/v1/reference/allocation-skip-reasons',
+    path: '/api/v1/reference/allocation-skip-reason',
     handler: getAllocationSkipReasons,
     options: {
       description: 'Get all allocation skip reason options',

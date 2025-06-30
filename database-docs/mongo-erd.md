@@ -64,6 +64,7 @@ erDiagram
     ApprovedFinishing {
         lots integer "NULLABLE"
         completedDate DateTime "NULLABLE"
+        finishingUnit string "NULLABLE"
     }
     
     AssignedTo {
@@ -224,7 +225,7 @@ erDiagram
         _id ObjectId PK "NOT NULL"
         code string "NOT NULL"
         description string "NOT NULL"
-        validRegions string "NOT NULL"
+        validRegions string[] "NOT NULL"
     }
 
     TbResult {
@@ -241,6 +242,12 @@ erDiagram
     AllocationSkipReasons {
         _id ObjectId PK "NOT NULL"
         reason string "NOT NULL"
+    }
+    
+    FinishingUnit {
+        _id ObjectId PK "NOT NULL"
+        unitType string "NOT NULL"
+        validRegions string[] "NOT NULL"
     }
     
     %% Relationships (Embedded Documents)
@@ -349,6 +356,7 @@ erDiagram
 |--------------|------------|-------|
 | `Incidents.approvedFinishing.lots` | `case_t.afu` | |
 | `Incidents.approvedFinishing.completedDate` | `case_t.afu_completed_date` | |
+| `Incidents.approvedFinishing.finishingUnit` | Lookup field | Soft reference to FinishingUnit collection by unitType |
 
 #### 2.3 Incidents.RestrictionDetails (Embedded Document)
 
@@ -524,3 +532,16 @@ erDiagram
 | `Incidents.removals[].removalNotifications.bt1Sent` | `removal_t.bt1_sent` | |
 | `Incidents.removals[].removalNotifications.bt1NotSentCategory` | `removal_t.bt1_not_sent_cat` | |
 | `Incidents.removals[].removalNotifications.tb161Comment` | `removal_t.tb161_comment` | |
+
+---
+
+### 5. FinishingUnit Collection
+
+> **Source:** `FinishingUnit` table  
+> **Purpose:** Reference data for finishing unit types with regional availability
+
+| MongoDB Path | SQL Source | Notes |
+|--------------|------------|-------|
+| `FinishingUnit._id` | Generated ObjectId | New MongoDB primary key |
+| `FinishingUnit.unitType` | `FinishingUnit.UnitType` | Primary reference field |
+| `FinishingUnit.validRegions` | Derived from boolean flags | Array of regions where unit type is valid (e.g., ["midlands", "north", "scotland"]) |

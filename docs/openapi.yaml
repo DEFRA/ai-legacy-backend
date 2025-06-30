@@ -17,6 +17,10 @@ tags:
     description: TB result reference data
   - name: allocation-booking-method
     description: Allocation booking method reference data
+  - name: allocation-skip-reason
+    description: Allocation skip reason reference data
+  - name: finishing-unit
+    description: Finishing unit reference data
 
 paths:
   /reference/tb-status:
@@ -111,6 +115,67 @@ paths:
                   - method: "Email"
                   - method: "Online Portal"
 
+  /reference/allocation-skip-reason:
+    get:
+      tags:
+        - reference
+        - allocation-skip-reason
+      summary: Get all allocation skip reason options
+      description: Retrieve all allocation skip reason options for lookup purposes
+      operationId: getAllocationSkipReasons
+      responses:
+        '200':
+          description: Successful response with allocation skip reason data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AllocationSkipReasonOption'
+              example:
+                data:
+                  - reason: "Declined"
+                  - reason: "Not Necessary"
+                  - reason: "N/A High Risk"
+
+  /reference/finishing-unit:
+    get:
+      tags:
+        - reference
+        - finishing-unit
+      summary: Get all finishing unit options
+      description: Retrieve all finishing unit options with optional region filtering
+      operationId: getFinishingUnits
+      parameters:
+        - name: region
+          in: query
+          description: Optional region filter to get finishing units specific to a region
+          required: false
+          schema:
+            type: string
+            example: "midlands"
+      responses:
+        '200':
+          description: Successful response with finishing unit data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FinishingUnitOption'
+              example:
+                data:
+                  - unitType: "Grazing AFU"
+                    regions: ["midlands", "north", "south_east", "south_west"]
+                  - unitType: "Non-Grazing AFU"
+                    regions: ["midlands", "north", "south_east", "south_west", "wales"]
+
 components:
   schemas:
     TbStatusOption:
@@ -162,3 +227,32 @@ components:
           example: "Phone"
       required:
         - method
+
+    AllocationSkipReasonOption:
+      type: object
+      description: An allocation skip reason option for lookup purposes
+      properties:
+        reason:
+          type: string
+          description: Allocation skip reason
+          example: "Declined"
+      required:
+        - reason
+
+    FinishingUnitOption:
+      type: object
+      description: A finishing unit option with associated regions
+      properties:
+        unitType:
+          type: string
+          description: Finishing unit type
+          example: "Grazing AFU"
+        regions:
+          type: array
+          description: List of regions where this finishing unit type is valid
+          items:
+            type: string
+          example: ["midlands", "north", "south_east", "south_west"]
+      required:
+        - unitType
+        - regions
