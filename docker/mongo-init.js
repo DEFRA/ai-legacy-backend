@@ -24,6 +24,15 @@ function checkExistingData () {
 }
 
 /**
+ * Check if allocation booking method data already exists
+ * @returns {number} Count of existing allocation booking method documents
+ */
+function checkExistingAllocationBookingMethodData () {
+  console.log('🔍 Checking for existing allocation booking method data...')
+  return db.allocationBookingMethod.countDocuments()
+}
+
+/**
  * Check if TB result data already exists
  * @returns {number} Count of existing TB result documents
  */
@@ -195,6 +204,57 @@ function seedTbResultData () {
 }
 
 /**
+ * Seed allocation booking method reference data into the database
+ * @returns {void}
+ */
+function seedAllocationBookingMethodData () {
+  console.log('🌱 Seeding allocation booking method reference data...')
+
+  const now = new Date()
+
+  // Allocation booking method reference data
+  const allocationBookingMethodData = [
+    {
+      method: 'Phone',
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      method: 'Email',
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      method: 'Online Portal',
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      method: 'Fax',
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      method: 'In Person',
+      createdAt: now,
+      updatedAt: now
+    }
+  ]
+
+  // Insert allocation booking method data
+  const result = db.allocationBookingMethod.insertMany(allocationBookingMethodData)
+  console.log('✅ Inserted ' + result.insertedIds.length + ' allocation booking method records')
+
+  // Create indexes
+  db.allocationBookingMethod.createIndex({ method: 1 }, { unique: true })
+  console.log('✅ Created indexes for allocation booking method collection')
+
+  // Verify data
+  const count = db.allocationBookingMethod.countDocuments()
+  console.log('📊 Total allocation booking method records: ' + count)
+}
+
+/**
  * Main initialization logic
  * @returns {void}
  */
@@ -216,6 +276,15 @@ function initializeMongoDB () {
     } else {
       seedTbResultData()
       console.log('🎉 TB result seeding completed!')
+    }
+
+    const existingAllocationBookingMethodCount = checkExistingAllocationBookingMethodData()
+
+    if (existingAllocationBookingMethodCount > 0) {
+      console.log('📊 Allocation booking method data already exists (' + existingAllocationBookingMethodCount + ' records), skipping seed...')
+    } else {
+      seedAllocationBookingMethodData()
+      console.log('🎉 Allocation booking method seeding completed!')
     }
 
     console.log('✅ MongoDB initialization complete!')

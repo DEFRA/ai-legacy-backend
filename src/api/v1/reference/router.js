@@ -3,8 +3,10 @@ import Boom from '@hapi/boom'
 import { mongoClient } from '../../../common/database/mongo.js'
 import { TbStatusService } from './services/tb-status.js'
 import { TbResultService } from './services/tb-result.js'
+import { AllocationBookingMethodService } from './services/allocation-booking-method.js'
 import { MongoTbStatusRepository } from '../../../data/mongo/repositories/tb-status.js'
 import { MongoTbResultRepository } from '../../../data/mongo/repositories/tb-result.js'
+import { MongoAllocationBookingMethodRepository } from '../../../data/mongo/repositories/allocation-booking-method.js'
 
 /**
  * Handler for GET /api/v1/reference/tb-status
@@ -61,6 +63,33 @@ async function getTbResult (request, h) {
 }
 
 /**
+ * Handler for GET /api/v1/reference/allocation-booking-method
+ * Get all allocation booking method options
+ *
+ * @param {Object} request - Hapi request object
+ * @param {Object} h - Hapi response toolkit
+ * @returns {Object} Response with allocation booking method data
+ */
+async function getAllocationBookingMethod (request, h) {
+  try {
+    const repository = new MongoAllocationBookingMethodRepository(mongoClient)
+    const allocationBookingMethodService = new AllocationBookingMethodService(repository)
+
+    const allocationBookingMethods = await allocationBookingMethodService.getOptions()
+
+    return h
+      .response({
+        data: allocationBookingMethods
+      })
+      .code(200)
+  } catch (error) {
+    request.logger.error('Error fetching allocation booking methods:', error)
+
+    throw Boom.internal(`Failed to fetch allocation booking methods: ${error.message}`)
+  }
+}
+
+/**
  * Reference router plugin
  */
 const router = {
@@ -83,6 +112,16 @@ const router = {
         handler: getTbResult,
         options: {
           description: 'Get all TB result options',
+          tags: ['api', 'reference']
+        }
+      })
+
+      server.route({
+        method: 'GET',
+        path: '/api/v1/reference/allocation-booking-method',
+        handler: getAllocationBookingMethod,
+        options: {
+          description: 'Get all allocation booking method options',
           tags: ['api', 'reference']
         }
       })
