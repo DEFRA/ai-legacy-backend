@@ -24,6 +24,15 @@ function checkExistingData () {
 }
 
 /**
+ * Check if TB result data already exists
+ * @returns {number} Count of existing TB result documents
+ */
+function checkExistingTbResultData () {
+  console.log('🔍 Checking for existing TB result data...')
+  return db.tbResult.countDocuments()
+}
+
+/**
  * Seed TB status reference data into the database
  * @returns {void}
  */
@@ -88,6 +97,69 @@ function seedTbStatusData () {
 }
 
 /**
+ * Seed TB result reference data into the database
+ * @returns {void}
+ */
+function seedTbResultData () {
+  console.log('🌱 Seeding TB result reference data...')
+
+  const now = new Date()
+
+  // TB Result reference data
+  const tbResultData = [
+    {
+      code: 'NVL',
+      description: 'NVL',
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      code: 'NVL - Neg',
+      description: 'NVL - Neg',
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      code: 'NVL - Pos',
+      description: 'NVL - Pos',
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      code: 'VL',
+      description: 'VL',
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      code: 'VL - Neg',
+      description: 'VL - Neg',
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      code: 'VL - Pos',
+      description: 'VL - Pos',
+      createdAt: now,
+      updatedAt: now
+    }
+  ]
+
+  // Insert TB result data
+  const result = db.tbResult.insertMany(tbResultData)
+  console.log('✅ Inserted ' + result.insertedIds.length + ' TB result records')
+
+  // Create indexes
+  db.tbResult.createIndex({ code: 1 }, { unique: true })
+  db.tbResult.createIndex({ description: 1 })
+  console.log('✅ Created indexes for TB result collection')
+
+  // Verify data
+  const count = db.tbResult.countDocuments()
+  console.log('📊 Total TB result records: ' + count)
+}
+
+/**
  * Main initialization logic
  * @returns {void}
  */
@@ -100,6 +172,15 @@ function initializeMongoDB () {
     } else {
       seedTbStatusData()
       console.log('🎉 TB status seeding completed!')
+    }
+
+    const existingTbResultCount = checkExistingTbResultData()
+
+    if (existingTbResultCount > 0) {
+      console.log('📊 TB result data already exists (' + existingTbResultCount + ' records), skipping seed...')
+    } else {
+      seedTbResultData()
+      console.log('🎉 TB result seeding completed!')
     }
 
     console.log('✅ MongoDB initialization complete!')

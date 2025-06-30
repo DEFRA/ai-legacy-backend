@@ -13,6 +13,8 @@ tags:
     description: Reference data operations
   - name: tb-status
     description: TB status reference data
+  - name: tb-result
+    description: TB result reference data
 
 paths:
   /reference/tb-status:
@@ -52,6 +54,35 @@ paths:
                     description: "TB Restricted"
                     regions: ["Midlands"]
 
+  /reference/tb-result:
+    get:
+      tags:
+        - reference
+        - tb-result
+      summary: Get all TB result options
+      description: Retrieve all TB result options for lookup purposes
+      operationId: getTbResult
+      responses:
+        '200':
+          description: Successful response with TB result data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TbResultOption'
+              example:
+                data:
+                  - code: "NVL"
+                    description: "NVL"
+                  - code: "NVL - Neg"
+                    description: "NVL - Neg"
+                  - code: "VL - Pos"
+                    description: "VL - Pos"
+
 components:
   schemas:
     TbStatusOption:
@@ -77,3 +108,18 @@ components:
         - description
         - regions
 
+    TbResultOption:
+      type: object
+      description: A TB result option for lookup purposes
+      properties:
+        code:
+          type: string
+          description: TB result code
+          example: "NVL"
+        description:
+          type: string
+          description: TB result description
+          example: "NVL"
+      required:
+        - code
+        - description
