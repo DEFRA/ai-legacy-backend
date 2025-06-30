@@ -42,6 +42,15 @@ function checkExistingTbResultData () {
 }
 
 /**
+ * Check if allocation skip reasons data already exists
+ * @returns {number} Count of existing allocation skip reasons documents
+ */
+function checkExistingAllocationSkipReasonsData () {
+  console.log('🔍 Checking for existing allocation skip reasons data...')
+  return db.allocationSkipReasons.countDocuments()
+}
+
+/**
  * Seed TB status reference data into the database
  * @returns {void}
  */
@@ -220,22 +229,17 @@ function seedAllocationBookingMethodData () {
       updatedAt: now
     },
     {
-      method: 'Email',
+      method: 'Letter',
       createdAt: now,
       updatedAt: now
     },
     {
-      method: 'Online Portal',
+      method: 'Other',
       createdAt: now,
       updatedAt: now
     },
     {
-      method: 'Fax',
-      createdAt: now,
-      updatedAt: now
-    },
-    {
-      method: 'In Person',
+      method: 'N/A',
       createdAt: now,
       updatedAt: now
     }
@@ -252,6 +256,47 @@ function seedAllocationBookingMethodData () {
   // Verify data
   const count = db.allocationBookingMethod.countDocuments()
   console.log('📊 Total allocation booking method records: ' + count)
+}
+
+/**
+ * Seed allocation skip reasons reference data into the database
+ * @returns {void}
+ */
+function seedAllocationSkipReasonsData () {
+  console.log('🌱 Seeding allocation skip reasons reference data...')
+
+  const now = new Date()
+
+  // Allocation skip reasons reference data
+  const allocationSkipReasonsData = [
+    {
+      reason: 'Declined',
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      reason: 'Not Necessary',
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      reason: 'N/A High Risk',
+      createdAt: now,
+      updatedAt: now
+    }
+  ]
+
+  // Insert allocation skip reasons data
+  const result = db.allocationSkipReasons.insertMany(allocationSkipReasonsData)
+  console.log('✅ Inserted ' + result.insertedIds.length + ' allocation skip reasons records')
+
+  // Create indexes
+  db.allocationSkipReasons.createIndex({ reason: 1 }, { unique: true })
+  console.log('✅ Created indexes for allocation skip reasons collection')
+
+  // Verify data
+  const count = db.allocationSkipReasons.countDocuments()
+  console.log('📊 Total allocation skip reasons records: ' + count)
 }
 
 /**
@@ -285,6 +330,15 @@ function initializeMongoDB () {
     } else {
       seedAllocationBookingMethodData()
       console.log('🎉 Allocation booking method seeding completed!')
+    }
+
+    const existingAllocationSkipReasonsCount = checkExistingAllocationSkipReasonsData()
+
+    if (existingAllocationSkipReasonsCount > 0) {
+      console.log('📊 Allocation skip reasons data already exists (' + existingAllocationSkipReasonsCount + ' records), skipping seed...')
+    } else {
+      seedAllocationSkipReasonsData()
+      console.log('🎉 Allocation skip reasons seeding completed!')
     }
 
     console.log('✅ MongoDB initialization complete!')
