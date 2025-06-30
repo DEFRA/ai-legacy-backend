@@ -42,41 +42,76 @@ function seedTbStatusData () {
   const now = new Date()
 
   // TB Status reference data
-  const allRegions = ['midlands', 'north', 'scotland', 'southEast', 'southWest', 'wales']
+  const allRegions = ['midlands', 'north', 'scotland', 'south_east', 'south_west', 'wales']
 
   const tbStatusData = [
     {
-      code: 'FR',
-      description: 'Fake Restricted',
+      code: 'OTF',
+      description: 'OTF',
       validRegions: allRegions,
       createdAt: now,
       updatedAt: now
     },
     {
-      code: 'FT1',
-      description: 'Fake First Test',
+      code: 'OTFS',
+      description: 'OTFS',
       validRegions: allRegions,
       createdAt: now,
       updatedAt: now
     },
     {
-      code: 'FT2',
-      description: 'Fake Second Test',
+      code: 'OTFS2',
+      description: 'OTFS2',
+      validRegions: ['midlands', 'north', 'south_east', 'south_west'],
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      code: 'OTFW',
+      description: 'OTFW',
       validRegions: allRegions,
       createdAt: now,
       updatedAt: now
     },
     {
-      code: 'FC',
-      description: 'Fake Clear',
-      validRegions: allRegions,
+      code: 'OTFW (Last 3 Yrs)',
+      description: 'OTFW (Confirmed disease within the last three years)',
+      validRegions: [],
       createdAt: now,
       updatedAt: now
     },
     {
-      code: 'FSU',
-      description: 'Fake Suspended',
-      validRegions: allRegions,
+      code: 'OTFW (Cont to Conf)',
+      description: 'OTFW (Contiguous to confirmed breakdown)',
+      validRegions: [],
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      code: 'OTFW (Last 3 Yrs + Cont to Conf)',
+      description: 'OTFW (Confirmed disease within the last three years & Contiguous to confirmed breakdown)',
+      validRegions: [],
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      code: 'OTFW (DL at PME)',
+      description: 'OTFW (DL at PME)',
+      validRegions: [],
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      code: 'OTFW (Positive Culture)',
+      description: 'OTFW (Positive Culture)',
+      validRegions: [],
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      code: 'OTFW2',
+      description: 'OTFW2',
+      validRegions: ['wales'],
       createdAt: now,
       updatedAt: now
     }
