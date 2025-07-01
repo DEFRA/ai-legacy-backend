@@ -138,8 +138,48 @@ class DetailsEntity {
 class HoldingEntity {
   constructor (id, details, incidents = []) {
     this.id = id
-    this.details = details
+    // Ensure details is a DetailsEntity instance
+    this.details = details instanceof DetailsEntity ? details : this._createDetailsEntity(details)
     this.incidents = incidents
+  }
+
+  /**
+   * Helper method to create DetailsEntity from raw data
+   * @param {Object} detailsData - Raw details data
+   * @returns {DetailsEntity|null} DetailsEntity instance or null
+   */
+  _createDetailsEntity (detailsData) {
+    if (!detailsData) return null
+
+    // Create AddressEntity if address data exists
+    const addressEntity = detailsData.address ? new AddressEntity(
+      detailsData.address.street,
+      detailsData.address.locality,
+      detailsData.address.town,
+      detailsData.address.county,
+      detailsData.address.postcode
+    ) : null
+
+    // Create GeolocationEntity if geolocation data exists
+    const geolocationEntity = detailsData.geolocation ? new GeolocationEntity(
+      detailsData.geolocation.mapRef,
+      detailsData.geolocation.easting,
+      detailsData.geolocation.northing
+    ) : null
+
+    // Create ContactEntity instances for contacts array
+    const contactEntities = Array.isArray(detailsData.contacts) 
+      ? detailsData.contacts.map(contact => new ContactEntity(contact.type, contact.value))
+      : []
+
+    return new DetailsEntity(
+      detailsData.cph,
+      detailsData.name,
+      detailsData.description,
+      addressEntity,
+      geolocationEntity,
+      contactEntities
+    )
   }
 
   static fromDocument (doc) {
