@@ -1,110 +1,30 @@
-import Boom from '@hapi/boom'
-import Joi from 'joi'
-
 import { mongoClient } from '../../../../common/database/mongo.js'
-import { HoldingService } from '../services/holding-service.js'
 import { MongoHoldingRepository } from '../../../../data/mongo/repositories/holding.js'
-import { createHoldingSchema } from '../schemas/holding-schemas.js'
+import { HoldingService } from '../services/holding.js'
+import { createHoldingSchema } from '../schemas/holding.js'
 
 /**
  * Handler for POST /api/v1/holding
  * Create a new holding
  *
- * @param {Object} request - Hapi request object
- * @param {Object} h - Hapi response toolkit
- * @returns {Object} Response with created holding data
+ * @param {import('@hapi/hapi').Request} request - Hapi request object
+ * @param {import('@hapi/hapi').ResponseToolkit} h - Hapi response toolkit
+ * @returns {import('@hapi/hapi').ResponseObject} Response object
  */
 async function createHolding (request, h) {
-  try {
-    const repository = new MongoHoldingRepository(mongoClient)
-    const holdingService = new HoldingService(repository)
+  const repo = new MongoHoldingRepository(mongoClient)
+  const service = new HoldingService(repo)
 
-    const holdingData = request.payload
-    const createdHolding = await holdingService.createHolding(holdingData)
+  const holding = await service.createHolding(request.payload.details)
 
-    return h
-      .response({
-        data: createdHolding.toJSON()
-      })
-      .code(201)
-  } catch (error) {
-    request.logger.error('Error creating holding:', error)
-
-    // Handle duplicate CPH error
-    if (error.code === 11000 && error.keyPattern && error.keyPattern['details.cph']) {
-      throw Boom.conflict('A holding with this CPH already exists')
+  return h.response({
+    message: 'Holding created successfully',
+    data: {
+      holding
     }
-
-    throw Boom.internal(`Failed to create holding: ${error.message}`)
-  }
+  }).code(201)
 }
 
-/**
- * Handler for GET /api/v1/holding/{id}
- * Get a holding by ID
- *
- * @param {Object} request - Hapi request object
- * @param {Object} h - Hapi response toolkit
- * @returns {Object} Response with holding data
- */
-async function getHoldingById (request, h) {
-  try {
-    const repository = new MongoHoldingRepository(mongoClient)
-    const holdingService = new HoldingService(repository)
-
-    const { id } = request.params
-    const holding = await holdingService.getHoldingById(id)
-
-    if (!holding) {
-      throw Boom.notFound('Holding not found')
-    }
-
-    return h
-      .response({
-        data: holding.toJSON()
-      })
-      .code(200)
-  } catch (error) {
-    request.logger.error('Error fetching holding by ID:', error)
-
-    if (error.isBoom) {
-      throw error
-    }
-
-    throw Boom.internal(`Failed to fetch holding: ${error.message}`)
-  }
-}
-
-/**
- * Handler for GET /api/v1/holding
- * Get all holdings
- *
- * @param {Object} request - Hapi request object
- * @param {Object} h - Hapi response toolkit
- * @returns {Object} Response with holdings data
- */
-async function getAllHoldings (request, h) {
-  try {
-    const repository = new MongoHoldingRepository(mongoClient)
-    const holdingService = new HoldingService(repository)
-
-    const holdings = await holdingService.getAllHoldings()
-
-    return h
-      .response({
-        data: holdings.map(holding => holding.toSummary())
-      })
-      .code(200)
-  } catch (error) {
-    request.logger.error('Error fetching holdings:', error)
-
-    throw Boom.internal(`Failed to fetch holdings: ${error.message}`)
-  }
-}
-
-/**
- * Holding endpoint routes
- */
 const holdingRoutes = [
   {
     method: 'POST',
@@ -115,33 +35,12 @@ const holdingRoutes = [
       notes: 'Creates a new holding with address, geolocation, and contact information',
       tags: ['api', 'holding'],
       validate: {
-        payload: createHoldingSchema,
-        failAction(request, h, error) {
-            return h.response(error.message).code(400).takeover()
-        }
+        payload: createHoldingSchema
       }
-    }
-  },
-  {
-    method: 'GET',
-    path: '/api/v1/holding/{id}',
-    handler: getHoldingById,
-    options: {
-      description: 'Get holding by ID',
-      notes: 'Retrieve a specific holding by its MongoDB ObjectId',
-      tags: ['api', 'holding']
-    }
-  },
-  {
-    method: 'GET',
-    path: '/api/v1/holding',
-    handler: getAllHoldings,
-    options: {
-      description: 'Get all holdings',
-      notes: 'Retrieve a summary list of all holdings',
-      tags: ['api', 'holding']
     }
   }
 ]
 
-export { holdingRoutes }
+export {
+  holdingRoutes
+}

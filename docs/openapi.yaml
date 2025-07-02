@@ -211,7 +211,6 @@ paths:
                     value: "01234 567890"
                   - type: "mobile"
                     value: "07700 123456"
-              incidents: []
       responses:
         '201':
           description: Holding created successfully
@@ -471,14 +470,6 @@ components:
       properties:
         details:
           $ref: '#/components/schemas/HoldingDetails'
-        incidents:
-          type: array
-          description: Array of incident ObjectIds
-          items:
-            type: string
-            pattern: '^[0-9a-fA-F]{24}$'
-          default: []
-          example: []
       required:
         - details
 
