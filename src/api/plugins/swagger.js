@@ -1,6 +1,8 @@
 import Inert from '@hapi/inert'
 import Vision from '@hapi/vision'
 import HapiSwagger from 'hapi-swagger'
+import path from 'path'
+import { config } from '../../config/index.js'
 
 export const swaggerPlugin = {
   name: 'swagger',
@@ -59,5 +61,17 @@ export const swaggerPlugin = {
         options: swaggerOptions
       }
     ])
+    
+    // Serve static files from the public directory (custom Swagger UI)
+    server.route({
+      method: 'GET',
+      path: '/custom-docs/{param*}',
+      handler: {
+        directory: {
+          path: path.resolve(config.get('root'), 'public'),
+          index: ['swagger-ui.html']
+        }
+      }
+    });
   }
 }

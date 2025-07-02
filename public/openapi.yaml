@@ -1,0 +1,759 @@
+openapi: 3.1.1
+
+info:
+  title: TB Case Management System API
+  description: |
+    Comprehensive REST API for the TB Case Management System.
+    Provides endpoints for managing TB case data, reference information, 
+    and holding management operations.
+    
+    This API enables:
+    - Management of holding information including addresses and contact details
+    - Access to TB-related reference data (statuses, results, allocation methods)
+    - Health monitoring and system status checks
+  version: 1.0.0
+  contact:
+    name: API Support Team
+  license:
+    name: MIT
+    identifier: MIT
+
+servers:
+  - url: http://localhost:3002
+    description: Local backend (for Try it out)
+  - url: /
+    description: Root URL (for /health endpoint)
+
+tags:
+  - name: health
+    description: Health check and system monitoring endpoints
+  - name: reference
+    description: Reference data endpoints for TB management
+  - name: tb
+    description: TB-specific reference data (statuses, results)
+  - name: allocation
+    description: Allocation-related reference data
+  - name: finishing-unit
+    description: Finishing unit reference data
+  - name: holding
+    description: Holding management operations
+
+paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Returns the health status of the API service
+      operationId: getHealthStatus
+      tags:
+        - health
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              examples:
+                success:
+                  summary: Successful health check
+                  value:
+                    message: "success"
+
+  /api/v1/reference/tb-status:
+    get:
+      summary: Get TB status options
+      description: |
+        Retrieves all available TB status options. Can be filtered by region 
+        to return only statuses valid for a specific geographical region.
+      operationId: getTbStatuses
+      tags:
+        - reference
+        - tb
+      parameters:
+        - name: region
+          in: query
+          description: Optional region filter to return TB statuses valid for specific region
+          required: false
+          schema:
+            type: string
+            minLength: 1
+          example: "England"
+      responses:
+        '200':
+          description: Successfully retrieved TB status options
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TbStatusResponse'
+              examples:
+                success:
+                  summary: Successful retrieval of TB statuses
+                  value:
+                    data:
+                      - code: "01"
+                        description: "Pre-movement test required"
+                        regions: ["England", "Wales"]
+                      - code: "02"
+                        description: "Routine surveillance"
+                        regions: ["Scotland", "Northern Ireland"]
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/reference/tb-result:
+    get:
+      summary: Get TB result options
+      description: Retrieves all available TB test result options
+      operationId: getTbResults
+      tags:
+        - reference
+        - tb
+      responses:
+        '200':
+          description: Successfully retrieved TB result options
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TbResultResponse'
+              examples:
+                success:
+                  summary: Successful retrieval of TB results
+                  value:
+                    data:
+                      - code: "NEG"
+                        description: "Negative"
+                        regions: ["England", "Wales", "Scotland", "Northern Ireland"]
+                      - code: "POS"
+                        description: "Positive"
+                        regions: ["England", "Wales", "Scotland", "Northern Ireland"]
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/reference/allocation-booking-method:
+    get:
+      summary: Get allocation booking method options
+      description: Retrieves all available allocation booking method options
+      operationId: getAllocationBookingMethods
+      tags:
+        - reference
+        - allocation
+      responses:
+        '200':
+          description: Successfully retrieved allocation booking method options
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllocationBookingMethodResponse'
+              examples:
+                success:
+                  summary: Successful retrieval of allocation booking methods
+                  value:
+                    data:
+                      - code: "ONLINE"
+                        description: "Online booking system"
+                        regions: ["England", "Wales", "Scotland", "Northern Ireland"]
+                      - code: "PHONE"
+                        description: "Telephone booking"
+                        regions: ["England", "Wales", "Scotland", "Northern Ireland"]
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/reference/allocation-skip-reason:
+    get:
+      summary: Get allocation skip reason options
+      description: Retrieves all available allocation skip reason options
+      operationId: getAllocationSkipReasons
+      tags:
+        - reference
+        - allocation
+      responses:
+        '200':
+          description: Successfully retrieved allocation skip reason options
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllocationSkipReasonResponse'
+              examples:
+                success:
+                  summary: Successful retrieval of allocation skip reasons
+                  value:
+                    data:
+                      - code: "WEATHER"
+                        description: "Adverse weather conditions"
+                        regions: ["England", "Wales", "Scotland", "Northern Ireland"]
+                      - code: "ACCESS"
+                        description: "Access issues to holding"
+                        regions: ["England", "Wales", "Scotland", "Northern Ireland"]
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/reference/finishing-unit:
+    get:
+      summary: Get finishing unit options
+      description: |
+        Retrieves all available finishing unit options. Can be filtered by region 
+        to return only finishing units valid for a specific geographical region.
+      operationId: getFinishingUnits
+      tags:
+        - reference
+        - finishing-unit
+      parameters:
+        - name: region
+          in: query
+          description: Optional region filter to return finishing units valid for specific region
+          required: false
+          schema:
+            type: string
+            minLength: 1
+          example: "England"
+      responses:
+        '200':
+          description: Successfully retrieved finishing unit options
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinishingUnitResponse'
+              examples:
+                success:
+                  summary: Successful retrieval of finishing units
+                  value:
+                    data:
+                      - code: "ABP001"
+                        description: "ABP Processing Plant - Yorkshire"
+                        regions: ["England"]
+                      - code: "COOP01"
+                        description: "Cooperative Abattoir - Wales"
+                        regions: ["Wales"]
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/holding:
+    post:
+      summary: Create a new holding
+      description: |
+        Creates a new holding with address, geolocation, and contact information.
+        A holding represents a farm or premises where livestock is kept.
+      operationId: createHolding
+      tags:
+        - holding
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateHoldingRequest'
+            examples:
+              farm_example:
+                summary: Example farm holding
+                value:
+                  details:
+                    cph: "12/345/6789"
+                    name: "Green Meadows Farm"
+                    description: "Dairy farm specializing in Holstein cattle"
+                    address:
+                      street: "Farm Lane"
+                      locality: "Little Village"
+                      town: "Farmington"
+                      county: "Devon"
+                      postcode: "EX12 3AB"
+                    geolocation:
+                      mapReference: "SS123456"
+                      easting: 123456
+                      northing: 654321
+                    contacts:
+                      - type: "mobile"
+                        value: "07900123456"
+                      - type: "email"
+                        value: "farmer@greenmeadows.co.uk"
+      responses:
+        '201':
+          description: Holding created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateHoldingResponse'
+              examples:
+                success:
+                  summary: Successful holding creation
+                  value:
+                    message: "Holding created successfully"
+                    data:
+                      holding:
+                        _id: "6507f1a4b8e3c1234567890a"
+                        details:
+                          cph: "12/345/6789"
+                          name: "Green Meadows Farm"
+                          description: "Dairy farm specializing in Holstein cattle"
+                          address:
+                            street: "Farm Lane"
+                            locality: "Little Village"
+                            town: "Farmington"
+                            county: "Devon"
+                            postcode: "EX12 3AB"
+                          geolocation:
+                            mapReference: "SS123456"
+                            easting: 123456
+                            northing: 654321
+                          contacts:
+                            - type: "mobile"
+                              value: "07900123456"
+                            - type: "email"
+                              value: "farmer@greenmeadows.co.uk"
+                        incidents: []
+                        createdAt: "2023-09-17T10:30:00.000Z"
+                        updatedAt: "2023-09-17T10:30:00.000Z"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: Conflict - CPH already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DuplicateCPHError'
+              examples:
+                duplicate_cph:
+                  summary: Duplicate CPH error
+                  value:
+                    error: "Conflict"
+                    message: "A holding with CPH 12/345/6789 already exists"
+                    statusCode: 409
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/holding/{cph}:
+    get:
+      summary: Get a holding by CPH
+      description: |
+        Retrieves a holding's details using its County Parish Holding (CPH) number.
+        CPH is a unique identifier for holdings in the UK.
+      operationId: getHoldingByCph
+      tags:
+        - holding
+      parameters:
+        - name: cph
+          in: path
+          required: true
+          description: County Parish Holding number in format XX/XXX/XXXX
+          schema:
+            $ref: '#/components/schemas/CPH'
+          example: "12/345/6789"
+      responses:
+        '200':
+          description: Successfully retrieved holding
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetHoldingResponse'
+              examples:
+                success:
+                  summary: Successful holding retrieval
+                  value:
+                    message: "Holding retrieved successfully"
+                    data:
+                      holding:
+                        _id: "6507f1a4b8e3c1234567890a"
+                        details:
+                          cph: "12/345/6789"
+                          name: "Green Meadows Farm"
+                          description: "Dairy farm specializing in Holstein cattle"
+                          address:
+                            street: "Farm Lane"
+                            locality: "Little Village"
+                            town: "Farmington"
+                            county: "Devon"
+                            postcode: "EX12 3AB"
+                          geolocation:
+                            mapReference: "SS123456"
+                            easting: 123456
+                            northing: 654321
+                          contacts:
+                            - type: "mobile"
+                              value: "07900123456"
+                            - type: "email"
+                              value: "farmer@greenmeadows.co.uk"
+                        incidents: []
+                        createdAt: "2023-09-17T10:30:00.000Z"
+                        updatedAt: "2023-09-17T10:30:00.000Z"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: Holding not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+              examples:
+                not_found:
+                  summary: Holding not found
+                  value:
+                    error: "Not Found"
+                    message: "Holding with CPH 12/345/6789 not found"
+                    statusCode: 404
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    # Common Schemas
+    CPH:
+      type: string
+      pattern: '^[0-9]{2}/[0-9]{3}/[0-9]{4}$'
+      description: County Parish Holding number in format XX/XXX/XXXX
+      example: "12/345/6789"
+
+    # Reference Data Base Schema
+    ReferenceOption:
+      type: object
+      required:
+        - code
+        - description
+        - regions
+      properties:
+        code:
+          type: string
+          description: Unique code for the reference option
+          minLength: 1
+        description:
+          type: string
+          description: Human-readable description of the option
+          minLength: 1
+        regions:
+          type: array
+          description: List of regions where this option is valid
+          items:
+            type: string
+          minItems: 1
+
+    # Health Response
+    HealthResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Health status message
+          example: "success"
+
+    # Reference Data Response Schemas
+    TbStatusResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          description: List of TB status options
+          items:
+            $ref: '#/components/schemas/ReferenceOption'
+
+    TbResultResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          description: List of TB result options
+          items:
+            $ref: '#/components/schemas/ReferenceOption'
+
+    AllocationBookingMethodResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          description: List of allocation booking method options
+          items:
+            $ref: '#/components/schemas/ReferenceOption'
+
+    AllocationSkipReasonResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          description: List of allocation skip reason options
+          items:
+            $ref: '#/components/schemas/ReferenceOption'
+
+    FinishingUnitResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          description: List of finishing unit options
+          items:
+            $ref: '#/components/schemas/ReferenceOption'
+
+    # Holding Schemas
+    Address:
+      type: object
+      required:
+        - town
+        - county
+        - postcode
+      properties:
+        street:
+          type: string
+          description: Street address
+          nullable: true
+          maxLength: 255
+        locality:
+          type: string
+          description: Local area or village
+          nullable: true
+          maxLength: 255
+        town:
+          type: string
+          description: Town or city
+          minLength: 1
+          maxLength: 255
+        county:
+          type: string
+          description: County
+          minLength: 1
+          maxLength: 255
+        postcode:
+          type: string
+          description: UK postcode
+          minLength: 1
+          maxLength: 10
+
+    Geolocation:
+      type: object
+      nullable: true
+      properties:
+        mapReference:
+          type: string
+          description: Map grid reference
+          nullable: true
+          maxLength: 50
+        easting:
+          type: integer
+          description: Easting coordinate
+          nullable: true
+          minimum: 0
+          maximum: 999999
+        northing:
+          type: integer
+          description: Northing coordinate
+          nullable: true
+          minimum: 0
+          maximum: 999999
+
+    Contact:
+      type: object
+      required:
+        - type
+        - value
+      properties:
+        type:
+          type: string
+          enum: ['landline', 'mobile', 'email']
+          description: Type of contact method
+        value:
+          type: string
+          description: Contact value (phone number or email address)
+          minLength: 1
+
+    HoldingDetails:
+      type: object
+      required:
+        - cph
+        - name
+        - address
+      properties:
+        cph:
+          $ref: '#/components/schemas/CPH'
+        name:
+          type: string
+          description: Name of the holding
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+          description: Optional description of the holding
+          nullable: true
+          maxLength: 1000
+        address:
+          $ref: '#/components/schemas/Address'
+        geolocation:
+          $ref: '#/components/schemas/Geolocation'
+        contacts:
+          type: array
+          description: Contact information for the holding
+          items:
+            $ref: '#/components/schemas/Contact'
+          default: []
+
+    Holding:
+      type: object
+      required:
+        - _id
+        - details
+        - incidents
+        - updatedAt
+      properties:
+        _id:
+          type: string
+          description: Unique identifier for the holding
+          format: uuid
+        details:
+          $ref: '#/components/schemas/HoldingDetails'
+        incidents:
+          type: array
+          description: List of incidents associated with the holding
+          items:
+            type: object
+          default: []
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the holding was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the holding was last updated
+
+    # Request Schemas
+    CreateHoldingRequest:
+      type: object
+      required:
+        - details
+      properties:
+        details:
+          $ref: '#/components/schemas/HoldingDetails'
+
+    # Response Schemas
+    CreateHoldingResponse:
+      type: object
+      required:
+        - message
+        - data
+      properties:
+        message:
+          type: string
+          description: Success message
+          example: "Holding created successfully"
+        data:
+          type: object
+          required:
+            - holding
+          properties:
+            holding:
+              $ref: '#/components/schemas/Holding'
+
+    GetHoldingResponse:
+      type: object
+      required:
+        - message
+        - data
+      properties:
+        message:
+          type: string
+          description: Success message
+          example: "Holding retrieved successfully"
+        data:
+          type: object
+          required:
+            - holding
+          properties:
+            holding:
+              $ref: '#/components/schemas/Holding'
+
+    # Error Schemas
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+        - statusCode
+      properties:
+        error:
+          type: string
+          description: Error type
+        message:
+          type: string
+          description: Error description
+        statusCode:
+          type: integer
+          description: HTTP status code
+
+    ValidationError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties:
+            validation:
+              type: object
+              description: Validation error details
+              properties:
+                source:
+                  type: string
+                  description: Source of validation error (e.g., 'payload', 'params')
+                keys:
+                  type: array
+                  description: Fields that failed validation
+                  items:
+                    type: string
+
+    DuplicateCPHError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties:
+            error:
+              type: string
+              example: "Conflict"
+            statusCode:
+              type: integer
+              example: 409
+
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties:
+            error:
+              type: string
+              example: "Not Found"
+            statusCode:
+              type: integer
+              example: 404
+
+  responses:
+    BadRequest:
+      description: Bad Request - Invalid input parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+          examples:
+            validation_error:
+              summary: Validation error example
+              value:
+                error: "Bad Request"
+                message: "Invalid input parameters"
+                statusCode: 400
+                validation:
+                  source: "payload"
+                  keys: ["details.cph"]
+
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            internal_error:
+              summary: Internal server error
+              value:
+                error: "Internal Server Error"
+                message: "An unexpected error occurred"
+                statusCode: 500

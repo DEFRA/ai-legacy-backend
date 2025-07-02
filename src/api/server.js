@@ -20,7 +20,7 @@ async function createServer () {
         }
       },
       files: {
-        relativeTo: path.resolve(config.get('root'), '.public')
+        relativeTo: path.resolve(config.get('root'), 'public')
       },
       security: {
         hsts: {

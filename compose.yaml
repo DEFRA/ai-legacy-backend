@@ -17,6 +17,7 @@ services:
     volumes:
       - ./src/:/home/node/src
       - ./package.json:/home/node/package.json
+      - ./public:/home/node/public
     env_file:
       - .env
     environment:

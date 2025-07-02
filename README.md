@@ -15,6 +15,9 @@ Core delivery platform Node.js Backend Template.
   - [NPM Scripts](#npm-scripts)
   - [Formatting](#formatting)
     - [Windows Prettier Issue](#windows-prettier-issue)
+- [API Documentation](#api-documentation)
+  - [Interactive Documentation](#interactive-documentation)
+  - [Available Endpoints](#available-endpoints)
 - [Development Helpers](#development-helpers)
   - [MongoDB Locks](#mongodb-locks)
 - [Docker](#docker)
@@ -137,6 +140,103 @@ If you are having issues with formatting of line breaks on Windows update your g
 
 ```bash
 git config --global core.autocrlf false
+```
+
+## API Documentation
+
+The TB Case Management System provides a comprehensive REST API documented using OpenAPI 3.1.1 specification. You can interact with all available endpoints through an interactive Swagger UI interface that is served directly from the backend server at [http://localhost:3002/custom-docs/swagger-ui.html](http://localhost:3002/custom-docs/swagger-ui.html) when the server is running.
+
+### Interactive Documentation
+
+To access the interactive API documentation:
+
+1. **Start the backend server:**
+
+   ```bash
+   docker-compose up
+   ```
+
+   This will start the backend server along with the required databases.
+
+2. **Access Swagger UI in your browser:**
+
+   Navigate to: [http://localhost:3002/custom-docs/swagger-ui.html](http://localhost:3002/custom-docs/swagger-ui.html)
+
+   The Swagger UI is served directly from the backend server, which:
+   - Prevents CORS issues when using the "Try it out" feature
+   - Ensures the documentation is always in sync with the API
+   - Allows for interactive testing of API endpoints
+
+3. **Access the OpenAPI specification:**
+
+   You can view the raw OpenAPI specification at:
+   [http://localhost:3002/custom-docs/openapi.yaml](http://localhost:3002/custom-docs/openapi.yaml)
+
+4. **Interact with the API:**
+   - Click on any endpoint to expand its details
+   - Click the "Try it out" button
+   - Fill in any required parameters
+   - Click "Execute" to send a request to the API
+   - View the response below
+
+### Troubleshooting Swagger UI Access
+
+If you encounter issues accessing the Swagger UI:
+
+1. **Ensure the backend is running:**
+   ```bash
+   docker-compose ps
+   ```
+   You should see the `ai-legacy-backend-development` container running.
+
+2. **Check for file mounting issues:**
+   If the Swagger UI returns a 404 error, ensure the `public` directory is properly mounted in the Docker container:
+   ```bash
+   docker exec -it ai-legacy-backend-development ls -la public
+   ```
+   You should see `swagger-ui.html` and `openapi.yaml` files listed.
+
+3. **Restart the containers:**
+   If files exist but the UI is still not accessible, try restarting the containers:
+   ```bash
+   docker-compose down && docker-compose up -d
+   ```
+
+4. **Access the built-in Swagger UI:**
+   As an alternative, you can access the built-in Swagger UI provided by the hapi-swagger plugin:
+   [http://localhost:3002/docs](http://localhost:3002/docs)
+   Note that this version may have CORS issues when using "Try it out".
+
+### Available Endpoints
+
+The API provides several endpoint categories, all of which are fully documented in the Swagger UI. Some of the key endpoints include:
+
+#### Health Monitoring
+- `GET /health` - System health check
+
+#### Reference Data
+- `GET /api/v1/reference/tb-status` - TB status options (with optional region filtering)
+- `GET /api/v1/reference/tb-result` - TB test result options
+- `GET /api/v1/reference/allocation-booking-method` - Allocation booking methods
+- `GET /api/v1/reference/allocation-skip-reason` - Allocation skip reasons
+- `GET /api/v1/reference/finishing-unit` - Finishing unit options (with optional region filtering)
+
+#### Holding Management
+- `POST /api/v1/holding` - Create a new holding
+- `GET /api/v1/holding/{cph}` - Get holding by CPH (County Parish Holding number)
+
+**Note:** To test endpoints that create or modify data, ensure your backend server is running with Docker Compose (`docker-compose up`) and your database is properly seeded with reference data.
+
+#### Quick API Test
+
+You can quickly test if the API is working:
+
+```bash
+# Test health endpoint
+curl http://localhost:3002/health
+
+# Test reference data endpoint
+curl http://localhost:3002/api/v1/reference/tb-status
 ```
 
 ## Development Helpers
