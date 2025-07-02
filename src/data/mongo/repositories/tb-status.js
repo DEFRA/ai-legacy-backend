@@ -3,25 +3,25 @@
  * Based on the MongoDB ERD specification for TbStatus collection
  */
 class MongoTbStatusRepository {
-  constructor (db) {
-    this.collection = db.collection('tbStatus')
+  constructor(db) {
+    this.collection = db.collection("tbStatus");
   }
 
-  async getAll () {
-    const tbStatuses = await this.collection.find({}).toArray()
+  async getAll() {
+    const tbStatuses = await this.collection.find({}).toArray();
 
-    return tbStatuses
+    return tbStatuses;
   }
 
-  async getByRegion (region) {
-    const tbStatuses = await this.collection.find({
-      validRegions: region
-    }).toArray()
+  async getByRegion(region) {
+    const tbStatuses = await this.collection
+      .find({
+        validRegions: region,
+      })
+      .toArray();
 
-    return tbStatuses
+    return tbStatuses;
   }
 }
 
-export {
-  MongoTbStatusRepository
-}
+export { MongoTbStatusRepository };

@@ -7,8 +7,8 @@ class TbResultService {
    *
    * @param {Object} repository - TB result repository instance
    */
-  constructor (repository) {
-    this.repository = repository
+  constructor(repository) {
+    this.repository = repository;
   }
 
   /**
@@ -17,20 +17,18 @@ class TbResultService {
    * @returns {Promise<Array<Object>>} List of TB result options
    * @throws {Error} When repository operations fail
    */
-  async getOptions () {
+  async getOptions() {
     try {
-      const options = await this.repository.getAll()
+      const options = await this.repository.getAll();
 
-      return options.map(option => ({
+      return options.map((option) => ({
         code: option.code,
-        description: option.description
-      }))
+        description: option.description,
+      }));
     } catch (error) {
-      throw new Error('Failed to retrieve TB result options')
+      throw new Error("Failed to retrieve TB result options");
     }
   }
 }
 
-export {
-  TbResultService
-}
+export { TbResultService };

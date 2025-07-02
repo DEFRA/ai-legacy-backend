@@ -1,35 +1,35 @@
-import { afterEach, beforeEach, describe, expect, test } from 'vitest'
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 
-import { startServer } from '../../../../../src/api/server.js'
+import { startServer } from "../../../../../src/api/server.js";
 
-describe('health probe', () => {
-  let server
+describe("health probe", () => {
+  let server;
 
   const setupServer = async () => {
-    server = await startServer()
+    server = await startServer();
 
-    await server.start()
-  }
+    await server.start();
+  };
 
-  describe('GET /health', () => {
-    describe('given the service is healthy', () => {
+  describe("GET /health", () => {
+    describe("given the service is healthy", () => {
       beforeEach(async () => {
-        await setupServer()
-      })
+        await setupServer();
+      });
 
-      test('should return 200 OK with success message', async () => {
+      test("should return 200 OK with success message", async () => {
         const response = await server.inject({
-          method: 'GET',
-          url: '/health'
-        })
+          method: "GET",
+          url: "/health",
+        });
 
-        expect(response.statusCode).toBe(200)
-        expect(response.result).toEqual({ message: 'success' })
-      })
+        expect(response.statusCode).toBe(200);
+        expect(response.result).toEqual({ message: "success" });
+      });
 
       afterEach(async () => {
-        await server.stop()
-      })
-    })
-  })
-})
+        await server.stop();
+      });
+    });
+  });
+});

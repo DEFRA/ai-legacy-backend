@@ -1,145 +1,143 @@
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-import environments from '../constants/environments.js'
+import environments from "../constants/environments.js";
 
-const dirname = path.dirname(fileURLToPath(import.meta.url))
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const isProduction = process.env.NODE_ENV === environments.PRODUCTION
-const isTest = process.env.NODE_ENV === environments.TEST
+const isProduction = process.env.NODE_ENV === environments.PRODUCTION;
+const isTest = process.env.NODE_ENV === environments.TEST;
 
 const serverConfig = {
   serviceVersion: {
-    doc: 'The service version, this variable is injected into your docker container in CDP environments',
+    doc: "The service version, this variable is injected into your docker container in CDP environments",
     format: String,
     nullable: true,
     default: null,
-    env: 'SERVICE_VERSION'
+    env: "SERVICE_VERSION",
   },
   host: {
-    doc: 'The IP address to bind',
-    format: 'ipaddress',
-    default: '0.0.0.0',
-    env: 'HOST'
+    doc: "The IP address to bind",
+    format: "ipaddress",
+    default: "0.0.0.0",
+    env: "HOST",
   },
   port: {
-    doc: 'The port to bind',
-    format: 'port',
+    doc: "The port to bind",
+    format: "port",
     default: 3002,
-    env: 'PORT'
+    env: "PORT",
   },
   serviceName: {
-    doc: 'Api Service Name',
+    doc: "Api Service Name",
     format: String,
-    default: 'fcp-sfd-accelerator'
+    default: "fcp-sfd-accelerator",
   },
   root: {
-    doc: 'Project root',
+    doc: "Project root",
     format: String,
-    default: path.resolve(dirname, '../..')
+    default: path.resolve(dirname, "../.."),
   },
   log: {
     isEnabled: {
-      doc: 'Is logging enabled',
+      doc: "Is logging enabled",
       format: Boolean,
       default: !isTest,
-      env: 'LOG_ENABLED'
+      env: "LOG_ENABLED",
     },
     level: {
-      doc: 'Logging level',
-      format: ['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'],
-      default: 'info',
-      env: 'LOG_LEVEL'
+      doc: "Logging level",
+      format: ["fatal", "error", "warn", "info", "debug", "trace", "silent"],
+      default: "info",
+      env: "LOG_LEVEL",
     },
     format: {
-      doc: 'Format to output logs in',
-      format: ['ecs', 'pino-pretty'],
-      default: isProduction ? 'ecs' : 'pino-pretty',
-      env: 'LOG_FORMAT'
+      doc: "Format to output logs in",
+      format: ["ecs", "pino-pretty"],
+      default: isProduction ? "ecs" : "pino-pretty",
+      env: "LOG_FORMAT",
     },
     redact: {
-      doc: 'Log paths to redact',
+      doc: "Log paths to redact",
       format: Array,
       default: isProduction
-        ? ['req.headers.authorization', 'req.headers.cookie', 'res.headers']
-        : ['req', 'res', 'responseTime']
-    }
+        ? ["req.headers.authorization", "req.headers.cookie", "res.headers"]
+        : ["req", "res", "responseTime"],
+    },
   },
   mongo: {
     uri: {
-      doc: 'URI for mongodb',
+      doc: "URI for mongodb",
       format: String,
-      default: 'mongodb://127.0.0.1:27017',
-      env: 'MONGO_URI'
+      default: "mongodb://127.0.0.1:27017",
+      env: "MONGO_URI",
     },
     databaseName: {
-      doc: 'Database name for mongodb',
+      doc: "Database name for mongodb",
       format: String,
-      default: 'fcp-sfd-accelerator',
-      env: 'MONGO_DATABASE'
-    }
+      default: "fcp-sfd-accelerator",
+      env: "MONGO_DATABASE",
+    },
   },
   postgres: {
     host: {
-      doc: 'PostgreSQL host',
+      doc: "PostgreSQL host",
       format: String,
-      default: 'localhost',
-      env: 'POSTGRES_HOST'
+      default: "localhost",
+      env: "POSTGRES_HOST",
     },
     port: {
-      doc: 'PostgreSQL port',
-      format: 'port',
+      doc: "PostgreSQL port",
+      format: "port",
       default: 5432,
-      env: 'POSTGRES_PORT'
+      env: "POSTGRES_PORT",
     },
     database: {
-      doc: 'PostgreSQL database name',
+      doc: "PostgreSQL database name",
       format: String,
-      default: 'tbcms',
-      env: 'POSTGRES_DB'
+      default: "tbcms",
+      env: "POSTGRES_DB",
     },
     user: {
-      doc: 'PostgreSQL username',
+      doc: "PostgreSQL username",
       format: String,
-      default: 'postgres',
-      env: 'POSTGRES_USER'
+      default: "postgres",
+      env: "POSTGRES_USER",
     },
     password: {
-      doc: 'PostgreSQL password',
+      doc: "PostgreSQL password",
       format: String,
-      default: 'postgres',
-      env: 'POSTGRES_PASSWORD'
-    }
+      default: "postgres",
+      env: "POSTGRES_PASSWORD",
+    },
   },
   httpProxy: {
-    doc: 'HTTP Proxy URL',
+    doc: "HTTP Proxy URL",
     format: String,
     nullable: true,
     default: null,
-    env: 'HTTP_PROXY'
+    env: "HTTP_PROXY",
   },
   isSecureContextEnabled: {
-    doc: 'Enable Secure Context',
+    doc: "Enable Secure Context",
     format: Boolean,
     default: isProduction,
-    env: 'ENABLE_SECURE_CONTEXT'
+    env: "ENABLE_SECURE_CONTEXT",
   },
   isMetricsEnabled: {
-    doc: 'Enable metrics reporting',
+    doc: "Enable metrics reporting",
     format: Boolean,
     default: isProduction,
-    env: 'ENABLE_METRICS'
+    env: "ENABLE_METRICS",
   },
   tracing: {
     header: {
-      doc: 'CDP tracing header name',
+      doc: "CDP tracing header name",
       format: String,
-      default: 'x-cdp-request-id',
-      env: 'TRACING_HEADER'
-    }
-  }
-}
+      default: "x-cdp-request-id",
+      env: "TRACING_HEADER",
+    },
+  },
+};
 
-export {
-  serverConfig
-}
+export { serverConfig };

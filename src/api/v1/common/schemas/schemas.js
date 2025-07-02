@@ -1,5 +1,3 @@
-import { cph } from './cph.js'
+import { cph } from "./cph.js";
 
-export {
-  cph
-}
+export { cph };

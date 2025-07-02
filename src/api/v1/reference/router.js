@@ -1,6 +1,6 @@
-import { tbRoutes } from './endpoints/tb.js'
-import { allocationRoutes } from './endpoints/allocation.js'
-import { finishingUnitRoutes } from './endpoints/finishing-unit.js'
+import { tbRoutes } from "./endpoints/tb.js";
+import { allocationRoutes } from "./endpoints/allocation.js";
+import { finishingUnitRoutes } from "./endpoints/finishing-unit.js";
 
 /**
  * All reference routes - combines all reference endpoint routes
@@ -8,7 +8,7 @@ import { finishingUnitRoutes } from './endpoints/finishing-unit.js'
 const referenceRoutes = [
   ...tbRoutes,
   ...allocationRoutes,
-  ...finishingUnitRoutes
-]
+  ...finishingUnitRoutes,
+];
 
-export { referenceRoutes }
+export { referenceRoutes };

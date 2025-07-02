@@ -7,8 +7,8 @@ class AllocationSkipReasonsService {
    *
    * @param {Object} repository - Allocation skip reasons repository instance
    */
-  constructor (repository) {
-    this.repository = repository
+  constructor(repository) {
+    this.repository = repository;
   }
 
   /**
@@ -17,23 +17,21 @@ class AllocationSkipReasonsService {
    * @returns {Promise<Array<Object>>} List of allocation skip reason options
    * @throws {Error} When repository operations fail
    */
-  async getOptions () {
+  async getOptions() {
     try {
-      const options = await this.repository.getAll()
+      const options = await this.repository.getAll();
 
       if (!options || !Array.isArray(options)) {
-        return []
+        return [];
       }
 
-      return options.map(option => ({
-        reason: option.reason
-      }))
+      return options.map((option) => ({
+        reason: option.reason,
+      }));
     } catch (error) {
-      throw new Error('Failed to retrieve allocation skip reason options')
+      throw new Error("Failed to retrieve allocation skip reason options");
     }
   }
 }
 
-export {
-  AllocationSkipReasonsService
-}
+export { AllocationSkipReasonsService };

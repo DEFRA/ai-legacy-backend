@@ -1,16 +1,16 @@
-import process from 'node:process'
+import process from "node:process";
 
-import { startServer } from './api/server.js'
-import { createLogger } from './common/logging/logger.js'
-import { setupProxy } from './common/proxy/setup-proxy.js'
+import { startServer } from "./api/server.js";
+import { createLogger } from "./common/logging/logger.js";
+import { setupProxy } from "./common/proxy/setup-proxy.js";
 
-setupProxy()
+setupProxy();
 
-await startServer()
+await startServer();
 
-process.on('unhandledRejection', (error) => {
-  const logger = createLogger()
-  logger.info('Unhandled rejection')
-  logger.error(error)
-  process.exitCode = 1
-})
+process.on("unhandledRejection", (error) => {
+  const logger = createLogger();
+  logger.info("Unhandled rejection");
+  logger.error(error);
+  process.exitCode = 1;
+});

@@ -1,42 +1,42 @@
-import hapi from '@hapi/hapi'
-import path from 'path'
+import hapi from "@hapi/hapi";
+import path from "path";
 
-import { createLogger } from '../common/logging/logger.js'
-import { config } from '../config/index.js'
-import { pulse } from './plugins/pulse.js'
-import { requestLogger } from './plugins/request-logger.js'
-import { requestTracing } from './plugins/request-tracing.js'
-import { probes as probesRouter } from './probes/probes.js'
-import { tbcmsRouter } from './v1/router.js'
-import { swaggerPlugin } from './plugins/swagger.js'
+import { createLogger } from "../common/logging/logger.js";
+import { config } from "../config/index.js";
+import { pulse } from "./plugins/pulse.js";
+import { requestLogger } from "./plugins/request-logger.js";
+import { requestTracing } from "./plugins/request-tracing.js";
+import { probes as probesRouter } from "./probes/probes.js";
+import { tbcmsRouter } from "./v1/router.js";
+import { swaggerPlugin } from "./plugins/swagger.js";
 
-async function createServer () {
+async function createServer() {
   const server = hapi.server({
-    port: config.get('port'),
+    port: config.get("port"),
     routes: {
       validate: {
         options: {
-          abortEarly: false
-        }
+          abortEarly: false,
+        },
       },
       files: {
-        relativeTo: path.resolve(config.get('root'), 'public')
+        relativeTo: path.resolve(config.get("root"), "public"),
       },
       security: {
         hsts: {
           maxAge: 31536000,
           includeSubDomains: true,
-          preload: false
+          preload: false,
         },
-        xss: 'enabled',
+        xss: "enabled",
         noSniff: true,
-        xframe: true
-      }
+        xframe: true,
+      },
     },
     router: {
-      stripTrailingSlash: true
-    }
-  })
+      stripTrailingSlash: true,
+    },
+  });
 
   await server.register([
     requestLogger,
@@ -44,33 +44,31 @@ async function createServer () {
     pulse,
     swaggerPlugin,
     probesRouter,
-    tbcmsRouter
-  ])
+    tbcmsRouter,
+  ]);
 
-  return server
+  return server;
 }
 
-async function startServer () {
-  let server
+async function startServer() {
+  let server;
 
   try {
-    server = await createServer()
+    server = await createServer();
 
-    await server.start()
+    await server.start();
 
-    server.logger.info('Server started successfully')
+    server.logger.info("Server started successfully");
     server.logger.info(
-      `Access your backend on http://localhost:${config.get('port')}`
-    )
+      `Access your backend on http://localhost:${config.get("port")}`,
+    );
   } catch (error) {
-    const logger = createLogger()
-    logger.info('Server failed to start :(')
-    logger.error(error)
+    const logger = createLogger();
+    logger.info("Server failed to start :(");
+    logger.error(error);
   }
 
-  return server
+  return server;
 }
 
-export {
-  startServer
-}
+export { startServer };

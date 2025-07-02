@@ -1,10 +1,10 @@
-import Boom from '@hapi/boom'
+import Boom from "@hapi/boom";
 
-import { mongoClient } from '../../../../common/database/mongo.js'
-import { TbStatusService } from '../services/tb-status.js'
-import { TbResultService } from '../services/tb-result.js'
-import { MongoTbStatusRepository } from '../../../../data/mongo/repositories/tb-status.js'
-import { MongoTbResultRepository } from '../../../../data/mongo/repositories/tb-result.js'
+import { mongoClient } from "../../../../common/database/mongo.js";
+import { TbStatusService } from "../services/tb-status.js";
+import { TbResultService } from "../services/tb-result.js";
+import { MongoTbStatusRepository } from "../../../../data/mongo/repositories/tb-status.js";
+import { MongoTbResultRepository } from "../../../../data/mongo/repositories/tb-result.js";
 
 /**
  * Handler for GET /api/v1/reference/tb-status
@@ -14,22 +14,22 @@ import { MongoTbResultRepository } from '../../../../data/mongo/repositories/tb-
  * @param {import('@hapi/hapi').ResponseToolkit} h - Hapi response toolkit
  * @returns {import('@hapi/hapi').ResponseObject} Response with TB status data
  */
-async function getTbStatuses (request, h) {
+async function getTbStatuses(request, h) {
   try {
-    const repository = new MongoTbStatusRepository(mongoClient)
-    const tbStatusService = new TbStatusService(repository)
+    const repository = new MongoTbStatusRepository(mongoClient);
+    const tbStatusService = new TbStatusService(repository);
 
-    const tbStatuses = await tbStatusService.getOptions(request.query.region)
+    const tbStatuses = await tbStatusService.getOptions(request.query.region);
 
     return h
       .response({
-        data: tbStatuses
+        data: tbStatuses,
       })
-      .code(200)
+      .code(200);
   } catch (error) {
-    request.logger.error('Error fetching TB statuses:', error)
+    request.logger.error("Error fetching TB statuses:", error);
 
-    throw Boom.internal(`Failed to fetch TB statuses: ${error.message}`)
+    throw Boom.internal(`Failed to fetch TB statuses: ${error.message}`);
   }
 }
 
@@ -41,22 +41,22 @@ async function getTbStatuses (request, h) {
  * @param {import('@hapi/hapi').ResponseToolkit} h - Hapi response toolkit
  * @returns {import('@hapi/hapi').ResponseObject} Response with TB result data
  */
-async function getTbResults (request, h) {
+async function getTbResults(request, h) {
   try {
-    const repository = new MongoTbResultRepository(mongoClient)
-    const tbResultService = new TbResultService(repository)
+    const repository = new MongoTbResultRepository(mongoClient);
+    const tbResultService = new TbResultService(repository);
 
-    const tbResults = await tbResultService.getOptions()
+    const tbResults = await tbResultService.getOptions();
 
     return h
       .response({
-        data: tbResults
+        data: tbResults,
       })
-      .code(200)
+      .code(200);
   } catch (error) {
-    request.logger.error('Error fetching TB results:', error)
+    request.logger.error("Error fetching TB results:", error);
 
-    throw Boom.internal(`Failed to fetch TB results: ${error.message}`)
+    throw Boom.internal(`Failed to fetch TB results: ${error.message}`);
   }
 }
 
@@ -65,23 +65,23 @@ async function getTbResults (request, h) {
  */
 const tbRoutes = [
   {
-    method: 'GET',
-    path: '/api/v1/reference/tb-status',
+    method: "GET",
+    path: "/api/v1/reference/tb-status",
     handler: getTbStatuses,
     options: {
-      description: 'Get all TB status options',
-      tags: ['api', 'reference', 'tb']
-    }
+      description: "Get all TB status options",
+      tags: ["api", "reference", "tb"],
+    },
   },
   {
-    method: 'GET',
-    path: '/api/v1/reference/tb-result',
+    method: "GET",
+    path: "/api/v1/reference/tb-result",
     handler: getTbResults,
     options: {
-      description: 'Get all TB result options',
-      tags: ['api', 'reference', 'tb']
-    }
-  }
-]
+      description: "Get all TB result options",
+      tags: ["api", "reference", "tb"],
+    },
+  },
+];
 
-export { tbRoutes }
+export { tbRoutes };

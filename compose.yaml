@@ -5,10 +5,10 @@ services:
     image: ai-legacy-backend-development
     container_name: ai-legacy-backend-development
     ports:
-      - '3002:3002'
-      - '9232:9232'
+      - "3002:3002"
+      - "9232:9232"
     links:
-      - 'mongodb:mongodb'
+      - "mongodb:mongodb"
     depends_on:
       mongodb:
         condition: service_started
@@ -38,7 +38,7 @@ services:
   mongodb:
     image: mongo:6.0.13
     ports:
-      - '27017:27017'
+      - "27017:27017"
     volumes:
       - mongodb-data:/data
       - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
@@ -51,7 +51,7 @@ services:
     image: postgres:15-alpine
     container_name: ai-legacy-backend-postgres
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
       POSTGRES_DB: tbcms
       POSTGRES_USER: postgres
@@ -88,4 +88,3 @@ networks:
   ai-legacy-backend:
     name: ai-legacy-backend
     driver: bridge
-

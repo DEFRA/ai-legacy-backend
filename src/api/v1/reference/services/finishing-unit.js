@@ -7,8 +7,8 @@ class FinishingUnitService {
    *
    * @param {Object} repository - Finishing unit repository instance
    */
-  constructor (repository) {
-    this.repository = repository
+  constructor(repository) {
+    this.repository = repository;
   }
 
   /**
@@ -18,26 +18,24 @@ class FinishingUnitService {
    * @returns {Promise<Array<Object>>} List of finishing unit options
    * @throws {Error} When repository operations fail
    */
-  async getOptions (region = null) {
+  async getOptions(region = null) {
     try {
-      let options = []
+      let options = [];
 
       if (region) {
-        options = await this.repository.getByRegion(region)
+        options = await this.repository.getByRegion(region);
       } else {
-        options = await this.repository.getAll()
+        options = await this.repository.getAll();
       }
 
-      return options.map(option => ({
+      return options.map((option) => ({
         unitType: option.unitType,
-        regions: option.validRegions || []
-      }))
+        regions: option.validRegions || [],
+      }));
     } catch (error) {
-      throw new Error('Failed to retrieve finishing unit options')
+      throw new Error("Failed to retrieve finishing unit options");
     }
   }
 }
 
-export {
-  FinishingUnitService
-}
+export { FinishingUnitService };

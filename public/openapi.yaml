@@ -6,7 +6,7 @@ info:
     Comprehensive REST API for the TB Case Management System.
     Provides endpoints for managing TB case data, reference information, 
     and holding management operations.
-    
+
     This API enables:
     - Management of holding information including addresses and contact details
     - Access to TB-related reference data (statuses, results, allocation methods)
@@ -47,12 +47,12 @@ paths:
       tags:
         - health
       responses:
-        '200':
+        "200":
           description: Service is healthy
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HealthResponse'
+                $ref: "#/components/schemas/HealthResponse"
               examples:
                 success:
                   summary: Successful health check
@@ -79,12 +79,12 @@ paths:
             minLength: 1
           example: "England"
       responses:
-        '200':
+        "200":
           description: Successfully retrieved TB status options
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TbStatusResponse'
+                $ref: "#/components/schemas/TbStatusResponse"
               examples:
                 success:
                   summary: Successful retrieval of TB statuses
@@ -96,8 +96,8 @@ paths:
                       - code: "02"
                         description: "Routine surveillance"
                         regions: ["Scotland", "Northern Ireland"]
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 
   /api/v1/reference/tb-result:
     get:
@@ -108,12 +108,12 @@ paths:
         - reference
         - tb
       responses:
-        '200':
+        "200":
           description: Successfully retrieved TB result options
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TbResultResponse'
+                $ref: "#/components/schemas/TbResultResponse"
               examples:
                 success:
                   summary: Successful retrieval of TB results
@@ -121,12 +121,14 @@ paths:
                     data:
                       - code: "NEG"
                         description: "Negative"
-                        regions: ["England", "Wales", "Scotland", "Northern Ireland"]
+                        regions:
+                          ["England", "Wales", "Scotland", "Northern Ireland"]
                       - code: "POS"
                         description: "Positive"
-                        regions: ["England", "Wales", "Scotland", "Northern Ireland"]
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                        regions:
+                          ["England", "Wales", "Scotland", "Northern Ireland"]
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 
   /api/v1/reference/allocation-booking-method:
     get:
@@ -137,12 +139,12 @@ paths:
         - reference
         - allocation
       responses:
-        '200':
+        "200":
           description: Successfully retrieved allocation booking method options
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AllocationBookingMethodResponse'
+                $ref: "#/components/schemas/AllocationBookingMethodResponse"
               examples:
                 success:
                   summary: Successful retrieval of allocation booking methods
@@ -150,12 +152,14 @@ paths:
                     data:
                       - code: "ONLINE"
                         description: "Online booking system"
-                        regions: ["England", "Wales", "Scotland", "Northern Ireland"]
+                        regions:
+                          ["England", "Wales", "Scotland", "Northern Ireland"]
                       - code: "PHONE"
                         description: "Telephone booking"
-                        regions: ["England", "Wales", "Scotland", "Northern Ireland"]
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                        regions:
+                          ["England", "Wales", "Scotland", "Northern Ireland"]
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 
   /api/v1/reference/allocation-skip-reason:
     get:
@@ -166,12 +170,12 @@ paths:
         - reference
         - allocation
       responses:
-        '200':
+        "200":
           description: Successfully retrieved allocation skip reason options
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AllocationSkipReasonResponse'
+                $ref: "#/components/schemas/AllocationSkipReasonResponse"
               examples:
                 success:
                   summary: Successful retrieval of allocation skip reasons
@@ -179,12 +183,14 @@ paths:
                     data:
                       - code: "WEATHER"
                         description: "Adverse weather conditions"
-                        regions: ["England", "Wales", "Scotland", "Northern Ireland"]
+                        regions:
+                          ["England", "Wales", "Scotland", "Northern Ireland"]
                       - code: "ACCESS"
                         description: "Access issues to holding"
-                        regions: ["England", "Wales", "Scotland", "Northern Ireland"]
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                        regions:
+                          ["England", "Wales", "Scotland", "Northern Ireland"]
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 
   /api/v1/reference/finishing-unit:
     get:
@@ -206,12 +212,12 @@ paths:
             minLength: 1
           example: "England"
       responses:
-        '200':
+        "200":
           description: Successfully retrieved finishing unit options
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FinishingUnitResponse'
+                $ref: "#/components/schemas/FinishingUnitResponse"
               examples:
                 success:
                   summary: Successful retrieval of finishing units
@@ -223,8 +229,8 @@ paths:
                       - code: "COOP01"
                         description: "Cooperative Abattoir - Wales"
                         regions: ["Wales"]
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 
   /api/v1/holding:
     post:
@@ -240,7 +246,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateHoldingRequest'
+              $ref: "#/components/schemas/CreateHoldingRequest"
             examples:
               farm_example:
                 summary: Example farm holding
@@ -265,12 +271,12 @@ paths:
                       - type: "email"
                         value: "farmer@greenmeadows.co.uk"
       responses:
-        '201':
+        "201":
           description: Holding created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateHoldingResponse'
+                $ref: "#/components/schemas/CreateHoldingResponse"
               examples:
                 success:
                   summary: Successful holding creation
@@ -301,14 +307,14 @@ paths:
                         incidents: []
                         createdAt: "2023-09-17T10:30:00.000Z"
                         updatedAt: "2023-09-17T10:30:00.000Z"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '409':
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "409":
           description: Conflict - CPH already exists
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DuplicateCPHError'
+                $ref: "#/components/schemas/DuplicateCPHError"
               examples:
                 duplicate_cph:
                   summary: Duplicate CPH error
@@ -316,8 +322,8 @@ paths:
                     error: "Conflict"
                     message: "A holding with CPH 12/345/6789 already exists"
                     statusCode: 409
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 
   /api/v1/holding/{cph}:
     get:
@@ -334,15 +340,15 @@ paths:
           required: true
           description: County Parish Holding number in format XX/XXX/XXXX
           schema:
-            $ref: '#/components/schemas/CPH'
+            $ref: "#/components/schemas/CPH"
           example: "12/345/6789"
       responses:
-        '200':
+        "200":
           description: Successfully retrieved holding
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetHoldingResponse'
+                $ref: "#/components/schemas/GetHoldingResponse"
               examples:
                 success:
                   summary: Successful holding retrieval
@@ -373,14 +379,14 @@ paths:
                         incidents: []
                         createdAt: "2023-09-17T10:30:00.000Z"
                         updatedAt: "2023-09-17T10:30:00.000Z"
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '404':
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
           description: Holding not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NotFoundError'
+                $ref: "#/components/schemas/NotFoundError"
               examples:
                 not_found:
                   summary: Holding not found
@@ -388,15 +394,15 @@ paths:
                     error: "Not Found"
                     message: "Holding with CPH 12/345/6789 not found"
                     statusCode: 404
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 
 components:
   schemas:
     # Common Schemas
     CPH:
       type: string
-      pattern: '^[0-9]{2}/[0-9]{3}/[0-9]{4}$'
+      pattern: "^[0-9]{2}/[0-9]{3}/[0-9]{4}$"
       description: County Parish Holding number in format XX/XXX/XXXX
       example: "12/345/6789"
 
@@ -444,7 +450,7 @@ components:
           type: array
           description: List of TB status options
           items:
-            $ref: '#/components/schemas/ReferenceOption'
+            $ref: "#/components/schemas/ReferenceOption"
 
     TbResultResponse:
       type: object
@@ -455,7 +461,7 @@ components:
           type: array
           description: List of TB result options
           items:
-            $ref: '#/components/schemas/ReferenceOption'
+            $ref: "#/components/schemas/ReferenceOption"
 
     AllocationBookingMethodResponse:
       type: object
@@ -466,7 +472,7 @@ components:
           type: array
           description: List of allocation booking method options
           items:
-            $ref: '#/components/schemas/ReferenceOption'
+            $ref: "#/components/schemas/ReferenceOption"
 
     AllocationSkipReasonResponse:
       type: object
@@ -477,7 +483,7 @@ components:
           type: array
           description: List of allocation skip reason options
           items:
-            $ref: '#/components/schemas/ReferenceOption'
+            $ref: "#/components/schemas/ReferenceOption"
 
     FinishingUnitResponse:
       type: object
@@ -488,7 +494,7 @@ components:
           type: array
           description: List of finishing unit options
           items:
-            $ref: '#/components/schemas/ReferenceOption'
+            $ref: "#/components/schemas/ReferenceOption"
 
     # Holding Schemas
     Address:
@@ -554,7 +560,7 @@ components:
       properties:
         type:
           type: string
-          enum: ['landline', 'mobile', 'email']
+          enum: ["landline", "mobile", "email"]
           description: Type of contact method
         value:
           type: string
@@ -569,7 +575,7 @@ components:
         - address
       properties:
         cph:
-          $ref: '#/components/schemas/CPH'
+          $ref: "#/components/schemas/CPH"
         name:
           type: string
           description: Name of the holding
@@ -581,14 +587,14 @@ components:
           nullable: true
           maxLength: 1000
         address:
-          $ref: '#/components/schemas/Address'
+          $ref: "#/components/schemas/Address"
         geolocation:
-          $ref: '#/components/schemas/Geolocation'
+          $ref: "#/components/schemas/Geolocation"
         contacts:
           type: array
           description: Contact information for the holding
           items:
-            $ref: '#/components/schemas/Contact'
+            $ref: "#/components/schemas/Contact"
           default: []
 
     Holding:
@@ -604,7 +610,7 @@ components:
           description: Unique identifier for the holding
           format: uuid
         details:
-          $ref: '#/components/schemas/HoldingDetails'
+          $ref: "#/components/schemas/HoldingDetails"
         incidents:
           type: array
           description: List of incidents associated with the holding
@@ -627,7 +633,7 @@ components:
         - details
       properties:
         details:
-          $ref: '#/components/schemas/HoldingDetails'
+          $ref: "#/components/schemas/HoldingDetails"
 
     # Response Schemas
     CreateHoldingResponse:
@@ -646,7 +652,7 @@ components:
             - holding
           properties:
             holding:
-              $ref: '#/components/schemas/Holding'
+              $ref: "#/components/schemas/Holding"
 
     GetHoldingResponse:
       type: object
@@ -664,7 +670,7 @@ components:
             - holding
           properties:
             holding:
-              $ref: '#/components/schemas/Holding'
+              $ref: "#/components/schemas/Holding"
 
     # Error Schemas
     ErrorResponse:
@@ -686,7 +692,7 @@ components:
 
     ValidationError:
       allOf:
-        - $ref: '#/components/schemas/ErrorResponse'
+        - $ref: "#/components/schemas/ErrorResponse"
         - type: object
           properties:
             validation:
@@ -704,7 +710,7 @@ components:
 
     DuplicateCPHError:
       allOf:
-        - $ref: '#/components/schemas/ErrorResponse'
+        - $ref: "#/components/schemas/ErrorResponse"
         - type: object
           properties:
             error:
@@ -716,7 +722,7 @@ components:
 
     NotFoundError:
       allOf:
-        - $ref: '#/components/schemas/ErrorResponse'
+        - $ref: "#/components/schemas/ErrorResponse"
         - type: object
           properties:
             error:
@@ -732,7 +738,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ValidationError'
+            $ref: "#/components/schemas/ValidationError"
           examples:
             validation_error:
               summary: Validation error example
@@ -749,7 +755,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: "#/components/schemas/ErrorResponse"
           examples:
             internal_error:
               summary: Internal server error

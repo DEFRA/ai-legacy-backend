@@ -7,6 +7,7 @@ This document provides GitHub Copilot with comprehensive guidelines for contribu
 The AI Legacy Backend is a **Node.js REST API** built with **Hapi.js** framework, implementing a **Repository Pattern** with support for both **MongoDB** and **PostgreSQL** databases. The project follows **Domain-Driven Design** principles with clear separation of concerns.
 
 ### Key Technologies
+
 - **Runtime**: Node.js >= 22, ES Modules
 - **Framework**: Hapi.js v21+
 - **Databases**: MongoDB (primary), PostgreSQL (legacy)
@@ -25,34 +26,34 @@ Follow the established repository pattern for all data access:
 // Repository Structure
 class MongoEntityRepository {
   constructor(db) {
-    this.collection = db.collection('collectionName')
+    this.collection = db.collection("collectionName");
   }
 
   async create(entity) {
     try {
-      const entityModel = new EntityModel(entity)
-      const result = await this.collection.insertOne(entityModel)
+      const entityModel = new EntityModel(entity);
+      const result = await this.collection.insertOne(entityModel);
       return EntityModel.fromDocument({
         ...entityModel,
-        _id: result.insertedId
-      })
+        _id: result.insertedId,
+      });
     } catch (error) {
       // Handle domain-specific errors
       if (error.code === 11000) {
-        throw new DomainSpecificError(entity.uniqueField)
+        throw new DomainSpecificError(entity.uniqueField);
       }
-      throw error
+      throw error;
     }
   }
 
   async findById(id) {
-    const document = await this.collection.findOne({ _id: id })
-    return document ? EntityModel.fromDocument(document) : null
+    const document = await this.collection.findOne({ _id: id });
+    return document ? EntityModel.fromDocument(document) : null;
   }
 
   async getAll() {
-    const documents = await this.collection.find({}).toArray()
-    return documents
+    const documents = await this.collection.find({}).toArray();
+    return documents;
   }
 }
 ```
@@ -64,24 +65,24 @@ Implement business logic in service classes:
 ```javascript
 class EntityService {
   constructor(entityRepository) {
-    this.entityRepository = entityRepository
+    this.entityRepository = entityRepository;
   }
 
   async createEntity(details) {
-    const entity = await this.entityRepository.create({ details })
+    const entity = await this.entityRepository.create({ details });
     return {
-      details: entity.details
-    }
+      details: entity.details,
+    };
   }
 
   async getEntityById(id) {
-    const entity = await this.entityRepository.findById(id)
+    const entity = await this.entityRepository.findById(id);
     if (!entity) {
-      return null
+      return null;
     }
     return {
-      details: entity.details
-    }
+      details: entity.details,
+    };
   }
 }
 ```
@@ -91,11 +92,11 @@ class EntityService {
 Follow the established endpoint pattern:
 
 ```javascript
-import Boom from '@hapi/boom'
-import { mongoClient } from '../../../../common/database/mongo.js'
-import { MongoEntityRepository } from '../../../../data/mongo/repositories/entity.js'
-import { EntityService } from '../services/entity.js'
-import { createEntitySchema, getEntitySchema } from '../schemas/entity.js'
+import Boom from "@hapi/boom";
+import { mongoClient } from "../../../../common/database/mongo.js";
+import { MongoEntityRepository } from "../../../../data/mongo/repositories/entity.js";
+import { EntityService } from "../services/entity.js";
+import { createEntitySchema, getEntitySchema } from "../schemas/entity.js";
 
 /**
  * Handler for POST /api/v1/entity
@@ -107,47 +108,51 @@ import { createEntitySchema, getEntitySchema } from '../schemas/entity.js'
  */
 async function createEntity(request, h) {
   try {
-    const repo = new MongoEntityRepository(mongoClient)
-    const service = new EntityService(repo)
+    const repo = new MongoEntityRepository(mongoClient);
+    const service = new EntityService(repo);
 
-    const entity = await service.createEntity(request.payload.details)
+    const entity = await service.createEntity(request.payload.details);
 
-    return h.response({
-      message: 'Entity created successfully',
-      data: { entity }
-    }).code(201)
+    return h
+      .response({
+        message: "Entity created successfully",
+        data: { entity },
+      })
+      .code(201);
   } catch (error) {
     // Handle domain-specific errors
     if (error instanceof DomainSpecificError) {
-      return h.response({
-        error: 'Conflict',
-        message: error.message,
-        statusCode: error.statusCode
-      }).code(error.statusCode)
+      return h
+        .response({
+          error: "Conflict",
+          message: error.message,
+          statusCode: error.statusCode,
+        })
+        .code(error.statusCode);
     }
 
-    request.logger.error('Error creating entity:', error)
-    throw Boom.internal(`Failed to create entity: ${error.message}`)
+    request.logger.error("Error creating entity:", error);
+    throw Boom.internal(`Failed to create entity: ${error.message}`);
   }
 }
 
 const entityRoutes = [
   {
-    method: 'POST',
-    path: '/api/v1/entity',
+    method: "POST",
+    path: "/api/v1/entity",
     handler: createEntity,
     options: {
-      description: 'Create a new entity',
-      notes: 'Creates a new entity with validation',
-      tags: ['api', 'entity'],
+      description: "Create a new entity",
+      notes: "Creates a new entity with validation",
+      tags: ["api", "entity"],
       validate: {
-        payload: createEntitySchema
-      }
-    }
-  }
-]
+        payload: createEntitySchema,
+      },
+    },
+  },
+];
 
-export { entityRoutes }
+export { entityRoutes };
 ```
 
 ## Folder Structure Guidelines
@@ -188,13 +193,16 @@ src/
 ## Coding Standards
 
 ### 1. ES Modules
+
 Always use ES module syntax:
+
 ```javascript
-import { Something } from './module.js'
-export { Something }
+import { Something } from "./module.js";
+export { Something };
 ```
 
 ### 2. Error Handling
+
 - Use **Boom** for HTTP errors in endpoints
 - Log errors with **request.logger**
 - Create domain-specific error classes
@@ -208,22 +216,26 @@ export { Something }
 ```
 
 ### 3. Validation Schemas
+
 Use **Joi** for all input validation:
+
 ```javascript
-import Joi from 'joi'
-import { cph } from '../../common/schemas/schemas.js'
+import Joi from "joi";
+import { cph } from "../../common/schemas/schemas.js";
 
 const createEntitySchema = Joi.object({
   details: Joi.object({
     cph: cph.required(),
     name: Joi.string().min(1).max(255).required(),
     // ... other fields
-  }).required()
-}).required()
+  }).required(),
+}).required();
 ```
 
 ### 4. JSDoc Documentation
+
 Document all functions with proper JSDoc:
+
 ```javascript
 /**
  * Handler for GET /api/v1/entity/{id}
@@ -236,21 +248,23 @@ Document all functions with proper JSDoc:
 ```
 
 ### 5. Database Models
+
 Create models with proper constructors and static methods:
+
 ```javascript
 class EntityModel {
   constructor(data = {}) {
-    this._id = data._id || data.id || null
-    this.details = data.details ? new DetailsModel(data.details) : null
-    this.updatedAt = new Date()
-    
+    this._id = data._id || data.id || null;
+    this.details = data.details ? new DetailsModel(data.details) : null;
+    this.updatedAt = new Date();
+
     if (!this._id) {
-      this.createdAt = data.createdAt || new Date()
+      this.createdAt = data.createdAt || new Date();
     }
   }
 
   static fromDocument(doc) {
-    return new EntityModel(doc)
+    return new EntityModel(doc);
   }
 }
 ```
@@ -258,36 +272,41 @@ class EntityModel {
 ## Testing Guidelines
 
 ### 1. Test Structure
+
 - Use **Vitest** for all tests
 - Follow naming convention: `*.test.js`
 - Place tests in `test/` directory
 - Mirror source structure in test folders
 
 ### 2. Test Categories
+
 - **Unit tests**: `test/unit/`
 - **Integration tests**: `test/integration/narrow/`
 
 ### 3. Mocking
-```javascript
-import { beforeEach, describe, expect, test, vi } from 'vitest'
 
-vi.mock('../../../src/common/logging/logger.js', () => ({
+```javascript
+import { beforeEach, describe, expect, test, vi } from "vitest";
+
+vi.mock("../../../src/common/logging/logger.js", () => ({
   createLogger: vi.fn().mockReturnValue({
     info: vi.fn(),
     warn: vi.fn(),
-    error: vi.fn()
-  })
-}))
+    error: vi.fn(),
+  }),
+}));
 ```
 
 ## API Design Principles
 
 ### 1. RESTful Endpoints
+
 - Use appropriate HTTP methods
 - Follow REST conventions
 - Return consistent response formats
 
 ### 2. Response Format
+
 ```javascript
 // Success responses
 {
@@ -304,6 +323,7 @@ vi.mock('../../../src/common/logging/logger.js', () => ({
 ```
 
 ### 3. Route Configuration
+
 ```javascript
 {
   method: 'GET',
@@ -323,12 +343,14 @@ vi.mock('../../../src/common/logging/logger.js', () => ({
 ## Database Guidelines
 
 ### 1. MongoDB Patterns
+
 - Use embedded documents for related data
 - Implement proper indexing
 - Handle duplicate key errors gracefully
 - Use ObjectId for primary keys
 
 ### 2. Connection Management
+
 ```javascript
 import { mongoClient } from '../../../../common/database/mongo.js'
 
@@ -339,6 +361,7 @@ constructor(db) {
 ```
 
 ### 3. Error Handling
+
 ```javascript
 } catch (error) {
   // Handle MongoDB duplicate key error
@@ -352,7 +375,9 @@ constructor(db) {
 ## Environment Configuration
 
 ### 1. Environment Variables
+
 Use **convict** for configuration management:
+
 ```javascript
 // In config files
 fieldName: {
@@ -364,6 +389,7 @@ fieldName: {
 ```
 
 ### 2. Docker Configuration
+
 - Default port: **3002**
 - Debug port: **9232**
 - MongoDB: **mongodb://mongodb:27017/**
@@ -372,11 +398,13 @@ fieldName: {
 ## Performance Guidelines
 
 ### 1. Database Queries
+
 - Use indexes for frequently queried fields
 - Implement pagination for large datasets
 - Use projection to limit returned fields
 
 ### 2. Error Logging
+
 - Log errors at appropriate levels
 - Include contextual information
 - Use structured logging
@@ -384,11 +412,13 @@ fieldName: {
 ## Security Considerations
 
 ### 1. Input Validation
+
 - Validate all inputs with Joi schemas
 - Sanitize user input
 - Use parameter validation for routes
 
 ### 2. Error Information
+
 - Don't expose internal details in error messages
 - Use generic error messages for production
 - Log detailed errors server-side
@@ -396,11 +426,13 @@ fieldName: {
 ## Code Quality
 
 ### 1. Linting
+
 - Use ESLint with neostandard configuration
 - Run `npm run test:lint` before commits
 - Fix linting issues with `npm run lint:fix`
 
 ### 2. Formatting
+
 - Use Prettier for code formatting
 - Run `npm run format` to format code
 - Check formatting with `npm run format:check`
@@ -408,38 +440,41 @@ fieldName: {
 ## Common Patterns to Follow
 
 ### 1. Reference Data Endpoints
+
 ```javascript
 async function getReferenceData(request, h) {
   try {
-    const repository = new MongoReferenceRepository(mongoClient)
-    const service = new ReferenceService(repository)
-    const data = await service.getOptions(request.query.filter)
-    
-    return h.response({ data }).code(200)
+    const repository = new MongoReferenceRepository(mongoClient);
+    const service = new ReferenceService(repository);
+    const data = await service.getOptions(request.query.filter);
+
+    return h.response({ data }).code(200);
   } catch (error) {
-    request.logger.error('Error fetching reference data:', error)
-    throw Boom.internal(`Failed to fetch reference data: ${error.message}`)
+    request.logger.error("Error fetching reference data:", error);
+    throw Boom.internal(`Failed to fetch reference data: ${error.message}`);
   }
 }
 ```
 
 ### 2. Domain Error Classes
+
 ```javascript
 class DomainSpecificError extends Error {
   constructor(field) {
-    super(`Duplicate ${field} already exists`)
-    this.name = 'DomainSpecificError'
-    this.statusCode = 409
+    super(`Duplicate ${field} already exists`);
+    this.name = "DomainSpecificError";
+    this.statusCode = 409;
   }
 }
 ```
 
 ### 3. Service Response Pattern
+
 ```javascript
 // Service methods should return formatted objects
 return {
-  details: entity.details
-}
+  details: entity.details,
+};
 
 // Not raw database documents
 ```
@@ -447,6 +482,7 @@ return {
 ## Migration Guidelines
 
 When adding new features:
+
 1. Create repository in `src/data/mongo/repositories/`
 2. Create service in `src/api/v1/domain/services/`
 3. Create schemas in `src/api/v1/domain/schemas/`

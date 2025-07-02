@@ -3,17 +3,15 @@
  * Based on the MongoDB ERD specification for TbResult collection
  */
 class MongoTbResultRepository {
-  constructor (db) {
-    this.collection = db.collection('tbResult')
+  constructor(db) {
+    this.collection = db.collection("tbResult");
   }
 
-  async getAll () {
-    const tbResults = await this.collection.find({}).toArray()
+  async getAll() {
+    const tbResults = await this.collection.find({}).toArray();
 
-    return tbResults
+    return tbResults;
   }
 }
 
-export {
-  MongoTbResultRepository
-}
+export { MongoTbResultRepository };

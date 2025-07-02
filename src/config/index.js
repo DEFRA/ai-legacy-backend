@@ -1,14 +1,14 @@
-import convict from 'convict'
-import convictFormatWithValidator from 'convict-format-with-validator'
+import convict from "convict";
+import convictFormatWithValidator from "convict-format-with-validator";
 
-import { serverConfig } from './server.js'
+import { serverConfig } from "./server.js";
 
-convict.addFormats(convictFormatWithValidator)
+convict.addFormats(convictFormatWithValidator);
 
 const config = convict({
-  ...serverConfig
-})
+  ...serverConfig,
+});
 
-config.validate({ allowed: 'strict' })
+config.validate({ allowed: "strict" });
 
-export { config }
+export { config };

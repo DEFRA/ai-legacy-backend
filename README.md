@@ -184,20 +184,25 @@ To access the interactive API documentation:
 If you encounter issues accessing the Swagger UI:
 
 1. **Ensure the backend is running:**
+
    ```bash
    docker-compose ps
    ```
+
    You should see the `ai-legacy-backend-development` container running.
 
 2. **Check for file mounting issues:**
    If the Swagger UI returns a 404 error, ensure the `public` directory is properly mounted in the Docker container:
+
    ```bash
    docker exec -it ai-legacy-backend-development ls -la public
    ```
+
    You should see `swagger-ui.html` and `openapi.yaml` files listed.
 
 3. **Restart the containers:**
    If files exist but the UI is still not accessible, try restarting the containers:
+
    ```bash
    docker-compose down && docker-compose up -d
    ```
@@ -212,9 +217,11 @@ If you encounter issues accessing the Swagger UI:
 The API provides several endpoint categories, all of which are fully documented in the Swagger UI. Some of the key endpoints include:
 
 #### Health Monitoring
+
 - `GET /health` - System health check
 
 #### Reference Data
+
 - `GET /api/v1/reference/tb-status` - TB status options (with optional region filtering)
 - `GET /api/v1/reference/tb-result` - TB test result options
 - `GET /api/v1/reference/allocation-booking-method` - Allocation booking methods
@@ -222,6 +229,7 @@ The API provides several endpoint categories, all of which are fully documented 
 - `GET /api/v1/reference/finishing-unit` - Finishing unit options (with optional region filtering)
 
 #### Holding Management
+
 - `POST /api/v1/holding` - Create a new holding
 - `GET /api/v1/holding/{cph}` - Get holding by CPH (County Parish Holding number)
 
@@ -247,17 +255,17 @@ If you require a write lock for Mongo you can acquire it via `server.locker` or 
 
 ```javascript
 async function doStuff(server) {
-  const lock = await server.locker.lock('unique-resource-name')
+  const lock = await server.locker.lock("unique-resource-name");
 
   if (!lock) {
     // Lock unavailable
-    return
+    return;
   }
 
   try {
     // do stuff
   } finally {
-    await lock.free()
+    await lock.free();
   }
 }
 ```
@@ -269,11 +277,11 @@ Note test coverage reports do not like that syntax.
 
 ```javascript
 async function doStuff(server) {
-  await using lock = await server.locker.lock('unique-resource-name')
+  await using lock = await server.locker.lock("unique-resource-name");
 
   if (!lock) {
     // Lock unavailable
-    return
+    return;
   }
 
   // do stuff
