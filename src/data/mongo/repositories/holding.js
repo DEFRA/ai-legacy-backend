@@ -36,6 +36,21 @@ class MongoHoldingRepository {
       throw error
     }
   }
+
+  /**
+   * Find a holding by CPH
+   * @param {string} cph - The County Parish Holding number
+   * @returns {Promise<Object|null>} - The holding document or null if not found
+   */
+  async findByCph (cph) {
+    const document = await this.collection.findOne({ 'details.cph': cph })
+    
+    if (!document) {
+      return null
+    }
+
+    return HoldingModel.fromDocument(document)
+  }
 }
 
 export {

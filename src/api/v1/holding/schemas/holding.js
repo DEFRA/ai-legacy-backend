@@ -28,6 +28,11 @@ const createHoldingSchema = Joi.object({
   }).required()
 }).required()
 
+const getHoldingByCphSchema = Joi.object({
+  cph: cph.required()
+})
+
 export {
-  createHoldingSchema
+  createHoldingSchema,
+  getHoldingByCphSchema
 }
