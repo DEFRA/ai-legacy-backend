@@ -15,7 +15,7 @@ const createHoldingSchema = Joi.object({
       postcode: Joi.string().required()
     }).required(),
     geolocation: Joi.object({
-      mapRef: Joi.string().allow('', null),
+      mapReference: Joi.string().allow('', null),
       easting: Joi.number().integer().min(0).max(999999).allow(null),
       northing: Joi.number().integer().min(0).max(999999).allow(null)
     }).allow(null),

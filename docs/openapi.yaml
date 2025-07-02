@@ -203,7 +203,7 @@ paths:
                   county: "Middlesex"
                   postcode: "AB12 3CD"
                 geolocation:
-                  mapRef: "TQ123456"
+                  mapReference: "TQ123456"
                   easting: 512345
                   northing: 187654
                 contacts:
@@ -412,7 +412,7 @@ components:
       type: object
       description: Geographic coordinates
       properties:
-        mapRef:
+        mapReference:
           type: string
           description: Map reference
           example: "TQ123456"
