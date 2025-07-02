@@ -53,14 +53,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/TbStatusOption'
-              example:
-                data:
-                  - code: "TB1"
-                    description: "Officially TB Free"
-                    regions: ["Midlands", "South West"]
-                  - code: "TB2"
-                    description: "TB Restricted"
-                    regions: ["Midlands"]
 
   /reference/tb-result:
     get:
@@ -82,14 +74,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/TbResultOption'
-              example:
-                data:
-                  - code: "NVL"
-                    description: "NVL"
-                  - code: "NVL - Neg"
-                    description: "NVL - Neg"
-                  - code: "VL - Pos"
-                    description: "VL - Pos"
 
   /reference/allocation-booking-method:
     get:
@@ -111,11 +95,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/AllocationBookingMethodOption'
-              example:
-                data:
-                  - method: "Phone"
-                  - method: "Email"
-                  - method: "Online Portal"
 
   /reference/allocation-skip-reason:
     get:
@@ -137,11 +116,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/AllocationSkipReasonOption'
-              example:
-                data:
-                  - reason: "Declined"
-                  - reason: "Not Necessary"
-                  - reason: "N/A High Risk"
 
   /reference/finishing-unit:
     get:
@@ -171,12 +145,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/FinishingUnitOption'
-              example:
-                data:
-                  - unitType: "Grazing AFU"
-                    regions: ["midlands", "north", "south_east", "south_west"]
-                  - unitType: "Non-Grazing AFU"
-                    regions: ["midlands", "north", "south_east", "south_west", "wales"]
 
   /holding:
     post:
@@ -191,26 +159,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateHoldingRequest'
-            example:
-              details:
-                cph: "12345678901"
-                name: "Green Acres Farm"
-                description: "Dairy farm in the countryside"
-                address:
-                  street: "123 Farm Lane"
-                  locality: "Little Village"
-                  town: "Markettown"
-                  county: "Middlesex"
-                  postcode: "AB12 3CD"
-                geolocation:
-                  mapReference: "TQ123456"
-                  easting: 512345
-                  northing: 187654
-                contacts:
-                  - type: "landline"
-                    value: "01234 567890"
-                  - type: "mobile"
-                    value: "07700 123456"
       responses:
         '201':
           description: Holding created successfully
@@ -248,22 +196,22 @@ paths:
         '500':
           description: Internal server error
 
-  /holding/{id}:
+  /holding/{cph}:
     get:
       tags:
         - holding
-      summary: Get holding by ID
-      description: Retrieve a specific holding by its MongoDB ObjectId
-      operationId: getHoldingById
+      summary: Get holding by CPH
+      description: Retrieve a specific holding by its County Parish Holding number
+      operationId: getHoldingByCph
       parameters:
-        - name: id
+        - name: cph
           in: path
           required: true
-          description: Holding ObjectId
+          description: County Parish Holding number (format XX/XXX/XXXX)
           schema:
             type: string
-            pattern: '^[0-9a-fA-F]{24}$'
-            example: "507f1f77bcf86cd799439011"
+            pattern: '^[0-9]{2}\/[0-9]{3}\/[0-9]{4}$'
+            example: "12/345/6789"
       responses:
         '200':
           description: Successful response with holding data
@@ -272,10 +220,46 @@ paths:
               schema:
                 type: object
                 properties:
+                  message:
+                    type: string
+                    example: "Holding retrieved successfully"
                   data:
-                    $ref: '#/components/schemas/HoldingResponse'
+                    type: object
+                    properties:
+                      holding:
+                        $ref: '#/components/schemas/HoldingResponse'
+        '400':
+          description: Invalid CPH format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 400
+                  error:
+                    type: string
+                    example: "Bad Request"
+                  message:
+                    type: string
+                    example: "Invalid request params input"
         '404':
           description: Holding not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Not Found"
+                  message:
+                    type: string
+                    example: "Holding with CPH 12/345/6789 not found"
+                  statusCode:
+                    type: integer
+                    example: 404
         '500':
           description: Internal server error
 
@@ -288,21 +272,25 @@ components:
         code:
           type: string
           description: TB status code
-          example: "TB1"
         description:
           type: string
           description: TB status description
-          example: "Officially TB Free"
         regions:
           type: array
           description: List of regions where this status is valid
           items:
             type: string
-          example: ["Midlands", "South West"]
       required:
         - code
         - description
         - regions
+      examples:
+        - code: "TB1"
+          description: "Officially TB Free"
+          regions: ["Midlands", "South West"]
+        - code: "TB2"
+          description: "TB Restricted"
+          regions: ["Wales"]
 
     TbResultOption:
       type: object
@@ -311,14 +299,17 @@ components:
         code:
           type: string
           description: TB result code
-          example: "NVL"
         description:
           type: string
           description: TB result description
-          example: "NVL"
       required:
         - code
         - description
+      examples:
+        - code: "NVL"
+          description: "NVL"
+        - code: "VL - Pos"
+          description: "VL - Pos"
 
     AllocationBookingMethodOption:
       type: object
@@ -327,9 +318,12 @@ components:
         method:
           type: string
           description: Allocation booking method
-          example: "Phone"
       required:
         - method
+      examples:
+        - method: "Phone"
+        - method: "Email"
+        - method: "Online Portal"
 
     AllocationSkipReasonOption:
       type: object
@@ -338,9 +332,12 @@ components:
         reason:
           type: string
           description: Allocation skip reason
-          example: "Declined"
       required:
         - reason
+      examples:
+        - reason: "Declined"
+        - reason: "Not Necessary"
+        - reason: "N/A High Risk"
 
     FinishingUnitOption:
       type: object
@@ -349,16 +346,19 @@ components:
         unitType:
           type: string
           description: Finishing unit type
-          example: "Grazing AFU"
         regions:
           type: array
           description: List of regions where this finishing unit type is valid
           items:
             type: string
-          example: ["midlands", "north", "south_east", "south_west"]
       required:
         - unitType
         - regions
+      examples:
+        - unitType: "Grazing AFU"
+          regions: ["midlands", "north", "south_east", "south_west"]
+        - unitType: "Non-Grazing AFU"
+          regions: ["wales", "scotland"]
 
     Address:
       type: object
@@ -389,6 +389,17 @@ components:
         - town
         - county
         - postcode
+      examples:
+        - street: "123 Farm Lane"
+          locality: "Little Village"
+          town: "Markettown"
+          county: "Middlesex"
+          postcode: "AB12 3CD"
+        - street: "45 Rural Road"
+          locality: "Countryside"
+          town: "Farmington"
+          county: "Somerset"
+          postcode: "TA1 2BC"
 
     Contact:
       type: object
@@ -435,9 +446,9 @@ components:
       properties:
         cph:
           type: string
-          description: County Parish Holding identifier (11 digits)
-          pattern: '^[0-9]{11}$'
-          example: "12345678901"
+          description: County Parish Holding identifier (format XX/XXX/XXXX)
+          pattern: '^[0-9]{2}\/[0-9]{3}\/[0-9]{4}$'
+          example: "12/345/6789"
         name:
           type: string
           description: Holding name
@@ -490,7 +501,9 @@ components:
           items:
             type: string
             pattern: '^[0-9a-fA-F]{24}$'
-          example: []
+          examples:
+            - []
+            - ["507f1f77bcf86cd799439012", "507f1f77bcf86cd799439013"]
       required:
         - id
         - details
@@ -507,7 +520,7 @@ components:
         cph:
           type: string
           description: County Parish Holding identifier
-          example: "12345678901"
+          example: "12/345/6789"
         name:
           type: string
           description: Holding name
