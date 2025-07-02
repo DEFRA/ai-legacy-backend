@@ -3,15 +3,15 @@
  * Based on the MongoDB ERD specification for AllocationSkipReasons collection
  */
 class MongoAllocationSkipReasonsRepository {
-  constructor(db) {
-    this.collection = db.collection("allocationSkipReasons");
+  constructor (db) {
+    this.collection = db.collection('allocationSkipReasons')
   }
 
-  async getAll() {
-    const allocationSkipReasons = await this.collection.find({}).toArray();
+  async getAll () {
+    const allocationSkipReasons = await this.collection.find({}).toArray()
 
-    return allocationSkipReasons;
+    return allocationSkipReasons
   }
 }
 
-export { MongoAllocationSkipReasonsRepository };
+export { MongoAllocationSkipReasonsRepository }

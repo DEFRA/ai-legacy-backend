@@ -1,8 +1,8 @@
-import { createLogger } from "../../common/logging/logger.js";
+import { createLogger } from '../../common/logging/logger.js'
 
-import hapiPulse from "hapi-pulse";
+import hapiPulse from 'hapi-pulse'
 
-const tenSeconds = 10 * 1000;
+const tenSeconds = 10 * 1000
 
 const pulse = {
   plugin: hapiPulse,
@@ -10,6 +10,6 @@ const pulse = {
     logger: createLogger(),
     timeout: tenSeconds,
   },
-};
+}
 
-export { pulse };
+export { pulse }

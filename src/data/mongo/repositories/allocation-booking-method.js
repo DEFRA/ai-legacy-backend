@@ -3,15 +3,15 @@
  * Based on the MongoDB ERD specification for AllocationBookingMethod collection
  */
 class MongoAllocationBookingMethodRepository {
-  constructor(db) {
-    this.collection = db.collection("allocationBookingMethod");
+  constructor (db) {
+    this.collection = db.collection('allocationBookingMethod')
   }
 
-  async getAll() {
-    const allocationBookingMethods = await this.collection.find({}).toArray();
+  async getAll () {
+    const allocationBookingMethods = await this.collection.find({}).toArray()
 
-    return allocationBookingMethods;
+    return allocationBookingMethods
   }
 }
 
-export { MongoAllocationBookingMethodRepository };
+export { MongoAllocationBookingMethodRepository }

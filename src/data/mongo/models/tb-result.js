@@ -1,12 +1,12 @@
 class TbResultOption {
-  constructor(data = {}) {
-    this.code = data.code;
-    this.description = data.description;
+  constructor (data = {}) {
+    this.code = data.code
+    this.description = data.description
   }
 
-  static fromDocument(doc) {
-    return new TbResultOption(doc);
+  static fromDocument (doc) {
+    return new TbResultOption(doc)
   }
 }
 
-export { TbResultOption };
+export { TbResultOption }

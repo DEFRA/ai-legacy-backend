@@ -3,25 +3,25 @@
  * Based on the MongoDB ERD specification for FinishingUnits collection
  */
 class MongoFinishingUnitsRepository {
-  constructor(db) {
-    this.collection = db.collection("finishingUnits");
+  constructor (db) {
+    this.collection = db.collection('finishingUnits')
   }
 
-  async getAll() {
-    const finishingUnits = await this.collection.find({}).toArray();
+  async getAll () {
+    const finishingUnits = await this.collection.find({}).toArray()
 
-    return finishingUnits;
+    return finishingUnits
   }
 
-  async getByRegion(region) {
+  async getByRegion (region) {
     const finishingUnits = await this.collection
       .find({
         validRegions: region,
       })
-      .toArray();
+      .toArray()
 
-    return finishingUnits;
+    return finishingUnits
   }
 }
 
-export { MongoFinishingUnitsRepository };
+export { MongoFinishingUnitsRepository }

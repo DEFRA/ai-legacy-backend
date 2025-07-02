@@ -1,11 +1,11 @@
 class AllocationBookingMethodOption {
-  constructor(data = {}) {
-    this.method = data.method;
+  constructor (data = {}) {
+    this.method = data.method
   }
 
-  static fromDocument(doc) {
-    return new AllocationBookingMethodOption(doc);
+  static fromDocument (doc) {
+    return new AllocationBookingMethodOption(doc)
   }
 }
 
-export { AllocationBookingMethodOption };
+export { AllocationBookingMethodOption }

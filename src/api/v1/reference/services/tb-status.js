@@ -7,8 +7,8 @@ class TbStatusService {
    *
    * @param {Object} repository - TB status repository instance
    */
-  constructor(repository) {
-    this.repository = repository;
+  constructor (repository) {
+    this.repository = repository
   }
 
   /**
@@ -18,25 +18,25 @@ class TbStatusService {
    * @returns {Promise<Array<Object>>} List of TB status options
    * @throws {Error} When repository operations fail
    */
-  async getOptions(region = null) {
+  async getOptions (region = null) {
     try {
-      let options = [];
+      let options = []
 
       if (region) {
-        options = await this.repository.getByRegion(region);
+        options = await this.repository.getByRegion(region)
       } else {
-        options = await this.repository.getAll();
+        options = await this.repository.getAll()
       }
 
       return options.map((option) => ({
         code: option.code,
         description: option.description,
         regions: option.validRegions || [],
-      }));
+      }))
     } catch (error) {
-      throw new Error("Failed to retrieve TB status options");
+      throw new Error('Failed to retrieve TB status options')
     }
   }
 }
 
-export { TbStatusService };
+export { TbStatusService }

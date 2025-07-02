@@ -7,8 +7,8 @@ class AllocationBookingMethodService {
    *
    * @param {Object} repository - Allocation booking method repository instance
    */
-  constructor(repository) {
-    this.repository = repository;
+  constructor (repository) {
+    this.repository = repository
   }
 
   /**
@@ -17,21 +17,21 @@ class AllocationBookingMethodService {
    * @returns {Promise<Array<Object>>} List of allocation booking method options
    * @throws {Error} When repository operations fail
    */
-  async getOptions() {
+  async getOptions () {
     try {
-      const options = await this.repository.getAll();
+      const options = await this.repository.getAll()
 
       if (!options || !Array.isArray(options)) {
-        return [];
+        return []
       }
 
       return options.map((option) => ({
         method: option.method,
-      }));
+      }))
     } catch (error) {
-      throw new Error("Failed to retrieve allocation booking method options");
+      throw new Error('Failed to retrieve allocation booking method options')
     }
   }
 }
 
-export { AllocationBookingMethodService };
+export { AllocationBookingMethodService }
