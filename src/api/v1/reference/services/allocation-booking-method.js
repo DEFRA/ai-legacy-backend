@@ -1,5 +1,3 @@
-import { AllocationBookingMethodOption } from '../models/allocation-booking-method.js'
-
 /**
  * Service for managing allocation booking method reference data
  */
@@ -16,7 +14,7 @@ class AllocationBookingMethodService {
   /**
    * Get all allocation booking method options
    *
-   * @returns {Promise<Array<AllocationBookingMethodOption>>} List of formatted allocation booking methods
+   * @returns {Promise<Array<Object>>} List of allocation booking method options
    * @throws {Error} When repository operations fail
    */
   async getOptions () {
@@ -27,7 +25,9 @@ class AllocationBookingMethodService {
         return []
       }
 
-      return options.map(option => AllocationBookingMethodOption.fromEntity(option))
+      return options.map(option => ({
+        method: option.method
+      }))
     } catch (error) {
       throw new Error('Failed to retrieve allocation booking method options')
     }

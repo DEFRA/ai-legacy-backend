@@ -1,5 +1,3 @@
-import { FinishingUnitOption } from '../models/finishing-unit.js'
-
 /**
  * Service for managing finishing unit reference data
  */
@@ -17,7 +15,7 @@ class FinishingUnitService {
    * Get all finishing unit options with optional region filtering
    *
    * @param {string|null} region - Optional region filter (must be non-empty string if provided)
-   * @returns {Promise<Array<FinishingUnitOption>>} List of formatted finishing units
+   * @returns {Promise<Array<Object>>} List of finishing unit options
    * @throws {Error} When repository operations fail
    */
   async getOptions (region = null) {
@@ -30,7 +28,10 @@ class FinishingUnitService {
         options = await this.repository.getAll()
       }
 
-      return options.map(option => FinishingUnitOption.fromEntity(option))
+      return options.map(option => ({
+        unitType: option.unitType,
+        regions: option.validRegions || []
+      }))
     } catch (error) {
       throw new Error('Failed to retrieve finishing unit options')
     }

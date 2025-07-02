@@ -1,6 +1,5 @@
 class HoldingModel {
   constructor (data = {}) {
-    // Use _id as the primary identifier field
     this._id = data._id || data.id || null
 
     if (data.details) {

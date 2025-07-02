@@ -10,9 +10,9 @@ import { MongoTbResultRepository } from '../../../../data/mongo/repositories/tb-
  * Handler for GET /api/v1/reference/tb-status
  * Get all TB status options with optional region filtering
  *
- * @param {Object} request - Hapi request object
- * @param {Object} h - Hapi response toolkit
- * @returns {Object} Response with TB status data
+ * @param {import('@hapi/hapi').Request} request - Hapi request object
+ * @param {import('@hapi/hapi').ResponseToolkit} h - Hapi response toolkit
+ * @returns {import('@hapi/hapi').ResponseObject} Response with TB status data
  */
 async function getTbStatuses (request, h) {
   try {
@@ -37,9 +37,9 @@ async function getTbStatuses (request, h) {
  * Handler for GET /api/v1/reference/tb-result
  * Get all TB result options
  *
- * @param {Object} request - Hapi request object
- * @param {Object} h - Hapi response toolkit
- * @returns {Object} Response with TB result data
+ * @param {import('@hapi/hapi').Request} request - Hapi request object
+ * @param {import('@hapi/hapi').ResponseToolkit} h - Hapi response toolkit
+ * @returns {import('@hapi/hapi').ResponseObject} Response with TB result data
  */
 async function getTbResults (request, h) {
   try {
