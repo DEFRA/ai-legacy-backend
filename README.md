@@ -247,6 +247,77 @@ curl http://localhost:3002/health
 curl http://localhost:3002/api/v1/reference/tb-status
 ```
 
+#### Creating and Looking Up Holdings
+
+The API allows you to create and retrieve holdings using CPH (County Parish Holding) numbers. Here are examples of how to create a holding and then look it up:
+
+**1. Create a new holding:**
+
+```bash
+curl -X POST http://localhost:3002/api/v1/holding \
+  -H "Content-Type: application/json" \
+  -d '{
+    "details": {
+      "cph": "99/888/7777",
+      "name": "Test Farm",
+      "description": "Test farm for API demonstration",
+      "address": {
+        "street": "123 Test Lane",
+        "locality": "Test Village",
+        "town": "Test Town",
+        "county": "Test County",
+        "postcode": "TE5T 1NG"
+      },
+      "contact": {
+        "landline": "01234 567890",
+        "mobile": "07700 900123"
+      },
+      "coordinates": {
+        "easting": 412345,
+        "northing": 267890
+      }
+    }
+  }'
+```
+
+**2. Look up the holding by CPH:**
+
+```bash
+# Note: URL encode the slashes in the CPH number (%2F)
+curl http://localhost:3002/api/v1/holding/99%2F888%2F7777
+```
+
+**3. Example with a different CPH:**
+
+```bash
+# Create another holding
+curl -X POST http://localhost:3002/api/v1/holding \
+  -H "Content-Type: application/json" \
+  -d '{
+    "details": {
+      "cph": "01/123/4567",
+      "name": "Demo Farm",
+      "description": "Another test farm",
+      "address": {
+        "street": "456 Demo Road",
+        "locality": "Demo Village",
+        "town": "Demo Town",
+        "county": "Demo County",
+        "postcode": "DE4M 0ST"
+      }
+    }
+  }'
+
+# Look it up
+curl http://localhost:3002/api/v1/holding/01%2F123%2F4567
+```
+
+**Important Notes:**
+- CPH numbers must follow the format `XX/XXX/XXXX` (e.g., `01/123/4567`)
+- When looking up holdings via URL, encode forward slashes as `%2F`
+- The `details` object is required and must contain at least the `cph` field
+- Other fields like `name`, `description`, `address`, `contact`, and `coordinates` are optional
+
 ## Development Helpers
 
 ### MongoDB Locks
