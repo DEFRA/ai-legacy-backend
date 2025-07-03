@@ -14,6 +14,4 @@ class MongoAllocationSkipReasonsRepository {
   }
 }
 
-export {
-  MongoAllocationSkipReasonsRepository
-}
+export { MongoAllocationSkipReasonsRepository }

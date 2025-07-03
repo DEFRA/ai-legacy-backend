@@ -11,12 +11,10 @@ const router = {
       server.route({
         method: 'GET',
         path: '/health',
-        handler: getHealthStatus
+        handler: getHealthStatus,
       })
-    }
-  }
+    },
+  },
 }
 
-export {
-  router
-}
+export { router }

@@ -8,12 +8,7 @@ export default defineConfig({
       clean: false,
       reporter: ['lcov'],
       include: ['src/**/*.js'],
-      exclude: [
-        '**/node_modules/**',
-        '**/test/**',
-        '.server',
-        'src/index.js'
-      ]
-    }
-  }
+      exclude: ['**/node_modules/**', '**/test/**', '.server', 'src/index.js'],
+    },
+  },
 })

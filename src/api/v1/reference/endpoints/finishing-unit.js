@@ -8,20 +8,22 @@ import { MongoFinishingUnitRepository } from '../../../../data/mongo/repositorie
  * Handler for GET /api/v1/reference/finishing-unit
  * Get all finishing unit options with optional region filtering
  *
- * @param {Object} request - Hapi request object
- * @param {Object} h - Hapi response toolkit
- * @returns {Object} Response with finishing unit data
+ * @param {import('@hapi/hapi').Request} request - Hapi request object
+ * @param {import('@hapi/hapi').ResponseToolkit} h - Hapi response toolkit
+ * @returns {import('@hapi/hapi').ResponseObject} Response with finishing unit data
  */
 async function getFinishingUnits (request, h) {
   try {
     const repository = new MongoFinishingUnitRepository(mongoClient)
     const finishingUnitService = new FinishingUnitService(repository)
 
-    const finishingUnits = await finishingUnitService.getOptions(request.query.region)
+    const finishingUnits = await finishingUnitService.getOptions(
+      request.query.region
+    )
 
     return h
       .response({
-        data: finishingUnits
+        data: finishingUnits,
       })
       .code(200)
   } catch (error) {
@@ -41,9 +43,9 @@ const finishingUnitRoutes = [
     handler: getFinishingUnits,
     options: {
       description: 'Get all finishing unit options',
-      tags: ['api', 'reference', 'finishing-unit']
-    }
-  }
+      tags: ['api', 'reference', 'finishing-unit'],
+    },
+  },
 ]
 
 export { finishingUnitRoutes }

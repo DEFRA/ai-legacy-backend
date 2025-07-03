@@ -10,26 +10,31 @@ import { MongoAllocationSkipReasonsRepository } from '../../../../data/mongo/rep
  * Handler for GET /api/v1/reference/allocation-booking-method
  * Get all allocation booking method options
  *
- * @param {Object} request - Hapi request object
- * @param {Object} h - Hapi response toolkit
- * @returns {Object} Response with allocation booking method data
+ * @param {import('@hapi/hapi').Request} request - Hapi request object
+ * @param {import('@hapi/hapi').ResponseToolkit} h - Hapi response toolkit
+ * @returns {import('@hapi/hapi').ResponseObject} Response with allocation booking method data
  */
 async function getAllocationBookingMethods (request, h) {
   try {
     const repository = new MongoAllocationBookingMethodRepository(mongoClient)
-    const allocationBookingMethodService = new AllocationBookingMethodService(repository)
+    const allocationBookingMethodService = new AllocationBookingMethodService(
+      repository
+    )
 
-    const allocationBookingMethods = await allocationBookingMethodService.getOptions()
+    const allocationBookingMethods =
+      await allocationBookingMethodService.getOptions()
 
     return h
       .response({
-        data: allocationBookingMethods
+        data: allocationBookingMethods,
       })
       .code(200)
   } catch (error) {
     request.logger.error('Error fetching allocation booking methods:', error)
 
-    throw Boom.internal(`Failed to fetch allocation booking methods: ${error.message}`)
+    throw Boom.internal(
+      `Failed to fetch allocation booking methods: ${error.message}`
+    )
   }
 }
 
@@ -37,26 +42,31 @@ async function getAllocationBookingMethods (request, h) {
  * Handler for GET /api/v1/reference/allocation-skip-reasons
  * Get all allocation skip reason options
  *
- * @param {Object} request - Hapi request object
- * @param {Object} h - Hapi response toolkit
- * @returns {Object} Response with allocation skip reason data
+ * @param {import('@hapi/hapi').Request} request - Hapi request object
+ * @param {import('@hapi/hapi').ResponseToolkit} h - Hapi response toolkit
+ * @returns {import('@hapi/hapi').ResponseObject} Response with allocation skip reason data
  */
 async function getAllocationSkipReasons (request, h) {
   try {
     const repository = new MongoAllocationSkipReasonsRepository(mongoClient)
-    const allocationSkipReasonsService = new AllocationSkipReasonsService(repository)
+    const allocationSkipReasonsService = new AllocationSkipReasonsService(
+      repository
+    )
 
-    const allocationSkipReasons = await allocationSkipReasonsService.getOptions()
+    const allocationSkipReasons =
+      await allocationSkipReasonsService.getOptions()
 
     return h
       .response({
-        data: allocationSkipReasons
+        data: allocationSkipReasons,
       })
       .code(200)
   } catch (error) {
     request.logger.error('Error fetching allocation skip reasons:', error)
 
-    throw Boom.internal(`Failed to fetch allocation skip reasons: ${error.message}`)
+    throw Boom.internal(
+      `Failed to fetch allocation skip reasons: ${error.message}`
+    )
   }
 }
 
@@ -70,8 +80,8 @@ const allocationRoutes = [
     handler: getAllocationBookingMethods,
     options: {
       description: 'Get all allocation booking method options',
-      tags: ['api', 'reference', 'allocation']
-    }
+      tags: ['api', 'reference', 'allocation'],
+    },
   },
   {
     method: 'GET',
@@ -79,9 +89,9 @@ const allocationRoutes = [
     handler: getAllocationSkipReasons,
     options: {
       description: 'Get all allocation skip reason options',
-      tags: ['api', 'reference', 'allocation']
-    }
-  }
+      tags: ['api', 'reference', 'allocation'],
+    },
+  },
 ]
 
 export { allocationRoutes }

@@ -12,13 +12,19 @@ const client = await MongoClient.connect(config.get('mongo.uri'), {
   connectTimeoutMS: 10000,
   retryWrites: false,
   readPreference: 'secondary',
-  ...(secureContext && { secureContext })
+  ...(secureContext && { secureContext }),
 })
 
 const mongoClient = client.db(config.get('mongo.databaseName'))
 
+await createIndexes()
+
 logger.info('Connected to MongoDB')
 
-export {
-  mongoClient
+async function createIndexes () {
+  await mongoClient
+    .collection('holdings')
+    .createIndex({ 'details.cph': 1 }, { unique: true })
 }
+
+export { mongoClient }

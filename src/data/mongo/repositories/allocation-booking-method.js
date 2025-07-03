@@ -14,6 +14,4 @@ class MongoAllocationBookingMethodRepository {
   }
 }
 
-export {
-  MongoAllocationBookingMethodRepository
-}
+export { MongoAllocationBookingMethodRepository }

@@ -14,6 +14,4 @@ class MongoTbResultRepository {
   }
 }
 
-export {
-  MongoTbResultRepository
-}
+export { MongoTbResultRepository }
