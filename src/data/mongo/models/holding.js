@@ -37,9 +37,7 @@ class DetailsModel {
       this.address = new AddressModel(data.address)
     }
 
-    this.contacts = (data.contacts || []).map(
-      (contact) => new ContactModel(contact)
-    )
+    this.contacts = (data.contacts || []).map(contact => new ContactModel(contact))
 
     if (data.geolocation) {
       this.geolocation = new GeolocationModel(data.geolocation)
@@ -93,5 +91,5 @@ export {
   DetailsModel,
   AddressModel,
   ContactModel,
-  GeolocationModel,
+  GeolocationModel
 }

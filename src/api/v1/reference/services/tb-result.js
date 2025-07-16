@@ -21,9 +21,9 @@ class TbResultService {
     try {
       const options = await this.repository.getAll()
 
-      return options.map((option) => ({
+      return options.map(option => ({
         code: option.code,
-        description: option.description,
+        description: option.description
       }))
     } catch (error) {
       throw new Error('Failed to retrieve TB result options')
@@ -31,4 +31,6 @@ class TbResultService {
   }
 }
 
-export { TbResultService }
+export {
+  TbResultService
+}

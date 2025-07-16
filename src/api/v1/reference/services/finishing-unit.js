@@ -28,9 +28,9 @@ class FinishingUnitService {
         options = await this.repository.getAll()
       }
 
-      return options.map((option) => ({
+      return options.map(option => ({
         unitType: option.unitType,
-        regions: option.validRegions || [],
+        regions: option.validRegions || []
       }))
     } catch (error) {
       throw new Error('Failed to retrieve finishing unit options')
@@ -38,4 +38,6 @@ class FinishingUnitService {
   }
 }
 
-export { FinishingUnitService }
+export {
+  FinishingUnitService
+}

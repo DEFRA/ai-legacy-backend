@@ -8,4 +8,6 @@ class AllocationSkipReasonOption {
   }
 }
 
-export { AllocationSkipReasonOption }
+export {
+  AllocationSkipReasonOption
+}

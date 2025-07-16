@@ -29,13 +29,13 @@ services:
     image: postgres:15-alpine
     container_name: ai-legacy-backend-postgres-test
     ports:
-      - "5433:5432" # Different port to avoid conflicts
+      - '5433:5432'  # Different port to avoid conflicts
     environment:
       POSTGRES_DB: tbcms_test
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ppp
     tmpfs:
-      - /var/lib/postgresql/data # Use tmpfs for faster test database
+      - /var/lib/postgresql/data  # Use tmpfs for faster test database
     networks:
       - ai-legacy-backend
 

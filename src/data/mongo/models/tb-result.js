@@ -9,4 +9,6 @@ class TbResultOption {
   }
 }
 
-export { TbResultOption }
+export {
+  TbResultOption
+}

@@ -21,12 +21,12 @@ function getKnexInstance () {
         port: postgresConfig.port,
         database: postgresConfig.database,
         user: postgresConfig.user,
-        password: postgresConfig.password,
+        password: postgresConfig.password
       },
       pool: {
         min: 2,
-        max: 10,
-      },
+        max: 10
+      }
     })
 
     logger.info('Knex database connection initialized')

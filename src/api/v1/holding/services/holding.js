@@ -12,7 +12,7 @@ class HoldingService {
     const holding = await this.holdingRepository.create({ details })
 
     return {
-      details: holding.details,
+      details: holding.details
     }
   }
 
@@ -23,13 +23,13 @@ class HoldingService {
    */
   async getHoldingByCph (cph) {
     const holding = await this.holdingRepository.findByCph(cph)
-
+    
     if (!holding) {
       return null
     }
 
     return {
-      details: holding.details,
+      details: holding.details
     }
   }
 }

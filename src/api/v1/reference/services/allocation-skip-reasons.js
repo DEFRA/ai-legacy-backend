@@ -25,8 +25,8 @@ class AllocationSkipReasonsService {
         return []
       }
 
-      return options.map((option) => ({
-        reason: option.reason,
+      return options.map(option => ({
+        reason: option.reason
       }))
     } catch (error) {
       throw new Error('Failed to retrieve allocation skip reason options')
@@ -34,4 +34,6 @@ class AllocationSkipReasonsService {
   }
 }
 
-export { AllocationSkipReasonsService }
+export {
+  AllocationSkipReasonsService
+}

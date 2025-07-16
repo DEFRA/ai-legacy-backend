@@ -8,4 +8,6 @@ class AllocationBookingMethodOption {
   }
 }
 
-export { AllocationBookingMethodOption }
+export {
+  AllocationBookingMethodOption
+}

@@ -17,13 +17,11 @@ async function getFinishingUnits (request, h) {
     const repository = new MongoFinishingUnitRepository(mongoClient)
     const finishingUnitService = new FinishingUnitService(repository)
 
-    const finishingUnits = await finishingUnitService.getOptions(
-      request.query.region
-    )
+    const finishingUnits = await finishingUnitService.getOptions(request.query.region)
 
     return h
       .response({
-        data: finishingUnits,
+        data: finishingUnits
       })
       .code(200)
   } catch (error) {
@@ -43,9 +41,9 @@ const finishingUnitRoutes = [
     handler: getFinishingUnits,
     options: {
       description: 'Get all finishing unit options',
-      tags: ['api', 'reference', 'finishing-unit'],
-    },
-  },
+      tags: ['api', 'reference', 'finishing-unit']
+    }
+  }
 ]
 
 export { finishingUnitRoutes }

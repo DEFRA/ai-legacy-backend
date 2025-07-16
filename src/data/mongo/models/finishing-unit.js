@@ -9,4 +9,6 @@ class FinishingUnitOption {
   }
 }
 
-export { FinishingUnitOption }
+export {
+  FinishingUnitOption
+}

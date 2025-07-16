@@ -25,8 +25,8 @@ class AllocationBookingMethodService {
         return []
       }
 
-      return options.map((option) => ({
-        method: option.method,
+      return options.map(option => ({
+        method: option.method
       }))
     } catch (error) {
       throw new Error('Failed to retrieve allocation booking method options')
@@ -34,4 +34,6 @@ class AllocationBookingMethodService {
   }
 }
 
-export { AllocationBookingMethodService }
+export {
+  AllocationBookingMethodService
+}

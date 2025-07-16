@@ -28,10 +28,10 @@ class TbStatusService {
         options = await this.repository.getAll()
       }
 
-      return options.map((option) => ({
+      return options.map(option => ({
         code: option.code,
         description: option.description,
-        regions: option.validRegions || [],
+        regions: option.validRegions || []
       }))
     } catch (error) {
       throw new Error('Failed to retrieve TB status options')
@@ -39,4 +39,6 @@ class TbStatusService {
   }
 }
 
-export { TbStatusService }
+export {
+  TbStatusService
+}

@@ -1,0 +1,545 @@
+openapi: 3.1.0
+info:
+  title: TB Case Management System API
+  description: Backend REST API for maintaining entries on the Defra AI Tech Radar - TB Case Management System
+  version: 1.0.0
+
+servers:
+  - url: /api/v1
+    description: Version 1 API
+
+tags:
+  - name: reference
+    description: Reference data operations
+  - name: tb-status
+    description: TB status reference data
+  - name: tb-result
+    description: TB result reference data
+  - name: allocation-booking-method
+    description: Allocation booking method reference data
+  - name: allocation-skip-reason
+    description: Allocation skip reason reference data
+  - name: finishing-unit
+    description: Finishing unit reference data
+  - name: holding
+    description: Holding management operations
+
+paths:
+  /reference/tb-status:
+    get:
+      tags:
+        - reference
+        - tb-status
+      summary: Get all TB status options
+      description: Retrieve all TB status options with optional region filtering
+      operationId: getTbStatus
+      parameters:
+        - name: region
+          in: query
+          description: Optional region filter to get TB statuses specific to a region
+          required: false
+          schema:
+            type: string
+            examples: ["Midlands"]
+      responses:
+        '200':
+          description: Successful response with TB status data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TbStatusOption'
+
+  /reference/tb-result:
+    get:
+      tags:
+        - reference
+        - tb-result
+      summary: Get all TB result options
+      description: Retrieve all TB result options for lookup purposes
+      operationId: getTbResult
+      responses:
+        '200':
+          description: Successful response with TB result data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TbResultOption'
+
+  /reference/allocation-booking-method:
+    get:
+      tags:
+        - reference
+        - allocation-booking-method
+      summary: Get all allocation booking method options
+      description: Retrieve all allocation booking method options for lookup purposes
+      operationId: getAllocationBookingMethod
+      responses:
+        '200':
+          description: Successful response with allocation booking method data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AllocationBookingMethodOption'
+
+  /reference/allocation-skip-reason:
+    get:
+      tags:
+        - reference
+        - allocation-skip-reason
+      summary: Get all allocation skip reason options
+      description: Retrieve all allocation skip reason options for lookup purposes
+      operationId: getAllocationSkipReasons
+      responses:
+        '200':
+          description: Successful response with allocation skip reason data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AllocationSkipReasonOption'
+
+  /reference/finishing-unit:
+    get:
+      tags:
+        - reference
+        - finishing-unit
+      summary: Get all finishing unit options
+      description: Retrieve all finishing unit options with optional region filtering
+      operationId: getFinishingUnits
+      parameters:
+        - name: region
+          in: query
+          description: Optional region filter to get finishing units specific to a region
+          required: false
+          schema:
+            type: string
+            examples: ["midlands"]
+      responses:
+        '200':
+          description: Successful response with finishing unit data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FinishingUnitOption'
+
+  /holding:
+    post:
+      tags:
+        - holding
+      summary: Create a new holding
+      description: Create a new holding with address, geolocation, and contact information
+      operationId: createHolding
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateHoldingRequest'
+      responses:
+        '201':
+          description: Holding created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/HoldingResponse'
+        '400':
+          description: Invalid request data
+        '409':
+          description: Holding with this CPH already exists
+        '500':
+          description: Internal server error
+    get:
+      tags:
+        - holding
+      summary: Get all holdings
+      description: Retrieve a summary list of all holdings
+      operationId: getAllHoldings
+      responses:
+        '200':
+          description: Successful response with holdings data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/HoldingSummary'
+        '500':
+          description: Internal server error
+
+  /holding/{cph}:
+    get:
+      tags:
+        - holding
+      summary: Get holding by CPH
+      description: Retrieve a specific holding by its County Parish Holding number
+      operationId: getHoldingByCph
+      parameters:
+        - name: cph
+          in: path
+          required: true
+          description: County Parish Holding number (format XX/XXX/XXXX)
+          schema:
+            type: string
+            pattern: '^[0-9]{2}\/[0-9]{3}\/[0-9]{4}$'
+            examples: ["12/345/6789"]
+      responses:
+        '200':
+          description: Successful response with holding data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    examples: ["Holding retrieved successfully"]
+                  data:
+                    type: object
+                    properties:
+                      holding:
+                        $ref: '#/components/schemas/HoldingResponse'
+        '400':
+          description: Invalid CPH format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    examples: [400]
+                  error:
+                    type: string
+                    examples: ["Bad Request"]
+                  message:
+                    type: string
+                    examples: ["Invalid request params input"]
+        '404':
+          description: Holding not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    examples: ["Not Found"]
+                  message:
+                    type: string
+                    examples: ["Holding with CPH 12/345/6789 not found"]
+                  statusCode:
+                    type: integer
+                    examples: [404]
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    TbStatusOption:
+      type: object
+      description: A TB status option with associated regions
+      properties:
+        code:
+          type: string
+          description: TB status code
+        description:
+          type: string
+          description: TB status description
+        regions:
+          type: array
+          description: List of regions where this status is valid
+          items:
+            type: string
+      required:
+        - code
+        - description
+        - regions
+      examples:
+        - code: "TB1"
+          description: "Officially TB Free"
+          regions: ["Midlands", "South West"]
+        - code: "TB2"
+          description: "TB Restricted"
+          regions: ["Wales"]
+
+    TbResultOption:
+      type: object
+      description: A TB result option for lookup purposes
+      properties:
+        code:
+          type: string
+          description: TB result code
+        description:
+          type: string
+          description: TB result description
+      required:
+        - code
+        - description
+      examples:
+        - code: "NVL"
+          description: "NVL"
+        - code: "VL - Pos"
+          description: "VL - Pos"
+
+    AllocationBookingMethodOption:
+      type: object
+      description: An allocation booking method option for lookup purposes
+      properties:
+        method:
+          type: string
+          description: Allocation booking method
+      required:
+        - method
+      examples:
+        - method: "Phone"
+        - method: "Email"
+        - method: "Online Portal"
+
+    AllocationSkipReasonOption:
+      type: object
+      description: An allocation skip reason option for lookup purposes
+      properties:
+        reason:
+          type: string
+          description: Allocation skip reason
+      required:
+        - reason
+      examples:
+        - reason: "Declined"
+        - reason: "Not Necessary"
+        - reason: "N/A High Risk"
+
+    FinishingUnitOption:
+      type: object
+      description: A finishing unit option with associated regions
+      properties:
+        unitType:
+          type: string
+          description: Finishing unit type
+        regions:
+          type: array
+          description: List of regions where this finishing unit type is valid
+          items:
+            type: string
+      required:
+        - unitType
+        - regions
+      examples:
+        - unitType: "Grazing AFU"
+          regions: ["midlands", "north", "south_east", "south_west"]
+        - unitType: "Non-Grazing AFU"
+          regions: ["wales", "scotland"]
+
+    Address:
+      type: object
+      description: Address information for a holding
+      properties:
+        street:
+          type: string
+          description: Street address
+        locality:
+          type: string
+          description: Locality
+        town:
+          type: string
+          description: Town name
+        county:
+          type: string
+          description: County name
+        postcode:
+          type: string
+          description: UK postcode
+          pattern: '^[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][A-Z-[CIKMOV]]{2}$'
+      required:
+        - town
+        - county
+        - postcode
+      examples:
+        - street: "123 Farm Lane"
+          locality: "Little Village"
+          town: "Markettown"
+          county: "Middlesex"
+          postcode: "AB12 3CD"
+        - street: "45 Rural Road"
+          locality: "Countryside"
+          town: "Farmington"
+          county: "Somerset"
+          postcode: "TA1 2BC"
+
+    Contact:
+      type: object
+      description: Contact information
+      properties:
+        type:
+          type: string
+          enum: ["landline", "mobile"]
+          description: Contact type
+          examples: ["landline"]
+        value:
+          type: string
+          description: Contact number
+          pattern: '^[0-9\s\-\+\(\)]+$'
+          examples: ["01234 567890"]
+      required:
+        - type
+        - value
+
+    Geolocation:
+      type: object
+      description: Geographic coordinates
+      properties:
+        mapReference:
+          type: string
+          description: Map reference
+          examples: ["TQ123456"]
+        easting:
+          type: integer
+          minimum: 0
+          maximum: 999999
+          description: Easting coordinate
+          examples: [512345]
+        northing:
+          type: integer
+          minimum: 0
+          maximum: 999999
+          description: Northing coordinate
+          examples: [187654]
+
+    HoldingDetails:
+      type: object
+      description: Detailed information about a holding
+      properties:
+        cph:
+          type: string
+          description: County Parish Holding identifier (format XX/XXX/XXXX)
+          pattern: '^[0-9]{2}\/[0-9]{3}\/[0-9]{4}$'
+          examples: ["12/345/6789"]
+        name:
+          type: string
+          description: Holding name
+          minLength: 1
+          maxLength: 255
+          examples: ["Green Acres Farm"]
+        description:
+          type: string
+          description: Holding description
+          maxLength: 1000
+          examples: ["Dairy farm in the countryside"]
+        address:
+          $ref: '#/components/schemas/Address'
+        geolocation:
+          $ref: '#/components/schemas/Geolocation'
+        contacts:
+          type: array
+          description: Contact information
+          items:
+            $ref: '#/components/schemas/Contact'
+          default: []
+      required:
+        - cph
+        - name
+        - address
+
+    CreateHoldingRequest:
+      type: object
+      description: Request body for creating a new holding
+      properties:
+        details:
+          $ref: '#/components/schemas/HoldingDetails'
+      required:
+        - details
+
+    HoldingResponse:
+      type: object
+      description: Complete holding information
+      properties:
+        id:
+          type: string
+          description: Holding ObjectId
+          pattern: '^[0-9a-fA-F]{24}$'
+          examples: ["507f1f77bcf86cd799439011"]
+        details:
+          $ref: '#/components/schemas/HoldingDetails'
+        incidents:
+          type: array
+          description: Array of incident IDs
+          items:
+            type: string
+            pattern: '^[0-9a-fA-F]{24}$'
+          examples:
+            - []
+            - ["507f1f77bcf86cd799439012", "507f1f77bcf86cd799439013"]
+      required:
+        - id
+        - details
+
+    HoldingSummary:
+      type: object
+      description: Summary information for holding list displays
+      properties:
+        id:
+          type: string
+          description: Holding ObjectId
+          pattern: '^[0-9a-fA-F]{24}$'
+          examples: ["507f1f77bcf86cd799439011"]
+        cph:
+          type: string
+          description: County Parish Holding identifier
+          examples: ["12/345/6789"]
+        name:
+          type: string
+          description: Holding name
+          examples: ["Green Acres Farm"]
+        description:
+          type: string
+          description: Holding description
+          examples: ["Dairy farm in the countryside"]
+        address:
+          type: object
+          description: Simplified address information
+          properties:
+            town:
+              type: string
+              examples: ["Markettown"]
+            county:
+              type: string
+              examples: ["Middlesex"]
+            postcode:
+              type: string
+              examples: ["AB12 3CD"]
+        incidentCount:
+          type: integer
+          description: Number of associated incidents
+          examples: [0]
+      required:
+        - id

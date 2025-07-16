@@ -8,7 +8,7 @@ import { finishingUnitRoutes } from './endpoints/finishing-unit.js'
 const referenceRoutes = [
   ...tbRoutes,
   ...allocationRoutes,
-  ...finishingUnitRoutes,
+  ...finishingUnitRoutes
 ]
 
 export { referenceRoutes }

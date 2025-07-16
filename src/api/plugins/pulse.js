@@ -8,8 +8,10 @@ const pulse = {
   plugin: hapiPulse,
   options: {
     logger: createLogger(),
-    timeout: tenSeconds,
-  },
+    timeout: tenSeconds
+  }
 }
 
-export { pulse }
+export {
+  pulse
+}

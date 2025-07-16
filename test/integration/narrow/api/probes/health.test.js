@@ -20,7 +20,7 @@ describe('health probe', () => {
       test('should return 200 OK with success message', async () => {
         const response = await server.inject({
           method: 'GET',
-          url: '/health',
+          url: '/health'
         })
 
         expect(response.statusCode).toBe(200)

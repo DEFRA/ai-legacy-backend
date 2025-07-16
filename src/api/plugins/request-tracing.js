@@ -5,8 +5,10 @@ import { config } from '../../config/index.js'
 const requestTracing = {
   plugin: tracing.plugin,
   options: {
-    tracingHeader: config.get('tracing.header'),
-  },
+    tracingHeader: config.get('tracing.header')
+  }
 }
 
-export { requestTracing }
+export {
+  requestTracing
+}

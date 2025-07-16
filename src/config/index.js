@@ -6,7 +6,7 @@ import { serverConfig } from './server.js'
 convict.addFormats(convictFormatWithValidator)
 
 const config = convict({
-  ...serverConfig,
+  ...serverConfig
 })
 
 config.validate({ allowed: 'strict' })

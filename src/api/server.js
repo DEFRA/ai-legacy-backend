@@ -16,26 +16,26 @@ async function createServer () {
     routes: {
       validate: {
         options: {
-          abortEarly: false,
-        },
+          abortEarly: false
+        }
       },
       files: {
-        relativeTo: path.resolve(config.get('root'), 'public'),
+        relativeTo: path.resolve(config.get('root'), '.public')
       },
       security: {
         hsts: {
           maxAge: 31536000,
           includeSubDomains: true,
-          preload: false,
+          preload: false
         },
         xss: 'enabled',
         noSniff: true,
-        xframe: true,
-      },
+        xframe: true
+      }
     },
     router: {
-      stripTrailingSlash: true,
-    },
+      stripTrailingSlash: true
+    }
   })
 
   await server.register([
@@ -44,7 +44,7 @@ async function createServer () {
     pulse,
     swaggerPlugin,
     probesRouter,
-    tbcmsRouter,
+    tbcmsRouter
   ])
 
   return server
@@ -71,4 +71,6 @@ async function startServer () {
   return server
 }
 
-export { startServer }
+export {
+  startServer
+}

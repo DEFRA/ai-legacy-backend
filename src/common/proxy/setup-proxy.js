@@ -19,4 +19,6 @@ async function setupProxy () {
   }
 }
 
-export { setupProxy }
+export {
+  setupProxy
+}

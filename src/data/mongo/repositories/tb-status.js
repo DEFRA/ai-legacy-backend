@@ -14,14 +14,14 @@ class MongoTbStatusRepository {
   }
 
   async getByRegion (region) {
-    const tbStatuses = await this.collection
-      .find({
-        validRegions: region,
-      })
-      .toArray()
+    const tbStatuses = await this.collection.find({
+      validRegions: region
+    }).toArray()
 
     return tbStatuses
   }
 }
 
-export { MongoTbStatusRepository }
+export {
+  MongoTbStatusRepository
+}

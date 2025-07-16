@@ -1,7 +1,7 @@
 import {
   StorageResolution,
   Unit,
-  createMetricsLogger,
+  createMetricsLogger
 } from 'aws-embedded-metrics'
 
 import { config } from '../../config/index.js'
@@ -28,4 +28,6 @@ async function metricsCounter (metricName, value = 1) {
   }
 }
 
-export { metricsCounter }
+export {
+  metricsCounter
+}

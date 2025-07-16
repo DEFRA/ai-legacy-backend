@@ -14,14 +14,14 @@ class MongoFinishingUnitsRepository {
   }
 
   async getByRegion (region) {
-    const finishingUnits = await this.collection
-      .find({
-        validRegions: region,
-      })
-      .toArray()
+    const finishingUnits = await this.collection.find({
+      validRegions: region
+    }).toArray()
 
     return finishingUnits
   }
 }
 
-export { MongoFinishingUnitsRepository }
+export {
+  MongoFinishingUnitsRepository
+}

@@ -17,24 +17,19 @@ import { MongoAllocationSkipReasonsRepository } from '../../../../data/mongo/rep
 async function getAllocationBookingMethods (request, h) {
   try {
     const repository = new MongoAllocationBookingMethodRepository(mongoClient)
-    const allocationBookingMethodService = new AllocationBookingMethodService(
-      repository
-    )
+    const allocationBookingMethodService = new AllocationBookingMethodService(repository)
 
-    const allocationBookingMethods =
-      await allocationBookingMethodService.getOptions()
+    const allocationBookingMethods = await allocationBookingMethodService.getOptions()
 
     return h
       .response({
-        data: allocationBookingMethods,
+        data: allocationBookingMethods
       })
       .code(200)
   } catch (error) {
     request.logger.error('Error fetching allocation booking methods:', error)
 
-    throw Boom.internal(
-      `Failed to fetch allocation booking methods: ${error.message}`
-    )
+    throw Boom.internal(`Failed to fetch allocation booking methods: ${error.message}`)
   }
 }
 
@@ -49,24 +44,19 @@ async function getAllocationBookingMethods (request, h) {
 async function getAllocationSkipReasons (request, h) {
   try {
     const repository = new MongoAllocationSkipReasonsRepository(mongoClient)
-    const allocationSkipReasonsService = new AllocationSkipReasonsService(
-      repository
-    )
+    const allocationSkipReasonsService = new AllocationSkipReasonsService(repository)
 
-    const allocationSkipReasons =
-      await allocationSkipReasonsService.getOptions()
+    const allocationSkipReasons = await allocationSkipReasonsService.getOptions()
 
     return h
       .response({
-        data: allocationSkipReasons,
+        data: allocationSkipReasons
       })
       .code(200)
   } catch (error) {
     request.logger.error('Error fetching allocation skip reasons:', error)
 
-    throw Boom.internal(
-      `Failed to fetch allocation skip reasons: ${error.message}`
-    )
+    throw Boom.internal(`Failed to fetch allocation skip reasons: ${error.message}`)
   }
 }
 
@@ -80,8 +70,8 @@ const allocationRoutes = [
     handler: getAllocationBookingMethods,
     options: {
       description: 'Get all allocation booking method options',
-      tags: ['api', 'reference', 'allocation'],
-    },
+      tags: ['api', 'reference', 'allocation']
+    }
   },
   {
     method: 'GET',
@@ -89,9 +79,9 @@ const allocationRoutes = [
     handler: getAllocationSkipReasons,
     options: {
       description: 'Get all allocation skip reason options',
-      tags: ['api', 'reference', 'allocation'],
-    },
-  },
+      tags: ['api', 'reference', 'allocation']
+    }
+  }
 ]
 
 export { allocationRoutes }

@@ -5,6 +5,9 @@ export const tbcmsRouter = {
   name: 'tbcms-api',
   version: '1.0.0',
   async register (server) {
-    server.route([...referenceRoutes, ...holdingRoutes])
-  },
+    server.route([
+      ...referenceRoutes,
+      ...holdingRoutes
+    ])
+  }
 }

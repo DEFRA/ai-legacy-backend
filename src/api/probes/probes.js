@@ -5,8 +5,10 @@ const probes = {
     name: 'probes',
     async register (server) {
       await server.register(healthProbeRouter)
-    },
-  },
+    }
+  }
 }
 
-export { probes }
+export {
+  probes
+}

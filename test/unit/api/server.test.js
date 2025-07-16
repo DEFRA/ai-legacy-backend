@@ -11,15 +11,15 @@ vi.mock('../../../src/common/logging/logger.js', () => ({
   createLogger: vi.fn().mockReturnValue({
     info: vi.fn(),
     warn: vi.fn(),
-    error: vi.fn(),
-  }),
+    error: vi.fn()
+  })
 }))
 
 vi.mock('@hapi/hapi', () => {
   return {
     default: {
-      server: vi.fn(),
-    },
+      server: vi.fn()
+    }
   }
 })
 
@@ -29,7 +29,7 @@ const mockServer = {
   start: vi.fn(),
   stop: vi.fn(),
   register: vi.fn(),
-  logger: mockLogger,
+  logger: mockLogger
 }
 
 describe('startServer', () => {
@@ -69,9 +69,7 @@ describe('startServer', () => {
       test('then it should log failure messages', async () => {
         await startServer()
 
-        expect(mockLogger.info).toHaveBeenCalledWith(
-          'Server failed to start :('
-        )
+        expect(mockLogger.info).toHaveBeenCalledWith('Server failed to start :(')
         expect(mockLogger.error).toHaveBeenCalledWith(error)
       })
     })

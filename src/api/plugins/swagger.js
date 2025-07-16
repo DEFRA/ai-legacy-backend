@@ -1,8 +1,6 @@
 import Inert from '@hapi/inert'
 import Vision from '@hapi/vision'
 import HapiSwagger from 'hapi-swagger'
-import path from 'path'
-import { config } from '../../config/index.js'
 
 export const swaggerPlugin = {
   name: 'swagger',
@@ -15,8 +13,8 @@ export const swaggerPlugin = {
         description: 'Tuberculosis Case Management System API',
         contact: {
           name: 'TBCMS Development Team',
-          email: 'tbcms-dev@example.com',
-        },
+          email: 'tbcms-dev@example.com'
+        }
       },
       schemes: ['http', 'https'],
       host: 'localhost:3002',
@@ -29,28 +27,28 @@ export const swaggerPlugin = {
       tags: [
         {
           name: 'Counties',
-          description: 'County management operations',
+          description: 'County management operations'
         },
         {
           name: 'CPH',
-          description: 'County Parish Holding management operations',
+          description: 'County Parish Holding management operations'
         },
         {
           name: 'Cases',
-          description: 'TB Case management operations',
+          description: 'TB Case management operations'
         },
         {
           name: 'Admin',
-          description: 'Administrative staff management operations',
+          description: 'Administrative staff management operations'
         },
         {
           name: 'Field Staff',
-          description: 'Field staff management operations',
-        },
+          description: 'Field staff management operations'
+        }
       ],
       grouping: 'tags',
       sortTags: 'alpha',
-      sortEndpoints: 'alpha',
+      sortEndpoints: 'alpha'
     }
 
     await server.register([
@@ -58,20 +56,8 @@ export const swaggerPlugin = {
       Vision,
       {
         plugin: HapiSwagger,
-        options: swaggerOptions,
-      },
+        options: swaggerOptions
+      }
     ])
-
-    // Serve static files from the public directory (custom Swagger UI)
-    server.route({
-      method: 'GET',
-      path: '/custom-docs/{param*}',
-      handler: {
-        directory: {
-          path: path.resolve(config.get('root'), 'public'),
-          index: ['swagger-ui.html'],
-        },
-      },
-    })
-  },
+  }
 }

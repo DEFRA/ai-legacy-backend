@@ -7,7 +7,6 @@ The TBCMS (Tuberculosis Case Management System) API provides RESTful endpoints f
 ## Architecture
 
 ### Repository Pattern
-
 The API implements the Repository Pattern to abstract data access operations:
 
 - **Base Repository**: Provides common CRUD operations
@@ -48,7 +47,6 @@ src/
 ## API Endpoints
 
 ### Counties API
-
 - `GET /api/v1/counties` - Get all counties with filtering
 - `GET /api/v1/counties/{id}` - Get county by ID
 - `GET /api/v1/counties/{id}/with-office` - Get county with office details
@@ -57,7 +55,6 @@ src/
 - `DELETE /api/v1/counties/{id}` - Delete county
 
 ### CPH (County Parish Holding) API
-
 - `GET /api/v1/cph` - Get all CPH records with filtering
 - `GET /api/v1/cph/{cph}` - Get CPH by CPH number
 - `GET /api/v1/cph/{cph}/with-location` - Get CPH with location coordinates
@@ -67,7 +64,6 @@ src/
 - `DELETE /api/v1/cph/{cph}` - Delete CPH record
 
 ### Cases API
-
 - `GET /api/v1/cases` - Get all TB cases with filtering
 - `GET /api/v1/cases/{nat_inc}` - Get case by national incident number
 - `GET /api/v1/cases/{nat_inc}/details` - Get case with related information
@@ -77,33 +73,28 @@ src/
 ## Features
 
 ### OpenAPI 3.0 Specification
-
 - Complete OpenAPI 3.0 documentation available at `/docs`
 - Interactive Swagger UI at `/swagger/`
 - JSON specification at `/swagger.json`
 
 ### Request Validation
-
 - Input validation using Joi schemas
 - Query parameter validation
 - Path parameter validation
 - Request body validation
 
 ### Error Handling
-
 - Standardized error responses using Boom
 - Proper HTTP status codes
 - Detailed error logging
 
 ### Database Operations
-
 - Connection pooling with Knex.js
 - Transaction support
 - Query optimization
 - Prepared statements
 
 ### Filtering and Pagination
-
 - Flexible filtering options
 - Cursor-based pagination
 - Sorting capabilities
@@ -112,25 +103,21 @@ src/
 ## Usage Examples
 
 ### Get Counties by Country
-
 ```bash
 curl "http://localhost:3002/api/v1/counties?country=England&limit=10"
 ```
 
 ### Search CPH Records
-
 ```bash
 curl "http://localhost:3002/api/v1/cph?search=Fake%20Hill&limit=5"
 ```
 
 ### Get Cases by Date Range
-
 ```bash
 curl "http://localhost:3002/api/v1/cases?start_date=2024-01-01&end_date=2024-12-31"
 ```
 
 ### Get Dashboard Statistics
-
 ```bash
 curl "http://localhost:3002/api/v1/cases/dashboard-stats"
 ```
@@ -152,19 +139,16 @@ The API uses PostgreSQL with the following connection configuration:
 ## Development
 
 ### Starting the Server
-
 ```bash
 npm run start:watch
 ```
 
 ### Running with Docker
-
 ```bash
 npm run docker:debug
 ```
 
 ### Accessing Documentation
-
 - Swagger UI: http://localhost:3002/swagger/
 - API Documentation: http://localhost:3002/docs
 - JSON Specification: http://localhost:3002/swagger.json

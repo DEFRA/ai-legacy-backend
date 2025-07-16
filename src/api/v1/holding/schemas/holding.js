@@ -12,26 +12,27 @@ const createHoldingSchema = Joi.object({
       locality: Joi.string().allow('', null),
       town: Joi.string().required(),
       county: Joi.string().required(),
-      postcode: Joi.string().required(),
+      postcode: Joi.string().required()
     }).required(),
     geolocation: Joi.object({
       mapReference: Joi.string().allow('', null),
       easting: Joi.number().integer().min(0).max(999999).allow(null),
-      northing: Joi.number().integer().min(0).max(999999).allow(null),
+      northing: Joi.number().integer().min(0).max(999999).allow(null)
     }).allow(null),
     contacts: Joi.array()
-      .items(
-        Joi.object({
-          type: Joi.string().valid('landline', 'mobile', 'email').required(),
-          value: Joi.string().required(),
-        })
-      )
-      .default([]),
-  }).required(),
+      .items(Joi.object({
+        type: Joi.string().valid('landline', 'mobile', 'email').required(),
+        value: Joi.string().required()
+      }))
+      .default([])
+  }).required()
 }).required()
 
 const getHoldingByCphSchema = Joi.object({
-  cph: cph.required(),
+  cph: cph.required()
 })
 
-export { createHoldingSchema, getHoldingByCphSchema }
+export {
+  createHoldingSchema,
+  getHoldingByCphSchema
+}

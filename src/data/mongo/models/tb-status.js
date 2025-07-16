@@ -10,4 +10,6 @@ class TbStatusOption {
   }
 }
 
-export { TbStatusOption }
+export {
+  TbStatusOption
+}

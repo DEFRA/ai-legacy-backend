@@ -23,7 +23,7 @@ async function getTbStatuses (request, h) {
 
     return h
       .response({
-        data: tbStatuses,
+        data: tbStatuses
       })
       .code(200)
   } catch (error) {
@@ -50,7 +50,7 @@ async function getTbResults (request, h) {
 
     return h
       .response({
-        data: tbResults,
+        data: tbResults
       })
       .code(200)
   } catch (error) {
@@ -70,8 +70,8 @@ const tbRoutes = [
     handler: getTbStatuses,
     options: {
       description: 'Get all TB status options',
-      tags: ['api', 'reference', 'tb'],
-    },
+      tags: ['api', 'reference', 'tb']
+    }
   },
   {
     method: 'GET',
@@ -79,9 +79,9 @@ const tbRoutes = [
     handler: getTbResults,
     options: {
       description: 'Get all TB result options',
-      tags: ['api', 'reference', 'tb'],
-    },
-  },
+      tags: ['api', 'reference', 'tb']
+    }
+  }
 ]
 
 export { tbRoutes }

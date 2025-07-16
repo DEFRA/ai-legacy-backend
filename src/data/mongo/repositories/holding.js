@@ -24,15 +24,11 @@ class MongoHoldingRepository {
 
       return HoldingModel.fromDocument({
         ...holdingModel,
-        _id: result.insertedId,
+        _id: result.insertedId
       })
     } catch (error) {
       // Handle MongoDB duplicate key error and convert to domain error
-      if (
-        error.code === 11000 &&
-        error.keyPattern &&
-        error.keyPattern['details.cph']
-      ) {
+      if (error.code === 11000 && error.keyPattern && error.keyPattern['details.cph']) {
         throw new DuplicateCPHError(holding.details.cph)
       }
 
@@ -48,7 +44,7 @@ class MongoHoldingRepository {
    */
   async findByCph (cph) {
     const document = await this.collection.findOne({ 'details.cph': cph })
-
+    
     if (!document) {
       return null
     }
@@ -57,4 +53,6 @@ class MongoHoldingRepository {
   }
 }
 
-export { MongoHoldingRepository }
+export {
+  MongoHoldingRepository
+}

@@ -50,4 +50,6 @@ function getSecureContext () {
   return secureContext
 }
 
-export { getSecureContext }
+export {
+  getSecureContext
+}
