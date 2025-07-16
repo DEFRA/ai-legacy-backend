@@ -23,7 +23,7 @@ class HoldingService {
    */
   async getHoldingByCph (cph) {
     const holding = await this.holdingRepository.findByCph(cph)
-    
+
     if (!holding) {
       return null
     }

@@ -22,7 +22,7 @@ await createIndexes()
 logger.info('Connected to MongoDB')
 
 async function createIndexes () {
-    await mongoClient.collection('holdings').createIndex({ 'details.cph': 1 }, { unique: true })
+  await mongoClient.collection('holdings').createIndex({ 'details.cph': 1 }, { unique: true })
 }
 
 export {

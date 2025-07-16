@@ -44,7 +44,7 @@ class MongoHoldingRepository {
    */
   async findByCph (cph) {
     const document = await this.collection.findOne({ 'details.cph': cph })
-    
+
     if (!document) {
       return null
     }

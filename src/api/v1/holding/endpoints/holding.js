@@ -72,7 +72,7 @@ async function getHoldingByCph (request, h) {
     }).code(200)
   } catch (error) {
     request.logger.error('Error retrieving holding by CPH:', error)
-    
+
     throw Boom.internal(`Failed to retrieve holding with CPH ${request.params.cph}: ${error.message}`)
   }
 }
