@@ -8,9 +8,9 @@ import { MongoFinishingUnitRepository } from '../../../../data/mongo/repositorie
  * Handler for GET /api/v1/reference/finishing-unit
  * Get all finishing unit options with optional region filtering
  *
- * @param {Object} request - Hapi request object
- * @param {Object} h - Hapi response toolkit
- * @returns {Object} Response with finishing unit data
+ * @param {import('@hapi/hapi').Request} request - Hapi request object
+ * @param {import('@hapi/hapi').ResponseToolkit} h - Hapi response toolkit
+ * @returns {import('@hapi/hapi').ResponseObject} Response with finishing unit data
  */
 async function getFinishingUnits (request, h) {
   try {

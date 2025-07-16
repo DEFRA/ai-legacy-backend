@@ -10,9 +10,9 @@ import { MongoAllocationSkipReasonsRepository } from '../../../../data/mongo/rep
  * Handler for GET /api/v1/reference/allocation-booking-method
  * Get all allocation booking method options
  *
- * @param {Object} request - Hapi request object
- * @param {Object} h - Hapi response toolkit
- * @returns {Object} Response with allocation booking method data
+ * @param {import('@hapi/hapi').Request} request - Hapi request object
+ * @param {import('@hapi/hapi').ResponseToolkit} h - Hapi response toolkit
+ * @returns {import('@hapi/hapi').ResponseObject} Response with allocation booking method data
  */
 async function getAllocationBookingMethods (request, h) {
   try {
@@ -37,9 +37,9 @@ async function getAllocationBookingMethods (request, h) {
  * Handler for GET /api/v1/reference/allocation-skip-reasons
  * Get all allocation skip reason options
  *
- * @param {Object} request - Hapi request object
- * @param {Object} h - Hapi response toolkit
- * @returns {Object} Response with allocation skip reason data
+ * @param {import('@hapi/hapi').Request} request - Hapi request object
+ * @param {import('@hapi/hapi').ResponseToolkit} h - Hapi response toolkit
+ * @returns {import('@hapi/hapi').ResponseObject} Response with allocation skip reason data
  */
 async function getAllocationSkipReasons (request, h) {
   try {

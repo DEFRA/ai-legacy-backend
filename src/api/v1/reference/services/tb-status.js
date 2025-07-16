@@ -1,5 +1,3 @@
-import { TbStatusOption } from '../models/tb-status.js'
-
 /**
  * Service for managing TB status reference data
  */
@@ -17,7 +15,7 @@ class TbStatusService {
    * Get all TB status options with optional region filtering
    *
    * @param {string|null} region - Optional region filter (must be non-empty string if provided)
-   * @returns {Promise<Array<TbStatusOption>>} List of formatted TB statuses
+   * @returns {Promise<Array<Object>>} List of TB status options
    * @throws {Error} When repository operations fail
    */
   async getOptions (region = null) {
@@ -30,7 +28,11 @@ class TbStatusService {
         options = await this.repository.getAll()
       }
 
-      return options.map(option => TbStatusOption.fromEntity(option))
+      return options.map(option => ({
+        code: option.code,
+        description: option.description,
+        regions: option.validRegions || []
+      }))
     } catch (error) {
       throw new Error('Failed to retrieve TB status options')
     }

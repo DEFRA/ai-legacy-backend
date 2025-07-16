@@ -1,5 +1,3 @@
-import { AllocationSkipReasonOption } from '../models/allocation-skip-reasons.js'
-
 /**
  * Service for managing allocation skip reasons reference data
  */
@@ -16,7 +14,7 @@ class AllocationSkipReasonsService {
   /**
    * Get all allocation skip reason options
    *
-   * @returns {Promise<Array<AllocationSkipReasonOption>>} List of formatted allocation skip reasons
+   * @returns {Promise<Array<Object>>} List of allocation skip reason options
    * @throws {Error} When repository operations fail
    */
   async getOptions () {
@@ -27,7 +25,9 @@ class AllocationSkipReasonsService {
         return []
       }
 
-      return options.map(option => AllocationSkipReasonOption.fromEntity(option))
+      return options.map(option => ({
+        reason: option.reason
+      }))
     } catch (error) {
       throw new Error('Failed to retrieve allocation skip reason options')
     }
