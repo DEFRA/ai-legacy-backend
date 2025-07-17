@@ -25,7 +25,7 @@ const serverConfig = {
   port: {
     doc: 'The port to bind',
     format: 'port',
-    default: 3002,
+    default: 3000,
     env: 'PORT'
   },
   serviceName: {
@@ -77,38 +77,6 @@ const serverConfig = {
       format: String,
       default: 'fcp-sfd-accelerator',
       env: 'MONGO_DATABASE'
-    }
-  },
-  postgres: {
-    host: {
-      doc: 'PostgreSQL host',
-      format: String,
-      default: 'localhost',
-      env: 'POSTGRES_HOST'
-    },
-    port: {
-      doc: 'PostgreSQL port',
-      format: 'port',
-      default: 5432,
-      env: 'POSTGRES_PORT'
-    },
-    database: {
-      doc: 'PostgreSQL database name',
-      format: String,
-      default: 'tbcms',
-      env: 'POSTGRES_DB'
-    },
-    user: {
-      doc: 'PostgreSQL username',
-      format: String,
-      default: 'postgres',
-      env: 'POSTGRES_USER'
-    },
-    password: {
-      doc: 'PostgreSQL password',
-      format: String,
-      default: 'postgres',
-      env: 'POSTGRES_PASSWORD'
     }
   },
   httpProxy: {

@@ -5,14 +5,12 @@ services:
     image: ai-legacy-backend-development
     container_name: ai-legacy-backend-development
     ports:
-      - '3002:3002'
+      - '3000:3000'
       - '9232:9232'
     links:
       - 'mongodb:mongodb'
     depends_on:
       mongodb:
-        condition: service_started
-      postgres:
         condition: service_started
     volumes:
       - ./src/:/home/node/src
@@ -20,19 +18,12 @@ services:
     env_file:
       - .env
     environment:
-      PORT: 3002
+      PORT: 3000
       PORT_DEBUG: 9232
       NODE_ENV: development
       MONGO_URI: mongodb://mongodb:27017/
-      MONGO_DATABASE: tbcms
-      MONGO_AUTO_INIT: true
-      POSTGRES_HOST: postgres
-      POSTGRES_PORT: 5432
-      POSTGRES_DB: tbcms
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ppp
     networks:
-      - ai-legacy-backend
+      - ai-tech-radar
 
   mongodb:
     image: mongo:6.0.13
@@ -40,51 +31,14 @@ services:
       - '27017:27017'
     volumes:
       - mongodb-data:/data
-      - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-    environment:
-      MONGO_INITDB_DATABASE: tbcms
     networks:
-      - ai-legacy-backend
-
-  postgres:
-    image: postgres:15-alpine
-    container_name: ai-legacy-backend-postgres
-    ports:
-      - '5432:5432'
-    environment:
-      POSTGRES_DB: tbcms
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ppp
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    networks:
-      - ai-legacy-backend
-
-  liquibase:
-    image: liquibase/liquibase:latest
-    container_name: ai-legacy-backend-liquibase
-    depends_on:
-      postgres:
-        condition: service_started
-    volumes:
-      - ./changelog:/liquibase/changelog
-    working_dir: /liquibase/changelog
-    environment:
-      LIQUIBASE_COMMAND_URL: jdbc:postgresql://postgres:5432/tbcms
-      LIQUIBASE_COMMAND_USERNAME: postgres
-      LIQUIBASE_COMMAND_PASSWORD: ppp
-      LIQUIBASE_COMMAND_CHANGELOG_FILE: db.changelog.xml
-    networks:
-      - ai-legacy-backend
-    profiles:
-      - tools
+      - ai-tech-radar
 
 volumes:
   mongodb-data:
-  postgres-data:
 
 networks:
-  ai-legacy-backend:
-    name: ai-legacy-backend
+  ai-tech-radar:
+    name: ai-tech-radar
     driver: bridge
 

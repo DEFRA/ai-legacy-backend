@@ -9,50 +9,13 @@ services:
       - path: .env
         required: false
     environment:
-      PORT: 3002
+      PORT: 3000
       NODE_ENV: development
       MONGO_URI: mongodb://mongodb:27017/
-      POSTGRES_HOST: postgres
-      POSTGRES_PORT: 5432
-      POSTGRES_DB: tbcms_test
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
     volumes:
       - ./src/:/home/node/src
       - ./test/:/home/node/test
       - ./package.json:/home/node/package.json
       - ./coverage:/home/node/coverage
     networks:
-      - ai-legacy-backend
-
-  postgres:
-    image: postgres:15-alpine
-    container_name: ai-legacy-backend-postgres-test
-    ports:
-      - '5433:5432'  # Different port to avoid conflicts
-    environment:
-      POSTGRES_DB: tbcms_test
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ppp
-    tmpfs:
-      - /var/lib/postgresql/data  # Use tmpfs for faster test database
-    networks:
-      - ai-legacy-backend
-
-  liquibase:
-    image: liquibase/liquibase:latest
-    container_name: ai-legacy-backend-liquibase-test
-    depends_on:
-      postgres:
-        condition: service_started
-    volumes:
-      - ./changelog:/liquibase/changelog
-    environment:
-      LIQUIBASE_COMMAND_URL: jdbc:postgresql://postgres:5432/tbcms_test
-      LIQUIBASE_COMMAND_USERNAME: postgres
-      LIQUIBASE_COMMAND_PASSWORD: ppp
-      LIQUIBASE_COMMAND_CHANGELOG_FILE: changelog/db.changelog.xml
-    networks:
-      - ai-legacy-backend
-    profiles:
-      - tools
+      - ai-tech-radar

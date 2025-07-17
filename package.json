@@ -1,6 +1,6 @@
 {
   "name": "ai-legacy-backend",
-  "version": "0.3.0",
+  "version": "0.1.0",
   "description": "Backend REST API for maintaining entries on the Defra AI Tech Radar",
   "main": "src/index.js",
   "type": "module",
@@ -14,38 +14,18 @@
     "docker:test:watch": "docker compose down -v && docker compose -f compose.yaml -f compose.test.yaml -f compose.test.watch.yaml run  --build --rm 'ai-legacy-backend'",
     "test": "rm -rf ./coverage/** && vitest run --coverage",
     "test:watch": "vitest watch",
-    "test:mongo": "npm run mongo:start && npm run test && npm run mongo:stop",
-    "test:mongo:watch": "npm run mongo:start && vitest watch",
-    "test:mongo:integration": "./scripts/test-mongo-integration.sh",
     "test:lint": "npx eslint",
-    "mongo:start": "./scripts/mongo-test.sh start",
-    "mongo:stop": "./scripts/mongo-test.sh stop",
-    "mongo:restart": "./scripts/mongo-test.sh restart",
-    "seed:tb-status": "node scripts/seed-tb-status.js",
-    "seed:tb-status:drop": "node scripts/seed-tb-status.js --drop",
-    "init:mongodb": "node scripts/init-mongodb.js",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "lint:fix": "eslint --fix .",
     "start:watch": "nodemon --watch src --exec 'node src/index.js'",
     "start:debug": "nodemon --watch src --exec 'node --inspect-brk=0.0.0.0:9232 src/index.js'",
-    "start": "node src/index.js",
-    "prepare": "husky"
+    "start": "node src/index.js"
   },
   "author": "Defra DDTS",
-  "contributors": [
-    {
-      "name": "Defra DDTS Team",
-      "email": "defra.ddts@defra.gov.uk"
-    }
-  ],
+  "contributors": [],
   "dependencies": {
     "@defra/hapi-tracing": "1.0.0",
     "@elastic/ecs-pino-format": "1.5.0",
     "@hapi/boom": "10.0.1",
     "@hapi/hapi": "21.3.12",
-    "@hapi/inert": "^7.1.0",
-    "@hapi/vision": "^7.0.3",
     "aws-embedded-metrics": "4.2.0",
     "aws4": "1.13.2",
     "convict": "6.2.4",
@@ -53,38 +33,23 @@
     "global-agent": "3.0.0",
     "hapi-pino": "12.1.0",
     "hapi-pulse": "3.0.1",
-    "hapi-swagger": "^17.3.2",
     "http-status-codes": "2.3.0",
     "https-proxy-agent": "7.0.5",
     "joi": "17.13.3",
-    "knex": "^3.1.0",
     "mongo-locks": "3.0.2",
     "mongodb": "6.10.0",
     "node-fetch": "3.3.2",
-    "pg": "^8.16.2",
     "pino": "9.5.0",
     "pino-pretty": "13.0.0",
-    "swagger-jsdoc": "^6.2.8",
     "undici": "^7.10.0"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "3.1.4",
     "autoprefixer": "10.4.20",
     "eslint": "^9.28.0",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.1.2",
     "neostandard": "^0.12.1",
     "nodemon": "3.1.7",
     "npm-run-all": "4.1.5",
-    "prettier": "^3.6.0",
     "vitest": "3.1.4"
-  },
-  "lint-staged": {
-    "*.{js,mjs,cjs,jsx,ts,tsx}": [
-      "prettier --write"
-    ],
-    "*.{json,md,yml,yaml}": [
-      "prettier --write"
-    ]
   }
 }
