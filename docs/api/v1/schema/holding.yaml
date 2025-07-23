@@ -1,16 +1,8 @@
 title: Holding
 type: object
 properties:
-  id:
-    type: string
-    format: uuid
-    description: Unique identifier for the holding
-    example: "550e8400-e29b-41d4-a716-446655440000"
   cph:
-    type: string
-    pattern: '^\d{2}/\d{3}/\d{4}$'
-    description: County Parish Holding number
-    example: "12/345/6789"
+    $ref: './cph.yaml'
   name:
     type: string
     description: Farm or premises name
@@ -19,7 +11,7 @@ properties:
     type: string
     description: Farm description
     example: "Mixed dairy and arable farm specializing in Holstein cattle"
-  contact:
+  contacts:
     type: array
     items:
       $ref: './contact.yaml'

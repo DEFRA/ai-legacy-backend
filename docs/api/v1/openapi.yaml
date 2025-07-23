@@ -1,4 +1,4 @@
-openapi: 3.1.1
+openapi: "3.1.0"
 info:
   title: TBCMS API
   description: Tuberculosis Case Management System API
@@ -24,4 +24,3 @@ components:
 tags:
   - name: Holdings
     description: Holdings management operations
-

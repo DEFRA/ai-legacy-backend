@@ -6,10 +6,7 @@ required:
   - address
 properties:
   cph:
-    type: string
-    pattern: '^\d{2}/\d{3}/\d{4}$'
-    description: County Parish Holding number (9-digit format XX/XXX/XXXX)
-    example: "12/345/6789"
+    $ref: './cph.yaml'
   name:
     type: string
     maxLength: 255

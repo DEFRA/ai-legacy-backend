@@ -1,4 +1,45 @@
 # Holdings resource path for OpenAPI
+get:
+  summary: Get holding information by CPH
+  description: |
+    Retrieves complete holding information (core details, contact info, address, geolocation) for a given CPH number.
+    Supports user story: Holdings - View Holding Information.
+  operationId: getHoldingByCph
+  tags:
+    - Holdings
+  parameters:
+    - name: cph
+      in: path
+      required: true
+      schema:
+        $ref: '../schema/cph.yaml'
+      description: The County Parish Holding number to retrieve information for
+  responses:
+    '200':
+      description: Holding found and returned successfully
+      content:
+        application/json:
+          schema:
+            $ref: '../schema/holding.yaml'
+    '404':
+      description: No holding found for the given CPH
+      content:
+        application/problem+json:
+          schema:
+            $ref: '../schema/problem-details.yaml'
+          examples:
+            not-found:
+              summary: Holding not found
+              value:
+                title: "Not Found"
+                status: 404
+                detail: "No holding found for CPH '12/345/6789'"
+    '500':
+      description: Internal server error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '../schema/problem-details.yaml'
 post:
   summary: Create a new holding
   description: Creates a new holding record with core information, contact details, and location data
