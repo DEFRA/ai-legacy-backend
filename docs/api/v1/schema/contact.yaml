@@ -1,0 +1,30 @@
+title: Contact
+type: object
+required:
+  - type
+  - value
+properties:
+  type:
+    type: string
+    enum: [telephone, email]
+    description: Type of contact information
+  value:
+    type: string
+    description: Contact value with appropriate validation based on type
+    example: "01234 567891"
+oneOf:
+  - properties:
+      type:
+        const: telephone
+      value:
+        type: string
+        description: UK telephone number (landline or mobile)
+        example: "01234 567891"
+  - properties:
+      type:
+        const: email
+      value:
+        type: string
+        format: email
+        description: Email address
+        example: "farmer@example.com"

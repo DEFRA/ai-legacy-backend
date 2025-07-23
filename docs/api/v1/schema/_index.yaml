@@ -1,0 +1,12 @@
+Address:
+  $ref: './address.yaml'
+Contact:
+  $ref: './contact.yaml'
+Geolocation:
+  $ref: './geolocation.yaml'
+ProblemDetails:
+  $ref: './problem-details.yaml'
+Holding:
+  $ref: './holding.yaml'
+CreateHoldingRequest:
+  $ref: './create-holding-request.yaml'

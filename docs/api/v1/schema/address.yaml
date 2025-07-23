@@ -1,0 +1,33 @@
+title: Address
+$type: object
+required:
+  - street
+  - town
+  - county
+  - postcode
+properties:
+  street:
+    type: string
+    maxLength: 255
+    description: Street address
+    example: Farm Lane
+  locality:
+    type: string
+    maxLength: 255
+    description: Locality or village
+    example: Little Meadow
+  town:
+    type: string
+    maxLength: 255
+    description: Town or city
+    example: Farmington
+  county:
+    type: string
+    maxLength: 255
+    description: County
+    example: Gloucestershire
+  postcode:
+    type: string
+    pattern: '^[A-Z]{1,2}[0-9][A-Z0-9]? [0-9][A-Z]{2}$'
+    description: UK postcode
+    example: GL7 4AB

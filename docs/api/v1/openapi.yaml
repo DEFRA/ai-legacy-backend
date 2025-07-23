@@ -1,0 +1,27 @@
+openapi: 3.1.1
+info:
+  title: TBCMS API
+  description: Tuberculosis Case Management System API
+  version: 1.0.0
+
+servers:
+  - url: https://{host}:{port}
+    description: API server
+    variables:
+      host:
+        default: "api.tbcms.example.com"
+      port:
+        default: "3001"
+
+paths:
+  /holdings:
+    $ref: './resources/holdings.yaml'
+
+components:
+  schemas:
+    $ref: './schema/_index.yaml'
+
+tags:
+  - name: Holdings
+    description: Holdings management operations
+

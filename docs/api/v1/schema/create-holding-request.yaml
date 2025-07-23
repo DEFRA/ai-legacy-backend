@@ -1,0 +1,33 @@
+title: CreateHoldingRequest
+type: object
+required:
+  - cph
+  - name
+  - address
+properties:
+  cph:
+    type: string
+    pattern: '^\d{2}/\d{3}/\d{4}$'
+    description: County Parish Holding number (9-digit format XX/XXX/XXXX)
+    example: "12/345/6789"
+  name:
+    type: string
+    maxLength: 255
+    description: Farm or premises name
+    example: "Meadowbrook Farm"
+  description:
+    type: string
+    maxLength: 500
+    description: Farm description
+    example: "Mixed dairy and arable farm specializing in Holstein cattle"
+  contact:
+    type: array
+    minItems: 1
+    maxItems: 2
+    description: Contact information (maximum one telephone and one email)
+    items:
+      $ref: './contact.yaml'
+  address:
+    $ref: './address.yaml'
+  geolocation:
+    $ref: './geolocation.yaml'

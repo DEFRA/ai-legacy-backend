@@ -1,0 +1,20 @@
+title: Geolocation
+type: object
+properties:
+  mapRef:
+    type: string
+    pattern: '^[A-Z]{2}[0-9]{6}$'
+    description: Full OS Grid Reference (2 letters + 6 digits)
+    example: "SP123456"
+  easting:
+    type: integer
+    minimum: 0
+    maximum: 800000
+    description: OS Grid Reference Easting coordinate
+    example: 412345
+  northing:
+    type: integer
+    minimum: 0
+    maximum: 1400000
+    description: OS Grid Reference Northing coordinate
+    example: 267890

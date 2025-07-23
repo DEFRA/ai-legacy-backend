@@ -1,0 +1,64 @@
+# Holdings resource path for OpenAPI
+post:
+  summary: Create a new holding
+  description: Creates a new holding record with core information, contact details, and location data
+  operationId: createHolding
+  tags:
+    - Holdings
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schema/create-holding-request.yaml'
+  responses:
+    '201':
+      description: Holding created successfully
+      content:
+        application/json:
+          schema:
+            $ref: '../schema/holding.yaml'
+    '400':
+      description: Issue with created holding request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '../schema/problem-details.yaml'
+          examples:
+            validation-error:
+              summary: Validation error example
+              value:
+                title: "Validation Error"
+                status: 400
+                detail: "The request contains invalid data"
+                errors:
+                  - field: "cph"
+                    message: "CPH must follow format XX/XXX/XXXX"
+                    value: "invalid_cph"
+                    pointer: "#/cph"
+    '409':
+      description: Holding with this CPH already exists
+      content:
+        application/problem+json:
+          schema:
+            $ref: '../schema/problem-details.yaml'
+          examples:
+            conflict-error:
+              summary: CPH conflict example
+              value:
+                title: "Duplicate CPH"
+                status: 409
+                detail: "A holding with CPH '12/345/6789' already exists"
+    '500':
+      description: Internal server error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '../schema/problem-details.yaml'
+          examples:
+            server-error:
+              summary: Internal server error example
+              value:
+                title: "Internal Server Error"
+                status: 500
+                detail: "An unexpected error occurred while processing the request"
