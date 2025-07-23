@@ -87,300 +87,308 @@ erDiagram
     Incidents ||--o{ ContactRecords : "embeds array"
     
     %% Embedded document relationships within Holdings
-    Holdings ||--|| Address : "embeds"
-    Holdings ||--|| ContactInfo : "embeds"
-    Holdings ||--|| Coordinates : "embeds"
+    Holdings ||--|| Details : "embeds"
+
+    Details ||--|| Address : "embeds"
+    Details ||--o{ Contact : "embeds array"
+    Details ||--|| Geolocation : "embeds"
     
     %% Nested embedded documents within arrays
     DrfReports ||--|| ReportData : "embeds"
 
     Incidents {
-        ObjectId _id PK
-        string natInc UK "National Incident Number"
-        ObjectId holdingId FK "Reference to Holdings collection"
-        string cph "County Parish Holding number (denormalized)"
-        object allocationInfo "Allocation workflow data"
-        object drfInfo "DRF workflow data"
-        object gisInfo "GIS mapping data"
-        object contiguousInfo "Contiguous testing data"
-        object postKillInfo "Post-kill processing data"
-        object tracingInfo "Contact tracing data"
-        array eartags "Animal identification records"
-        array removals "Animal removal records"
-        array valuations "Compensation valuation records"
-        array radialTests "Radial and hotspot testing records"
-        array drfReports "Disease Risk Factor reports"
-        array contactRecords "Communication tracking records"
-        string tbStatus "TB Status description"
-        boolean slh "Slaughterhouse case"
-        boolean empb "Emergency slaughter"
-        string afu "Approved Finishing Unit type"
-        date tt2 "TB2 test date"
-        date tb2Served "Restriction notice date"
-        string genComment "General comments"
-        string dashboardComment "Dashboard comments"
-        date tb10 "Restrictions lifted date"
-        string caseVo "Veterinary Officer"
-        string caseAdmin "Case Administrator"
-        string result "Case result description"
-        string wss "Work Sheet reference"
-        date createdAt
-        date updatedAt
+        id ObjectId PK
+        natInc String UK "UNIQUE"
+        holdingId ObjectId FK "NOT NULL"
+        cph String "NOT NULL"
+        allocationInfo AllocationInfo "NOT NULL"
+        drfInfo DrfInfo "NOT NULL"
+        gisInfo GisInfo "NOT NULL"
+        contiguousInfo ContiguousInfo "NOT NULL"
+        postKillInfo PostKillInfo "NOT NULL"
+        tracingInfo TracingInfo "NOT NULL"
+        eartags Eartags[] "NOT NULL"
+        removals Removals[] "NOT NULL"
+        valuations Valuations[] "NOT NULL"
+        radialTests RadialTests[] "NOT NULL"
+        drfReports DrfReports[] "NOT NULL"
+        contactRecords ContactRecords[] "NOT NULL"
+        tbStatus String "NULLABLE"
+        slh Boolean "NULLABLE"
+        empb Boolean "NULLABLE"
+        afu String "NULLABLE"
+        tt2 Date "NULLABLE"
+        tb2Served Date "NULLABLE"
+        genComment String "NULLABLE"
+        dashboardComment String "NULLABLE"
+        tb10 Date "NULLABLE"
+        caseVo String "NULLABLE"
+        caseAdmin String "NULLABLE"
+        bt5SentDate String "NULLABLE"
+        result String "NULLABLE"
+        tbTest String "NULLABLE"
+        wss String "NULLABLE"
+        confirmationDate Date "NULLABLE"
+        databaseEntryDate Date "NULLABLE"
+        imt21SentDate Date "NULLABLE"
+        finalPmDate Date "NULLABLE"
+        afuCompletedDate Date "NULLABLE"
+        coLocatedOtherSpecies Boolean "NULLABLE"
+        conSpecies Boolean "NULLABLE"
+        createdAt Date "NOT NULL"
+        updatedAt Date "NULLABLE"
     }
 
     AllocationInfo {
-        string admin "Allocation administrator"
-        date bookedFor "Booked allocation date"
-        string bookingMethod "Booking method description"
-        boolean calendar "Calendar booking flag"
-        boolean sam "SAM booking flag"
-        date drfInfDate "DRF information date"
-        string emailSentBy "Email sender"
-        string comment "Allocation comments"
-        string notRequired "Not required reason"
-        string failCategory "Failure category reason"
-        boolean notReq "Allocation not required flag"
+        admin String
+        bookedFor Date
+        bookingMethod String
+        calendar Boolean
+        sam Boolean
+        drfInfDate Date
+        emailSentBy String
+        comment String
+        notRequired String
+        failCategory String
+        notReq Boolean
     }
 
     DrfInfo {
-        string fieldStaff "DRF field staff"
-        date mapRequestDate "Map request date"
-        date fieldInfDate "Field information date"
-        boolean reactorNum "Reactor numbering flag"
-        boolean publicAccess "Public access flag"
-        boolean noPrevious "No previous history flag"
-        date initialCompletedDate "Initial DRF completion date"
-        string phoneVisit "Phone/visit method"
-        string failCategory "DRF failure category reason"
-        boolean late "Late submission flag"
-        date finalCompletedDate "Final DRF completion date"
-        boolean tenPercentAudit "Audit selection flag"
-        string comments "DRF comments"
-        string voNotifiedAdmin "VO notification admin"
-        boolean notRequired "DRF not required flag"
+        fieldStaff String
+        mapRequestDate Date
+        fieldInfDate Date
+        reactorNum Boolean
+        publicAccess Boolean
+        noPrevious Boolean
+        initialCompletedDate Date
+        phoneVisit String
+        failCategory String
+        late Boolean
+        finalCompletedDate Date
+        tenPercentAudit Boolean
+        comments String
+        voNotifiedAdmin String
+        notRequired Boolean
     }
 
     GisInfo {
-        string admin "GIS administrator"
-        date mapCreated "Map creation date"
-        int numberMaps "Number of maps created"
-        string comment "GIS comments"
-        boolean notRequired "GIS not required flag"
+        admin String
+        mapCreated Date
+        numberMaps Number
+        comment String
+        notRequired Boolean
     }
 
     ContiguousInfo {
-        date dateInstigated "Contiguous testing start date"
-        date dateNotified "Notification date"
-        int numberContigs "Number of contiguous tests"
-        string comment "Contiguous comments"
-        string failCategory "Failure category reason"
-        boolean notRequired "Contiguous not required flag"
-        boolean complete "Contiguous complete flag"
-        string admin "Contiguous administrator"
+        notRequired Boolean
+        species Boolean
+        colocatedOtherSpecies Boolean
+        admin String
+        instigationDate Date
+        notificationDate Date
+        finalPmDate Date
+        testCount Number
+        actionsComplete Boolean
+        comments String
     }
 
     PostKillInfo {
-        string comment "Post-kill comments"
-        string admin "Post-kill administrator"
+        comment String
+        admin String
     }
 
     TracingInfo {
-        int group "Tracing group number"
-        string wss "Work sheet reference"
-        string sourceWs "Source work sheet"
-        string spreadWs "Spread work sheet"
-        date notifiedDate "Notification date"
-        date wsToCardiffDate "Cardiff submission date"
-        date drfCheckedDate "DRF check date"
-        string admin "Tracing administrator"
-        string comments "Tracing comments"
+        group Number
+        wss String
+        sourceWs String
+        spreadWs String
+        notifiedDate Date
+        wsToCardiffDate Date
+        drfCheckedDate Date
+        admin String
+        comments String
     }
 
     Eartags {
-        string eartag "Animal identification number"
-        string species "Animal species"
-        boolean reactor "TB reactor status"
-        boolean priorityReactor "Priority reactor flag"
-        date testDate "TB test date"
-        date createdAt "Record creation timestamp"
+        eartag String
+        species String
+        reactor Boolean
+        priorityReactor Boolean
+        testDate Date
+        createdAt Date
     }
 
     Removals {
-        string eartag "Animal reference"
-        string removalType "Removal method"
-        date removalDate "Date of removal"
-        string destination "Abattoir/knacker destination"
-        string worksheet "Work sheet reference"
-        date createdAt "Record creation timestamp"
+        eartag String
+        removalType String
+        removalDate Date
+        destination String
+        worksheet String
+        createdAt Date
     }
 
     Valuations {
-        string region "Region: Wales/Scotland/England"
-        decimal valuationAmount "Compensation amount in GBP"
-        date valuationDate "Valuation date"
-        string status "Valuation status"
-        date createdAt "Record creation timestamp"
+        region String
+        valuationAmount Number
+        valuationDate Date
+        status String
+        createdAt Date
     }
 
     RadialTests {
-        string testType "Test type: Radial/Hotspot"
-        date testDate "Test date"
-        string result "Test result"
-        date createdAt "Record creation timestamp"
+        testType String
+        testDate Date
+        result String
+        createdAt Date
     }
 
     DrfReports {
-        string reportType "Report type: Farm level/Candidate"
-        date reportDate "Report generation date"
-        object reportData "Report content"
-        date createdAt "Record creation timestamp"
+        reportType String
+        reportDate Date
+        reportData ReportData "NOT NULL"
+        createdAt Date
     }
 
     ReportData {
-        string reportId "Unique report identifier"
-        string status "Report status"
-        string findings "Report findings"
-        string recommendations "Recommendations"
-        array attachments "File attachment references"
+        reportId String
+        status String
+        findings String
+        recommendations String
+        attachments String[] "NOT NULL"
     }
 
     ContactRecords {
-        date contactDate "Contact date and time"
-        string contactType "Contact method"
-        string contactDetails "Contact information and notes"
-        string staffMember "Staff member who made contact"
-        string outcome "Contact outcome"
-        boolean followUpRequired "Follow-up action required flag"
-        date followUpDate "Scheduled follow-up date"
-        date createdAt "Record creation timestamp"
+        contactDate Date
+        contactType String
+        contactDetails String
+        staffMember String
+        outcome String
+        followUpRequired Boolean
+        followUpDate Date
+        createdAt Date
     }
 
     Holdings {
-        ObjectId _id PK
-        string cph UK "County Parish Holding number"
-        string cphName "Farm/premises name"
-        string description "Description"
-        object address "Complete address information"
-        object contactInfo "Phone and mobile numbers"
-        string language "Preferred language"
-        boolean pgpStudy "PGP study participant"
-        object coordinates "Location details (embeds Coordinates schema)"
-        array incidents "Array of incident ObjectIds"
-        date createdAt
-        date updatedAt
+        id ObjectId PK "NOT NULL"
+        details Details "NOT NULL"
+        incidents ObjectId[] "NOT NULL"
+    }
+
+    Details {
+      cph String "INDEXED NOT NULL"
+      name String "NOT NULL"
+      description String "NULLABLE"
+      address Address "NOT NULL"
+      contacts Contact[] "NOT NULL"
+      geolocation Geolocation "NOT NULL"
     }
 
     Address {
-        string street "Street address"
-        string locality "Locality/village"
-        string town "Town/city"
-        string county "County"
-        string postcode "Postal code"
-        string country "Country (default: UK)"
+        street String
+        locality String
+        town String
+        county String
+        postcode String
+        country String
     }
 
-    ContactInfo {
-        string landline "Landline telephone number"
-        string mobile "Mobile telephone number"
-        string email "Email address"
-        string preferredMethod "Preferred contact method"
+    Contact {
+        type String
+        value String
     }
 
-    Coordinates {
-        int easting "OS Grid Reference Easting"
-        int northing "OS Grid Reference Northing"
-        string mapRef "Full OS Grid Reference"
-        decimal latitude "WGS84 Latitude (optional)"
-        decimal longitude "WGS84 Longitude (optional)"
-        string description "Location description (optional)"
+    Geolocation {
+        mapRef String
+        easting Number
+        northing Number
     }
 
     TbStatuses {
-        ObjectId _id PK
-        int statusId UK "Original TB status ID"
-        string statusAbb "Status abbreviation"
-        string status "Full status description"
-        array regions "Available regions"
-        date createdAt
-        date updatedAt
+        id ObjectId PK
+        statusId Number UK
+        statusAbb String
+        status String
+        regions String[] "NOT NULL"
+        createdAt Date
+        updatedAt Date
     }
 
     Units {
-        ObjectId _id PK
-        int unitId UK "Original unit ID"
-        string unitType "Unit type description"
-        array regions "Available regions"
-        date createdAt
-        date updatedAt
+        id ObjectId PK
+        unitId Number UK
+        unitType String
+        regions String[] "NOT NULL"
+        createdAt Date
+        updatedAt Date
     }
 
     Results {
-        ObjectId _id PK
-        string result UK "Result code"
-        string description "Result description"
-        date createdAt
-        date updatedAt
+        id ObjectId PK
+        result String UK
+        description String
+        createdAt Date
+        updatedAt Date
     }
 
     AllcBookingMethods {
-        ObjectId _id PK
-        int methodId UK "Original booking method ID"
-        string allBookingMethod "Booking method description"
-        date createdAt
-        date updatedAt
+        id ObjectId PK
+        methodId Number UK
+        allBookingMethod String
+        createdAt Date
+        updatedAt Date
     }
 
     AllcNotReasons {
-        ObjectId _id PK
-        int reasonId UK "Original reason ID"
-        string reason "Not required reason"
-        date createdAt
-        date updatedAt
+        id ObjectId PK
+        reasonId Number UK
+        reason String
+        createdAt Date
+        updatedAt Date
     }
 
     AllcFailCategories {
-        ObjectId _id PK
-        int categoryId UK "Original category ID"
-        string reason "Allocation failure reason"
-        array regions "Available regions"
-        date createdAt
-        date updatedAt
+        id ObjectId PK
+        categoryId Number UK
+        reason String
+        regions String[] "NOT NULL"
+        createdAt Date
+        updatedAt Date
     }
 
     DrfFailCategories {
-        ObjectId _id PK
-        int categoryId UK "Original category ID"
-        string reason "DRF failure reason"
-        array regions "Available regions"
-        date createdAt
-        date updatedAt
+        id ObjectId PK
+        categoryId Number UK
+        reason String
+        regions String[] "NOT NULL"
+        createdAt Date
+        updatedAt Date
     }
 
     ContiguousFailCategories {
-        ObjectId _id PK
-        int categoryId UK "Original category ID"
-        string reason "Contiguous testing failure reason"
-        array regions "Available regions"
-        date createdAt
-        date updatedAt
+        id ObjectId PK
+        categoryId Number UK
+        reason String
+        regions String[] "NOT NULL"
+        createdAt Date
+        updatedAt Date
     }
 
     ReactorCategories {
-        ObjectId _id PK
-        int categoryId UK "Original category ID"
-        string reason "Reactor classification reason"
-        array regions "Available regions"
-        date createdAt
-        date updatedAt
+        id ObjectId PK
+        categoryId Number UK
+        reason String
+        regions String[] "NOT NULL"
+        createdAt Date
+        updatedAt Date
     }
 
     OnFarmKillCategories {
-        ObjectId _id PK
-        int categoryId UK "Original category ID"
-        string reason "On-farm kill reason"
-        array regions "Available regions"
-        date createdAt
-        date updatedAt
+        id ObjectId PK
+        categoryId Number UK
+        reason String
+        regions String[] "NOT NULL"
+        createdAt Date
+        updatedAt Date
     }
 ```
 
@@ -578,49 +586,50 @@ This collection represents the main `case` table from SQL, with embedded workflo
 | MongoDB Field | Type | SQL Mapping | Constraints | Description |
 |---------------|------|-------------|-------------|-------------|
 | `_id` | ObjectId | - | Primary Key | MongoDB auto-generated |
-| `cph` | String | `cph` | Unique Index | County Parish Holding number |
-| `cphName` | String | `cph_name` | - | Farm/premises name |
-| `description` | String | `description` | - | Description |
-| `address` | Object | Multiple address fields | Embedded | See address mapping below |
-| `contactInfo` | Object | `landline`, `mobile` | Embedded | Contact information |
-| `language` | String | `language` | Max 7 chars | Preferred language |
-| `pgpStudy` | Boolean | `pgp_study` | Default: false | PGP study participant |
-| `coordinates` | Object | `easting`, `northing`, `map_ref` | Embedded | Location details (embeds Coordinates schema) |
+| `details` | Object | Multiple fields | Embedded | Core holding details (see Details mapping below) |
 | `incidents` | Array[ObjectId] | - | References to Incidents | Array of incident ObjectIds for this holding |
 | `createdAt` | Date | `created_at` | - | Record creation timestamp |
 | `updatedAt` | Date | - | - | Record update timestamp |
 
-#### Embedded Document: `address`
+#### Embedded Document: `details`
+
+| MongoDB Field | Type | SQL Mapping | Constraints | Description |
+|---------------|------|-------------|-------------|-------------|
+| `details.cph` | String | `cph` | Unique Index | County Parish Holding number |
+| `details.name` | String | `cph_name` | - | Farm/premises name |
+| `details.description` | String | `description` | - | Farm description |
+| `details.address` | Object | Multiple address fields | Embedded | See address mapping below |
+| `details.contacts` | Array[Object] | `landline`, `mobile`, `email` | Embedded | Contact information array |
+| `details.geolocation` | Object | `easting`, `northing`, `map_ref` | Embedded | Location details (embeds Geolocation schema) |
+
+#### Embedded Document: `details.address`
 
 | MongoDB Field | Type | SQL Mapping | Description |
 |---------------|------|-------------|-------------|
-| `address.street` | String | `street` | Street address |
-| `address.locality` | String | `locality` | Locality |
-| `address.town` | String | `town` | Town |
-| `address.county` | String | `county` | County |
-| `address.postcode` | String | `postcode` | Postal code |
+| `details.address.street` | String | `street` | Street address |
+| `details.address.locality` | String | `locality` | Locality |
+| `details.address.town` | String | `town` | Town |
+| `details.address.county` | String | `county` | County |
+| `details.address.postcode` | String | `postcode` | Postal code |
 
-#### Embedded Document: `contactInfo`
-
-| MongoDB Field | Type | SQL Mapping | Description |
-|---------------|------|-------------|-------------|
-| `contactInfo.landline` | String | `landline` | Landline telephone number |
-| `contactInfo.mobile` | String | `mobile` | Mobile telephone number |
-| `contactInfo.email` | String | `email` | Email address |
-| `contactInfo.preferredMethod` | String | `preferred_method` | Preferred contact method |
-
-#### Embedded Document: `coordinates` (Coordinates Schema)
-
-This embeds the standardized Coordinates schema used throughout the system for location details.
+#### Embedded Array: `details.contacts`
 
 | MongoDB Field | Type | SQL Mapping | Description |
 |---------------|------|-------------|-------------|
-| `coordinates.easting` | Number | `easting` | OS Grid Reference Easting |
-| `coordinates.northing` | Number | `northing` | OS Grid Reference Northing |
-| `coordinates.mapRef` | String | `map_ref` | Full OS Grid Reference |
-| `coordinates.latitude` | Number | `latitude` | WGS84 Latitude (optional) |
-| `coordinates.longitude` | Number | `longitude` | WGS84 Longitude (optional) |
-| `coordinates.description` | String | `description` | Location description (optional) |
+| `details.contacts[].type` | String | - | Contact type (landline, mobile, email) |
+| `details.contacts[].value` | String | `landline`, `mobile`, `email` | Contact value |
+
+#### Embedded Document: `details.geolocation` (Geolocation Schema)
+
+#### Embedded Document: `details.geolocation` (Geolocation Schema)
+
+This embeds the standardized Geolocation schema used throughout the system for location details.
+
+| MongoDB Field | Type | SQL Mapping | Description |
+|---------------|------|-------------|-------------|
+| `details.geolocation.mapRef` | String | `map_ref` | Full OS Grid Reference |
+| `details.geolocation.easting` | Number | `easting` | OS Grid Reference Easting |
+| `details.geolocation.northing` | Number | `northing` | OS Grid Reference Northing |
 
 ### Collection: `TbStatuses`
 
@@ -761,295 +770,3 @@ This collection represents on-farm kill reason categories from the original SQL 
 | `regions` | Array[String] | Regional boolean fields | - | Available regions array |
 | `createdAt` | Date | - | - | Record creation timestamp |
 | `updatedAt` | Date | - | - | Record update timestamp |
-
-## Validation Rules and Constraints
-
-### Collection-Level Constraints
-
-#### Incidents Collection
-```javascript
-{
-  validator: {
-    $jsonSchema: {
-      bsonType: "object",
-      required: ["natInc", "holdingId", "cph", "createdAt"],
-      properties: {
-        natInc: {
-          bsonType: "string",
-          pattern: "^[A-Z]{2}[0-9]{8}$",
-          description: "10-character National Incident Number"
-        },
-        holdingId: {
-          bsonType: "objectId",
-          description: "Reference to Holdings collection"
-        },
-        cph: {
-          bsonType: "string",
-          pattern: "^[0-9]{11}$",
-          description: "11-digit County Parish Holding number"
-        },
-        tbStatus: {
-          bsonType: "string",
-          enum: ["T0", "T1", "T2", "T3", "T4", "W", "S", "Officially TB Free"],
-          description: "TB Status description"
-        },
-        afu: {
-          bsonType: "string",
-          enum: ["Finishing Unit", "Dealer Premises", "Collection Centre", "Quarantine Unit"],
-          description: "Approved Finishing Unit type"
-        },
-        result: {
-          bsonType: "string",
-          enum: ["CLEAR", "CONFIRMED", "INCONCLUSIVE", "NOT TESTED", "WITHDRAWN"],
-          description: "Case result description"
-        },
-        eartags: {
-          bsonType: "array",
-          items: {
-            bsonType: "object",
-            required: ["eartag"],
-            properties: {
-              eartag: {
-                bsonType: "string",
-                pattern: "^UK[0-9]{9}$",
-                description: "UK format animal identification"
-              },
-              species: {
-                bsonType: "string",
-                enum: ["Cattle", "Sheep", "Goat", "Pig", "Other"]
-              },
-              reactor: { bsonType: "bool" },
-              priorityReactor: { bsonType: "bool" },
-              testDate: { bsonType: "date" },
-              createdAt: { bsonType: "date" }
-            }
-          }
-        },
-        removals: {
-          bsonType: "array",
-          items: {
-            bsonType: "object",
-            required: ["eartag", "removalType", "removalDate"],
-            properties: {
-              eartag: {
-                bsonType: "string",
-                pattern: "^UK[0-9]{9}$"
-              },
-              removalType: {
-                bsonType: "string",
-                enum: ["Slaughter", "On-farm kill", "Natural death", "Export"]
-              },
-              removalDate: { bsonType: "date" },
-              destination: { bsonType: "string" },
-              worksheet: { bsonType: "string" },
-              createdAt: { bsonType: "date" }
-            }
-          }
-        },
-        valuations: {
-          bsonType: "array",
-          items: {
-            bsonType: "object",
-            required: ["region", "valuationAmount", "valuationDate"],
-            properties: {
-              region: {
-                bsonType: "string",
-                enum: ["Wales", "Scotland", "England"]
-              },
-              valuationAmount: {
-                bsonType: "decimal",
-                minimum: 0
-              },
-              valuationDate: { bsonType: "date" },
-              status: {
-                bsonType: "string",
-                enum: ["Pending", "Approved", "Paid", "Rejected"]
-              },
-              createdAt: { bsonType: "date" }
-            }
-          }
-        },
-        contactRecords: {
-          bsonType: "array",
-          items: {
-            bsonType: "object",
-            required: ["contactDate", "contactType", "staffMember"],
-            properties: {
-              contactDate: { bsonType: "date" },
-              contactType: {
-                bsonType: "string",
-                enum: ["Phone", "Email", "Visit", "Letter", "SMS"]
-              },
-              contactDetails: { bsonType: "string" },
-              staffMember: { bsonType: "string" },
-              outcome: { bsonType: "string" },
-              followUpRequired: { bsonType: "bool" },
-              followUpDate: { bsonType: "date" },
-              createdAt: { bsonType: "date" }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-#### Holdings Collection
-```javascript
-{
-  validator: {
-    $jsonSchema: {
-      bsonType: "object",
-      required: ["cph", "createdAt"],
-      properties: {
-        cph: {
-          bsonType: "string",
-          pattern: "^[0-9]{11}$",
-          description: "11-digit County Parish Holding number"
-        },
-        cphName: {
-          bsonType: "string",
-          maxLength: 100
-        },
-        address: {
-          bsonType: "object",
-          properties: {
-            street: { bsonType: "string", maxLength: 100 },
-            locality: { bsonType: "string", maxLength: 50 },
-            town: { bsonType: "string", maxLength: 50 },
-            county: { bsonType: "string", maxLength: 50 },
-            postcode: {
-              bsonType: "string",
-              pattern: "^[A-Z]{1,2}[0-9][A-Z0-9]? [0-9][A-Z]{2}$"
-            },
-            country: { bsonType: "string", enum: ["UK", "England", "Wales", "Scotland", "Northern Ireland"] }
-          }
-        },
-        contactInfo: {
-          bsonType: "object",
-          properties: {
-            landline: {
-              bsonType: "string",
-              pattern: "^[0-9+\\-\\s()]+$"
-            },
-            mobile: {
-              bsonType: "string",
-              pattern: "^[0-9+\\-\\s()]+$"
-            },
-            email: {
-              bsonType: "string",
-              pattern: "^[\\w\\.-]+@[\\w\\.-]+\\.[a-zA-Z]{2,}$"
-            },
-            preferredMethod: {
-              bsonType: "string",
-              enum: ["Phone", "Email", "Post", "Visit"]
-            }
-          }
-        },
-        coordinates: {
-          bsonType: "object",
-          properties: {
-            easting: { bsonType: "number", minimum: 0, maximum: 800000 },
-            northing: { bsonType: "number", minimum: 0, maximum: 1400000 },
-            mapRef: { bsonType: "string" },
-            latitude: { bsonType: "number", minimum: -90, maximum: 90 },
-            longitude: { bsonType: "number", minimum: -180, maximum: 180 }
-          }
-        },
-        incidents: {
-          bsonType: "array",
-          items: { bsonType: "objectId" }
-        }
-      }
-    }
-  }
-}
-```
-
-#### Lookup Collections Purpose
-
-The lookup collections (`TbStatuses`, `Units`, `Results`, `AllcBookingMethods`, `AllcNotReasons`, `AllcFailCategories`, `DrfFailCategories`, `ContiguousFailCategories`, `ReactorCategories`, `OnFarmKillCategories`) serve as **reference data sources** for application development and data validation. While the `Incidents` collection stores the actual dropdown values directly (not IDs), these lookup collections provide:
-
-### **1. Application Configuration**
-- **Frontend dropdowns**: Populate UI dropdown lists with current valid options
-- **Regional filtering**: Show only options available in the user's current region
-- **Dynamic updates**: Modify available options without code changes
-
-### **2. Data Validation**
-- **Enum constraints**: Validate that stored values match current valid options
-- **Regional compliance**: Ensure values are appropriate for the region
-- **Historical tracking**: Maintain audit trail of dropdown option changes
-
-### **3. Migration Support**
-- **Legacy mapping**: Map original SQL IDs to descriptive values during migration
-- **Data consistency**: Ensure all historical data uses consistent value formats
-- **Validation rules**: Cross-reference existing data against valid options
-
-### **4. Usage Examples**
-
-#### Frontend Application
-```javascript
-// Get allocation failure categories available for Wales region
-const allcFailCategories = await db.AllcFailCategories.find({
-  regions: "Wales"
-}).toArray();
-
-// Populate allocation failure dropdown
-allcFailCategories.forEach(category => {
-  allocationFailDropdown.addOption(category.reason);
-});
-
-// Get DRF failure categories for current region
-const drfFailCategories = await db.DrfFailCategories.find({
-  regions: userRegion
-}).toArray();
-
-// Populate DRF failure dropdown
-drfFailCategories.forEach(category => {
-  drfFailDropdown.addOption(category.reason);
-});
-```
-
-#### Data Validation
-```javascript
-// Validate allocation failure category before saving incident
-const validCategories = await db.AllcFailCategories.distinct("reason", {
-  regions: userRegion
-});
-
-if (!validCategories.includes(incident.allocationInfo.failCategory)) {
-  throw new Error("Invalid allocation failure category for region");
-}
-
-// Validate DRF failure category
-const validDrfCategories = await db.DrfFailCategories.distinct("reason", {
-  regions: userRegion
-});
-
-if (!validDrfCategories.includes(incident.drfInfo.failCategory)) {
-  throw new Error("Invalid DRF failure category for region");
-}
-```
-
-#### Migration Process
-```javascript
-// Convert legacy allocation failure ID to descriptive value
-const legacyRecord = { allcFailCat: 12 }; // Old ID
-const categoryLookup = await db.AllcFailCategories.findOne({ categoryId: 12 });
-const newRecord = { 
-  allocationInfo: {
-    failCategory: categoryLookup.reason // "Access Denied - Locked Gates"
-  }
-};
-
-// Convert legacy DRF failure ID to descriptive value  
-const legacyDrfRecord = { drfFailCat: 8 }; // Old ID
-const drfCategoryLookup = await db.DrfFailCategories.findOne({ categoryId: 8 });
-const newDrfRecord = {
-  drfInfo: {
-    failCategory: drfCategoryLookup.reason // "Late Submission - Staff Shortage"
-  }
-};
-```
-````
