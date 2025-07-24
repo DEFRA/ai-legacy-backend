@@ -1,4 +1,4 @@
-import { routes as holdingRoutes } from './holdings/routes.js'
+import { holdingRoutes } from './holdings/endpoints/holding.js'
 
 const v1 = {
   plugin: {
