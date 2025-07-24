@@ -17,7 +17,7 @@ properties:
     maxLength: 500
     description: Farm description
     example: "Mixed dairy and arable farm specializing in Holstein cattle"
-  contact:
+  contacts:
     type: array
     minItems: 1
     maxItems: 2

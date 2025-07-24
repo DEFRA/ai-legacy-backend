@@ -5,7 +5,7 @@ import { config } from '../../../src/config/index.js'
 
 import hapi from '@hapi/hapi'
 
-import { startServer } from '../../../src/api/server.js'
+import { startServer } from '../../../src/api/api.js'
 
 vi.mock('../../../src/common/logging/logger.js', () => ({
   createLogger: vi.fn().mockReturnValue({
@@ -67,8 +67,9 @@ describe('startServer', () => {
       })
 
       test('then it should log failure messages', async () => {
-        await startServer()
+        const result = await startServer()
 
+        expect(result).toBeDefined()
         expect(mockLogger.info).toHaveBeenCalledWith('Server failed to start :(')
         expect(mockLogger.error).toHaveBeenCalledWith(error)
       })

@@ -1,10 +1,10 @@
-import { router as healthProbeRouter } from './health/router.js'
+import { routes as healthRoutes } from './health/routes.js'
 
 const probes = {
   plugin: {
     name: 'probes',
     async register (server) {
-      await server.register(healthProbeRouter)
+      server.route(healthRoutes)
     }
   }
 }

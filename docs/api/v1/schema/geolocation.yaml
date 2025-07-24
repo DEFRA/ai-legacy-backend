@@ -1,7 +1,7 @@
 title: Geolocation
 type: object
 properties:
-  mapRef:
+  mapReference:
     type: string
     pattern: '^[A-Z]{2}[0-9]{6}$'
     description: Full OS Grid Reference (2 letters + 6 digits)

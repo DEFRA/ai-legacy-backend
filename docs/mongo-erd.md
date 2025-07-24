@@ -298,7 +298,7 @@ erDiagram
     }
 
     Geolocation {
-        mapRef String
+        mapReference String
         easting Number
         northing Number
     }
@@ -627,7 +627,7 @@ This embeds the standardized Geolocation schema used throughout the system for l
 
 | MongoDB Field | Type | SQL Mapping | Description |
 |---------------|------|-------------|-------------|
-| `details.geolocation.mapRef` | String | `map_ref` | Full OS Grid Reference |
+| `details.geolocation.mapReference` | String | `map_ref` | Full OS Grid Reference |
 | `details.geolocation.easting` | Number | `easting` | OS Grid Reference Easting |
 | `details.geolocation.northing` | Number | `northing` | OS Grid Reference Northing |
 

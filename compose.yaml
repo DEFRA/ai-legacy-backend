@@ -5,8 +5,8 @@ services:
     image: ai-legacy-backend-development
     container_name: ai-legacy-backend-development
     ports:
-      - '3000:3000'
-      - '9232:9232'
+      - '3001:3001'
+      - '9230:9230'
     links:
       - 'mongodb:mongodb'
     depends_on:
@@ -18,12 +18,12 @@ services:
     env_file:
       - .env
     environment:
-      PORT: 3000
-      PORT_DEBUG: 9232
+      PORT: 3001
+      PORT_DEBUG: 9230
       NODE_ENV: development
       MONGO_URI: mongodb://mongodb:27017/
     networks:
-      - ai-tech-radar
+      - ai-legacy-backend
 
   mongodb:
     image: mongo:6.0.13
@@ -32,13 +32,13 @@ services:
     volumes:
       - mongodb-data:/data
     networks:
-      - ai-tech-radar
+      - ai-legacy-backend
 
 volumes:
   mongodb-data:
 
 networks:
-  ai-tech-radar:
-    name: ai-tech-radar
+  ai-legacy-backend:
+    name: ai-legacy-backend
     driver: bridge
 

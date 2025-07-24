@@ -25,13 +25,13 @@ const serverConfig = {
   port: {
     doc: 'The port to bind',
     format: 'port',
-    default: 3000,
+    default: 3001,
     env: 'PORT'
   },
   serviceName: {
     doc: 'Api Service Name',
     format: String,
-    default: 'fcp-sfd-accelerator'
+    default: 'ai-legacy-backend',
   },
   root: {
     doc: 'Project root',

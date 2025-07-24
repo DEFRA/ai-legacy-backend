@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, test } from 'vitest'
 
-import { startServer } from '../../../../../src/api/server.js'
+import { startServer } from '../../../../../src/api/api.js'
 
 describe('health probe', () => {
   let server
