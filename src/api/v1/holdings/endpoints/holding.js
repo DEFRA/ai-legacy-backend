@@ -1,3 +1,25 @@
+/**
+ * @fileoverview API endpoint handlers for holding operations
+ *
+ * This module contains all HTTP request handlers for holding-related API endpoints.
+ * Handlers implement the controller layer of the MVC pattern, managing request/response
+ * processing, validation, error handling, and service coordination.
+ *
+ * Available Endpoints:
+ * - POST /api/v1/holdings - Create a new holding
+ * - GET /api/v1/holdings/{cph} - Retrieve holding by CPH
+ *
+ * All endpoints follow REST conventions and return standardized JSON responses
+ * with consistent error handling using Boom for HTTP errors.
+ *
+ * @module api/v1/holdings/endpoints/holding
+ * @requires @hapi/boom - HTTP error handling
+ * @requires ../services/holding - Business logic service
+ * @requires ../schemas/holding - Request validation schemas
+ * @author Defra DDTS
+ * @since 1.0.0
+ */
+
 import Boom from '@hapi/boom'
 import { mongoClient } from '../../../../common/database/mongo.js'
 import { MongoHoldingRepository } from '../../../../data/mongo/repositories/holding.js'
