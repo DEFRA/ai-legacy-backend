@@ -25,57 +25,54 @@ import { cph } from '../../common/schemas/schemas.js'
 /**
  * Joi validation schema for creating a new holding
  * Validates all required and optional fields for holding creation
+ * Uses flattened structure to match OpenAPI specification
  * @type {Joi.ObjectSchema}
  * @example
  * const validPayload = {
- *   details: {
- *     cph: '12/345/6789',
- *     name: 'Test Farm',
- *     description: 'A test holding',
- *     address: {
- *       street: '123 Farm Lane',
- *       locality: 'Little Village',
- *       town: 'Farmington',
- *       county: 'Test County',
- *       postcode: 'TE1 2ST'
- *     },
- *     geolocation: {
- *       mapReference: 'TEST123',
- *       easting: 123456,
- *       northing: 654321
- *     },
- *     contacts: [
- *       { type: 'telephone', value: '01234567890' },
- *       { type: 'email', value: 'test@example.com' }
- *     ]
- *   }
+ *   cph: '12/345/6789',
+ *   name: 'Test Farm',
+ *   description: 'A test holding',
+ *   address: {
+ *     street: '123 Farm Lane',
+ *     locality: 'Little Village',
+ *     town: 'Farmington',
+ *     county: 'Test County',
+ *     postcode: 'TE1 2ST'
+ *   },
+ *   geolocation: {
+ *     mapReference: 'TEST123',
+ *     easting: 123456,
+ *     northing: 654321
+ *   },
+ *   contacts: [
+ *     { type: 'telephone', value: '01234567890' },
+ *     { type: 'email', value: 'test@example.com' }
+ *   ]
  * }
  */
 
 const createHoldingSchema = Joi.object({
-  details: Joi.object({
-    cph: cph.required(),
-    name: Joi.string().min(1).max(255).required(),
-    description: Joi.string().min(1).max(1000).optional(),
-    address: Joi.object({
-      street: Joi.string().min(1).max(255).optional(),
-      locality: Joi.string().min(1).max(100).optional(),
-      town: Joi.string().min(1).max(100).optional(),
-      county: Joi.string().min(1).max(100).optional(),
-      postcode: Joi.string().min(1).max(10).optional()
-    }).optional(),
-    geolocation: Joi.object({
-      mapReference: Joi.string().min(1).max(50).optional(),
-      easting: Joi.number().integer().min(0).max(999999).optional(),
-      northing: Joi.number().integer().min(0).max(999999).optional()
-    }).optional(),
-    contacts: Joi.array().items(
-      Joi.object({
-        type: Joi.string().valid('telephone', 'email').required(),
-        value: Joi.string().min(1).max(255).required()
-      })
-    ).optional()
-  }).required()
+  cph: cph.required(),
+  name: Joi.string().min(1).max(255).required(),
+  description: Joi.string().min(1).max(1000).optional(),
+  address: Joi.object({
+    street: Joi.string().min(1).max(255).optional(),
+    locality: Joi.string().min(1).max(100).optional(),
+    town: Joi.string().min(1).max(100).optional(),
+    county: Joi.string().min(1).max(100).optional(),
+    postcode: Joi.string().min(1).max(10).optional()
+  }).optional(),
+  geolocation: Joi.object({
+    mapReference: Joi.string().min(1).max(50).optional(),
+    easting: Joi.number().integer().min(0).max(999999).optional(),
+    northing: Joi.number().integer().min(0).max(999999).optional()
+  }).optional(),
+  contacts: Joi.array().items(
+    Joi.object({
+      type: Joi.string().valid('telephone', 'email').required(),
+      value: Joi.string().min(1).max(255).required()
+    })
+  ).optional()
 }).required()
 
 /**

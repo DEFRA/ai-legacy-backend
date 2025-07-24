@@ -39,24 +39,23 @@ async function createHolding (request, h) {
     const repo = new MongoHoldingRepository(mongoClient)
     const service = new HoldingService(repo)
 
-    const holding = await service.createHolding(request.payload.details)
+    const holding = await service.createHolding(request.payload)
 
-    return h.response({
-      message: 'Holding created successfully',
-      data: { holding }
-    }).code(201)
+    return h.response(holding).code(201)
   } catch (error) {
     // Handle domain-specific errors
     if (error.name === 'DuplicateCphError') {
-      return h.response({
-        error: 'Conflict',
-        message: error.message,
-        statusCode: error.statusCode
-      }).code(error.statusCode)
+      throw Boom.conflict(`A holding with CPH '${request.payload.cph}' already exists`)
     }
 
+    // Handle validation errors
+    if (error.isJoi) {
+      throw Boom.badRequest(error.details[0].message)
+    }
+
+    // For unexpected errors, log and return generic error
     request.logger.error('Error creating holding:', error)
-    throw Boom.internal(`Failed to create holding: ${error.message}`)
+    throw Boom.internal('An error occurred while creating the holding')
   }
 }
 
@@ -76,20 +75,18 @@ async function getHolding (request, h) {
     const holding = await service.getHoldingByCph(request.params.cph)
 
     if (!holding) {
-      return h.response({
-        error: 'Not Found',
-        message: 'Holding not found',
-        statusCode: 404
-      }).code(404)
+      throw Boom.notFound(`Holding with CPH '${request.params.cph}' not found`)
     }
 
-    return h.response({
-      message: 'Holding retrieved successfully',
-      data: { holding }
-    }).code(200)
+    return h.response(holding).code(200)
   } catch (error) {
+    // Re-throw Boom errors as-is
+    if (error.isBoom) {
+      throw error
+    }
+
     request.logger.error('Error retrieving holding:', error)
-    throw Boom.internal(`Failed to retrieve holding: ${error.message}`)
+    throw Boom.internal('An error occurred while retrieving the holding')
   }
 }
 

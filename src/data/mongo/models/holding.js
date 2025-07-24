@@ -38,11 +38,8 @@ class HoldingModel {
   constructor (data = {}) {
     this._id = data._id || data.id || null
     this.details = data.details ? this.createDetailsModel(data.details) : null
-    this.updatedAt = new Date()
-
-    if (!this._id) {
-      this.createdAt = data.createdAt || new Date()
-    }
+    this.updatedAt = data.updatedAt || new Date()
+    this.createdAt = data.createdAt || new Date()
   }
 
   /**
@@ -172,6 +169,50 @@ class HoldingModel {
     }
 
     return new HoldingModel(data)
+  }
+
+  /**
+   * Converts this HoldingModel instance to OpenAPI-compliant response format
+   * Returns a flattened object structure that matches the OpenAPI specification
+   * @returns {object} OpenAPI-compliant holding object with timestamps
+   * @example
+   * const holding = new HoldingModel({ details: { cph: '12/345/6789', name: 'Test Farm' } })
+   * const apiResponse = holding.toOpenApiObject()
+   * // Returns: { cph: '12/345/6789', name: 'Test Farm', address: {...}, contacts: [...], createdAt: Date, updatedAt: Date }
+   */
+  toOpenApiObject () {
+    if (!this.details) {
+      return {
+        createdAt: this.createdAt,
+        updatedAt: this.updatedAt
+      }
+    }
+
+    const result = {
+      cph: this.details.cph,
+      name: this.details.name,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt
+    }
+
+    // Add optional fields only if they exist
+    if (this.details.description) {
+      result.description = this.details.description
+    }
+
+    if (this.details.address) {
+      result.address = this.details.address.toObject()
+    }
+
+    if (this.details.geolocation) {
+      result.geolocation = this.details.geolocation.toObject()
+    }
+
+    if (this.details.contacts && this.details.contacts.length > 0) {
+      result.contacts = this.details.contacts.map(c => c.toObject())
+    }
+
+    return result
   }
 }
 

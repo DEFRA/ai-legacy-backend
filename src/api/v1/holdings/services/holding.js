@@ -34,44 +34,44 @@ class HoldingService {
 
   /**
    * Create a new holding with business logic validation
-   * @param {object} details - The holding details to create
-   * @param {string} details.cph - County Parish Holding number (format: XX/XXX/XXXX)
-   * @param {string} details.name - Name of the holding
-   * @param {string} [details.description] - Optional description
-   * @param {object} [details.address] - Optional address information
-   * @param {object} [details.geolocation] - Optional geolocation data
-   * @param {Array<object>} [details.contacts] - Optional contact information
-   * @returns {Promise<object>} The created holding details formatted for API response
+   * @param {object} holdingData - The flattened holding data from request
+   * @param {string} holdingData.cph - County Parish Holding number (format: XX/XXX/XXXX)
+   * @param {string} holdingData.name - Name of the holding
+   * @param {string} [holdingData.description] - Optional description
+   * @param {object} [holdingData.address] - Optional address information
+   * @param {object} [holdingData.geolocation] - Optional geolocation data
+   * @param {Array<object>} [holdingData.contacts] - Optional contact information
+   * @returns {Promise<object>} The created holding in OpenAPI-compliant format with timestamps
    * @throws {DuplicateCphError} When a holding with the same CPH already exists
    * @example
-   * const details = { cph: '12/345/6789', name: 'Test Farm' }
-   * const result = await service.createHolding(details)
-   * // Returns: { details: { cph: '12/345/6789', name: 'Test Farm', contacts: [] } }
+   * const holdingData = { cph: '12/345/6789', name: 'Test Farm' }
+   * const result = await service.createHolding(holdingData)
+   * // Returns: { cph: '12/345/6789', name: 'Test Farm', address: {...}, contacts: [...], createdAt: Date, updatedAt: Date }
    */
-  async createHolding (details) {
-    const holding = await this.holdingRepository.create({ details })
-    return {
-      details: holding.details
+  async createHolding (holdingData) {
+    // Transform the flattened data to the internal model structure
+    const entityData = {
+      details: holdingData
     }
-  }
 
-  /**
+    const holding = await this.holdingRepository.create(entityData)
+    return holding.toOpenApiObject()
+  }  /**
    * Get a holding by its CPH (County Parish Holding number)
    * @param {string} cph - The CPH to search for (format: XX/XXX/XXXX)
-   * @returns {Promise<object|null>} The holding details formatted for API response, or null if not found
+   * @returns {Promise<object|null>} The holding in OpenAPI-compliant format with timestamps, or null if not found
    * @example
    * const result = await service.getHoldingByCph('12/345/6789')
-   * // Returns: { details: { cph: '12/345/6789', name: 'Test Farm', ... } } or null
+   * // Returns: { cph: '12/345/6789', name: 'Test Farm', address: {...}, contacts: [...], createdAt: Date, updatedAt: Date } or null
    */
+
   async getHoldingByCph (cph) {
     const holdings = await this.holdingRepository.findByCph(cph)
     if (!holdings || holdings.length === 0) {
       return null
     }
-    // Return the first holding found with this CPH
-    return {
-      details: holdings[0].details
-    }
+    // Return the first holding found with this CPH in OpenAPI format
+    return holdings[0].toOpenApiObject()
   }
 }
 
