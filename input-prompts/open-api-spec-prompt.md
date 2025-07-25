@@ -1,38 +1,45 @@
-# Task: Iteratively Expand OpenAPI Specification for User Story
-
-Create or expand an OpenAPI 3.1.1 specification to support a specific user story in my tbcms project. This is an iterative development process where the specification grows incrementally with each user story implementation. Reference the official OpenAPI Specification v3.1.1 from https://spec.openapis.org/oas/v3.1.1.html
-
-**Note**: This specification is for development validation purposes. Use v1 as the API version throughout development until all user stories are implemented.
-
-## Context Documents
-You have access to the following design documentation:
-1. `mongo-erd.md` - Database ERD showing structure and business entities
-2. `[SPECIFY USER STORY FILE]` - The specific user story to implement
-3. `documentation/` folder - System design and documentation
-
-## Analysis Requirements
-1. Review the specified user story and associated system documentation
-2. Understand all business logic and entities for this project
-3. Identify the API endpoints needed to support the user story
-4. **If an existing OpenAPI specification exists, extend it rather than replacing it**
-
-## Design Principles
-1. DO NOT tightly couple the API design to the database structure
-2. Follow RESTful API design best practices and principles
-3. Design for the user story requirements, not database convenience
-4. Build incrementally - add only what's needed for the current user story
-
-## Output Requirements
-1. Use OpenAPI Specification v3.1.1 format
-2. Output MUST be in YAML format
-3. Focus only on endpoints needed for the specified user story
-4. **Iterative approach**: If this is the first user story, create a complete new specification. If extending an existing spec, clearly indicate what's being added or modified
-5. Include comments in the YAML to identify which endpoints/schemas support the current user story
-
-## Development Context
-This OpenAPI specification serves as:
-- A development tool for validating API design against user story requirements  
-- A reference for code generation and implementation
-- An incremental documentation that grows with each user story
-
-Each iteration should build upon the previous specification, creating a comprehensive API definition that supports all implemented user stories.
+Task: Iteratively Expand OpenAPI Specification for Holdings Contact Information Management User Story
+Expand the existing OpenAPI specification (#file:openapi.yaml) to support the Holdings Contact Information Management user story in the TBCMS project. This is an iterative development process where the specification grows incrementally with each user story implementation.
+Note: This specification is for development validation purposes. Use v1 as the API version throughout development until all user stories are implemented.
+Context Documents
+#file:mongo-erd.md - Database ERD showing structure and business entities
+#file:holdings-contact-information-management.md - The specific user story to implement
+Existing OpenAPI specification with holdings endpoints and schemas
+User Story Requirements Analysis
+Core Need: APHA field officers need to view and edit holding contact information (telephone and email) while keeping CPH immutable.
+Acceptance Criteria:
+AC1: View and edit all holding information except CPH (immutable)
+AC1: Edit primary telephone number with UK format validation
+AC2: Edit email address with format validation
+AC3: Proper validation, error handling, and save confirmation
+Required API Changes
+Endpoints to Add
+1. PATCH /holdings/{cph}
+Purpose: Partial update of holding information including contact details
+Reuses existing GET /holdings/{cph} for viewing (no new GET endpoint needed)
+Supports editing telephone and email contact information
+Ensures CPH remains immutable
+Schema Enhancements Required
+New Schema: HoldingPatchRequest for partial updates
+Enhanced Contact Validation:
+UK telephone number format validation patterns
+Email format validation (already exists but ensure proper error responses)
+Validation Rules: CPH must not be updateable in PATCH requests
+Design Principles
+Extend, don't replace - Build upon existing OpenAPI specification
+RESTful design - Use PATCH for partial updates on the holding resource
+User story focused - Only add what's needed for telephone and email editing
+UK standards compliance - Implement UK telephone and email validation
+Immutable CPH - Ensure CPH cannot be modified via PATCH
+Output Requirements
+Use OpenAPI Specification v3.1.1 format in YAML
+Add comments identifying changes for this user story
+Include comprehensive error responses with validation details
+Implement proper HTTP status codes (200, 400, 404, 409, 500)
+Focus on incremental additions to existing specification
+Validation Requirements
+UK telephone number patterns for landline and mobile
+Standard email format validation
+Detailed error responses for validation failures
+Clear error messages for field-level validation issues
+The goal is to extend the existing specification minimally and precisely to support the Holdings Contact Information Management user story requirements.

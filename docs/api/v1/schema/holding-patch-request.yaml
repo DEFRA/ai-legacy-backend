@@ -1,0 +1,68 @@
+# USER STORY: Holdings Contact Information Management
+# Schema for partial updates of holding contact information via PATCH endpoint
+
+title: HoldingPatchRequest
+type: object
+description: |
+  Request schema for partial updates to holding contact information.
+  Supports editing telephone and email contacts while ensuring CPH remains immutable.
+additionalProperties: false
+properties:
+  name:
+    type: string
+    description: Farm or premises name
+    example: "Meadowbrook Farm"
+  description:
+    type: string
+    description: Farm description
+    example: "Mixed dairy and arable farm specializing in Holstein cattle"
+  contacts:
+    type: array
+    description: |
+      Array of contact information (telephone and email).
+      Supports partial updates with UK telephone number and email validation.
+    items:
+      $ref: './contact-with-validation.yaml'
+    examples:
+      - type: telephone
+        value: "01234 567890"
+      - type: email
+        value: "farmer@example.com"
+  address:
+    $ref: './address.yaml'
+  geolocation:
+    $ref: './geolocation.yaml'
+
+# Explicitly exclude CPH from allowed properties to ensure immutability
+not:
+  properties:
+    cph:
+      description: "CPH field is immutable and cannot be updated via PATCH requests"
+
+examples:
+  update-contacts-only:
+    summary: Update only contact information
+    value:
+      contacts:
+        - type: telephone
+          value: "01234 567890"
+        - type: email
+          value: "updated@example.com"
+  
+  update-name-and-contacts:
+    summary: Update name and contact information
+    value:
+      name: "Updated Farm Name"
+      contacts:
+        - type: telephone
+          value: "+44 1234 567890"
+        - type: email
+          value: "newcontact@farm.co.uk"
+
+  invalid-cph-attempt:
+    summary: Invalid attempt to update CPH (will be rejected)
+    value:
+      cph: "99/999/9999"
+      contacts:
+        - type: telephone
+          value: "01234 567890"

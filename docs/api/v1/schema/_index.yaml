@@ -2,6 +2,8 @@ Address:
   $ref: './address.yaml'
 Contact:
   $ref: './contact.yaml'
+ContactWithValidation:
+  $ref: './contact-with-validation.yaml'
 Geolocation:
   $ref: './geolocation.yaml'
 ProblemDetails:
@@ -10,3 +12,5 @@ Holding:
   $ref: './holding.yaml'
 CreateHoldingRequest:
   $ref: './create-holding-request.yaml'
+HoldingPatchRequest:
+  $ref: './holding-patch-request.yaml'

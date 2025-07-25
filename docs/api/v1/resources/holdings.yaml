@@ -98,8 +98,118 @@ post:
             $ref: '../schema/problem-details.yaml'
           examples:
             server-error:
-              summary: Internal server error example
+              summary: Server error example
               value:
                 title: "Internal Server Error"
                 status: 500
                 detail: "An unexpected error occurred while processing the request"
+
+# USER STORY: Holdings Contact Information Management
+# Added PATCH endpoint to enable editing of holding contact information
+patch:
+  summary: Update holding contact information
+  description: |
+    Updates holding contact information (telephone and email) for a given CPH number.
+    Supports user story: Holdings Contact Information Management.
+    
+    Key features:
+    - CPH is immutable and cannot be updated
+    - Supports partial updates of contact information
+    - UK telephone number format validation
+    - Email format validation
+    - Proper error handling with detailed validation messages
+  operationId: updateHoldingContactInfo
+  tags:
+    - Holdings
+  parameters:
+    - name: cph
+      in: path
+      required: true
+      schema:
+        $ref: '../schema/cph.yaml'
+      description: The County Parish Holding number to update contact information for
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schema/holding-patch-request.yaml'
+  responses:
+    '200':
+      description: Holding contact information updated successfully
+      content:
+        application/json:
+          schema:
+            $ref: '../schema/holding.yaml'
+    '400':
+      description: Invalid request data or validation errors
+      content:
+        application/problem+json:
+          schema:
+            $ref: '../schema/problem-details.yaml'
+          examples:
+            validation-error:
+              summary: Contact validation error
+              value:
+                title: "Validation Error"
+                status: 400
+                detail: "The request contains invalid contact information"
+                errors:
+                  - field: "contacts[0].value"
+                    message: "UK telephone number must be in format: 01234 567890 or +44 1234 567890"
+                    value: "invalid_phone"
+                    pointer: "#/contacts/0/value"
+                  - field: "contacts[1].value"
+                    message: "Email address is not in valid format"
+                    value: "invalid-email"
+                    pointer: "#/contacts/1/value"
+            immutable-cph-error:
+              summary: Attempt to update immutable CPH
+              value:
+                title: "Immutable Field Error"
+                status: 400
+                detail: "CPH field cannot be updated"
+                errors:
+                  - field: "cph"
+                    message: "CPH is immutable and cannot be modified"
+                    value: "12/345/6789"
+                    pointer: "#/cph"
+    '404':
+      description: No holding found for the given CPH
+      content:
+        application/problem+json:
+          schema:
+            $ref: '../schema/problem-details.yaml'
+          examples:
+            not-found:
+              summary: Holding not found for update
+              value:
+                title: "Not Found"
+                status: 404
+                detail: "No holding found for CPH '12/345/6789'"
+    '409':
+      description: Conflict during update operation
+      content:
+        application/problem+json:
+          schema:
+            $ref: '../schema/problem-details.yaml'
+          examples:
+            update-conflict:
+              summary: Concurrent update conflict
+              value:
+                title: "Update Conflict"
+                status: 409
+                detail: "The holding has been modified by another user. Please refresh and try again."
+    '500':
+      description: Internal server error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '../schema/problem-details.yaml'
+          examples:
+            server-error:
+              summary: Server error during update
+              value:
+                title: "Internal Server Error"
+                status: 500
+                detail: "An unexpected error occurred while updating the holding"
